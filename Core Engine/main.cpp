@@ -1,6 +1,29 @@
 #include "Engine/header/Common.h"
 #include "Engine/header/Core.h"
 
+class MyCustomModule : public Module
+{
+    void Render(std::shared_ptr<Camera> camera, std::vector<std::shared_ptr<Light>> lights)
+    {
+        if (keys_pressed[SDLK_d])
+        {
+            camera->transform.rotation -= glm::vec3(0, 50, 0) * delta_time;
+        }
+        if (keys_pressed[SDLK_a])
+        {
+            camera->transform.rotation += glm::vec3(0, 50, 0) * delta_time;
+        }
+        if (keys_pressed[SDLK_w])
+        {
+            camera->transform.position += camera->transform.Forward() * delta_time * 5.0f;
+        }
+        if (keys_pressed[SDLK_s])
+        {
+            camera->transform.position -= camera->transform.Forward() * delta_time * 5.0f;
+        }
+    }
+};
+
 int main(int argc, char* args[])
 {
     std::shared_ptr<Core> engine = std::shared_ptr<Core>(new Core());
@@ -33,6 +56,9 @@ int main(int argc, char* args[])
     mySurface->ApplyTexture("texture.png");
     //Apply Texture and shader to the mesh
     myMesh->ApplySurface(mySurface);
+
+    //Add mycustom Module
+    myObj->AddModule<MyCustomModule>();
 
     engine->Start();
     return 0;

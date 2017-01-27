@@ -54,23 +54,6 @@ public:
 
     void Render(std::shared_ptr<Camera> camera, std::vector<std::shared_ptr<Light>> lights)
     {
-        if (keys_pressed[SDLK_RIGHT])
-        {
-            camera->transform.rotation -= glm::vec3(0, 50, 0) * delta_time;
-        }
-        if (keys_pressed[SDLK_LEFT])
-        {
-            camera->transform.rotation += glm::vec3(0, 50, 0) * delta_time;
-        }
-        if (keys_pressed[SDLK_UP])
-        {
-            camera->transform.position += camera->transform.Forward() * delta_time * 5.0f;
-        }
-        if (keys_pressed[SDLK_DOWN])
-        {
-            camera->transform.position -= camera->transform.Forward() * delta_time * 5.0f;
-        }
-
         if (surface != nullptr)
         {
             glUseProgram(surface->GetShaderProgram());
