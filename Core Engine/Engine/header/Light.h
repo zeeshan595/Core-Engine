@@ -7,20 +7,21 @@ class Light
 {
 public:
     enum LIGHT_TYPE{
-        AMBIENT = 0,
-        POINT = 1,
-        DIRECTIONAL = 2
+        POINT = 0,
+        DIRECTIONAL = 1
     };
 
-    std::vec4 color;
+    glm::vec4 color;
     float brightness;
     Transform transform;
+    LIGHT_TYPE light_type;
 
-    Light()
+    Light(LIGHT_TYPE type)
     {
-        color = std::vec4(1.0f, 1.0f, 1.0f, 1.0f);
+        color = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
         brightness = 1.0f;
         transform = Transform();
+        light_type = type;
     }
 };
 

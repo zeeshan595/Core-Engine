@@ -52,23 +52,23 @@ public:
         }
     }
 
-    void Render(std::shared_ptr<Camera> camera)
+    void Render(std::shared_ptr<Camera> camera, std::vector<std::shared_ptr<Light>> lights)
     {
         if (keys_pressed[SDLK_RIGHT])
         {
-            attached_to->transform.rotation += glm::vec3(0, 50, 0) * delta_time;
+            camera->transform.rotation -= glm::vec3(0, 50, 0) * delta_time;
         }
         if (keys_pressed[SDLK_LEFT])
         {
-            attached_to->transform.rotation += glm::vec3(0, -50, 0) * delta_time;
+            camera->transform.rotation += glm::vec3(0, 50, 0) * delta_time;
         }
         if (keys_pressed[SDLK_UP])
         {
-            attached_to->transform.rotation += glm::vec3(50, 0, 0) * delta_time;
+            camera->transform.position += camera->transform.Forward() * delta_time * 5.0f;
         }
         if (keys_pressed[SDLK_DOWN])
         {
-            attached_to->transform.rotation += glm::vec3(-50, 0, 0) * delta_time;
+            camera->transform.position -= camera->transform.Forward() * delta_time * 5.0f;
         }
 
         if (surface != nullptr)
@@ -91,19 +91,40 @@ public:
                 GLint texture_uniform = glGetUniformLocation(surface->GetShaderProgram(), "texture_map");
                 glUniform1i(texture_uniform, 0);
             }
-            //Lighting
-            //Ambient
-            glm::vec3 ambientLight = glm::vec3(0.1f, 0.1f, 0.1f);
-            GLint light_ambient_uniform = glGetUniformLocation(surface->GetShaderProgram(), "light_ambient");
-            glUniform3fv(light_ambient_uniform, 1, &ambientLight[0]);
+            std::vector<glm::vec3> light_directions;
+            std::vector<glm::vec3> light_positions;
 
-            //Directional
-            glm::vec3 light_direction = glm::vec3(0.0f, 0.75f, 0.25f);
-            GLint light_direction_uniform = glGetUniformLocation(surface->GetShaderProgram(), "light_direction");
-            glUniform3fv(light_direction_uniform, 1, &light_direction[0]);
+            for (auto i = lights.begin(); i < lights.end(); i++)
+            {
+                if ((*i)->light_type == Light::LIGHT_TYPE::DIRECTIONAL)
+                {
+                    light_directions.push_back((*i)->transform.Forward());
+                }
+                else if ((*i)->light_type == Light::LIGHT_TYPE::POINT)
+                {
+                    light_positions.push_back((*i)->transform.position);
+                }
+            }
+
+            //Directional Light
+            int directional_light_count = light_directions.size();
+            GLint light_direction_uniform = glGetUniformLocation(surface->GetShaderProgram(), "light_directions");
+            glUniform3fv(light_direction_uniform, light_directions.size(), &light_directions[0][0]);
+
+            GLint light_direction_count_uniform = glGetUniformLocation(surface->GetShaderProgram(), "directional_light_count");
+            glUniform1iv(light_direction_count_uniform, 1, &directional_light_count);
+
+            //Point Light
+            int point_light_size = light_positions.size();
+            GLint light_position_uniform = glGetUniformLocation(surface->GetShaderProgram(), "light_position");
+            glUniform3fv(light_position_uniform, light_positions.size(), &light_positions[0][0]);
+
+            GLint light_point_count_uniform = glGetUniformLocation(surface->GetShaderProgram(), "point_light_count");
+            glUniform1iv(light_point_count_uniform, 1, &point_light_size);
 
             GLint eye_position_uniform = glGetUniformLocation(surface->GetShaderProgram(), "camera_position_world");
             glUniform3fv(eye_position_uniform, 1, &camera->transform.position[0]);
+            
 
             glBindVertexArray(VAO);
             glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);

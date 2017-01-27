@@ -158,7 +158,7 @@ void Core::Render()
         for (auto i = world->entities.begin(); i != world->entities.end(); ++i)
         {
             for (std::shared_ptr<Module> j : (*i)->GetModules())
-                j->Render((*camera_ptr));
+                j->Render((*camera_ptr), world->lights);
         }
     }
 }
