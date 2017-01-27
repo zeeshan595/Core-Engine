@@ -13,12 +13,14 @@ int main(int argc, char* args[])
     camera_1->viewport_y = 0;
     camera_1->viewport_size_x = 1; //Value between 0 and 1. (0.5 is middle of the screen)
     camera_1->viewport_size_y = 1;
+
+
     //Create a new Cube object
     std::shared_ptr<Entity> myObj = engine->world->CreateEntity("Cube");
     //Attach Mesh Component So It Is Renders (If no shader is specified it creates a default one)
     std::shared_ptr<Mesh> myMesh = myObj->AddModule<Mesh>();
     //Load obj mesh
-    //myMesh->LoadModel("monkey3.obj");
+    myMesh->LoadModel("monkey3.obj");  // OR myMesh->LoadDefaultCube();
     //Create new Surface (this includes shader and texture)
     std::shared_ptr<Surface> mySurface = std::shared_ptr<Surface>(new Surface("defaultVS.glsl", "defaultFS.glsl"));
     mySurface->ApplyTexture("texture.png");

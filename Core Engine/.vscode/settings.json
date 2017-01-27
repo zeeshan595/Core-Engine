@@ -27,7 +27,13 @@
         "IOSTREAM": "cpp",
         "memory": "cpp",
         "*Hios": "cpp",
-        "*H*H*Hqueue": "cpp"
+        "*H*H*Hqueue": "cpp",
+        "*h*h*hxutility": "cpp",
+        "*h*hppfunctional": "cpp",
+        "*h*halgorithm": "cpp",
+        "locale": "cpp",
+        "fstream": "cpp",
+        "xlocmes": "cpp"
     },
     "editor.tabSize": 4
 }

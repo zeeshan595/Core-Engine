@@ -13,17 +13,21 @@ Surface::Surface(std::string vertex_shader_path, std::string fragment_shader_pat
     shader_program = glCreateProgram();
     glAttachShader(shader_program, vertex_shader_program);
     glAttachShader(shader_program, fragment_shader_program);
+
+    //Shader Attributes
+    glBindAttribLocation(shader_program, 0, "vertex_position_model");
+    glBindAttribLocation(shader_program, 1, "vertex_color");
+    glBindAttribLocation(shader_program, 2, "vertex_uv");
+    glBindAttribLocation(shader_program, 3, "vertex_normal_model");
+
+    //Link Program
     glLinkProgram(shader_program);
     CheckForLinkErrors(shader_program);
     std::cout << "SUCCESS [Shader Loaded]" << std::endl;
 
+    //Delete shaders
     glDeleteShader(vertex_shader_program);
     glDeleteShader(fragment_shader_program);
-
-    //Shader Attributes
-    glBindAttribLocation(shader_program, 0, "vertex_position");
-    glBindAttribLocation(shader_program, 1, "vertex_uv");
-    glBindAttribLocation(shader_program, 2, "vertex_normal");
 }
 
 Surface::~Surface()
@@ -54,9 +58,8 @@ GLuint Surface::LoadShaderFromMemory(const char * pMem, SHADER_TYPE shader_type)
 GLuint Surface::LoadShaderFromFile(const std::string& filename, SHADER_TYPE shader_type)
 {
     std::string file_contents;
-    std::ifstream file;
-    file.open(filename.c_str(), std::ios::in);
-    if (!file)
+    std::ifstream file(filename, std::ios::in);
+    if (!file.is_open())
     {
         std::cout << "File could not be loaded" << std::endl;
         return 0;
@@ -65,17 +68,14 @@ GLuint Surface::LoadShaderFromFile(const std::string& filename, SHADER_TYPE shad
     //calculate size
     if (file.good())
     {
-        file.seekg(0, std::ios::end);
-        unsigned long len = file.tellg();
-        file.seekg(std::ios::beg);
-        if (len == 0)
-        {
-            std::cout << "File has no contents" << std::endl;
-            return 0;
+        std::string line = "";
+        while(!file.eof()) {
+            std::getline(file, line);
+            file_contents.append(line + "\n");
         }
-        file_contents.resize(len);
-        file.read(&file_contents[0], len);
+
         file.close();
+        
         GLuint program = LoadShaderFromMemory(file_contents.c_str(), shader_type);
         return program;
     }

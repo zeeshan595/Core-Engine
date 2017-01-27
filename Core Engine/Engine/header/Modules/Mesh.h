@@ -7,12 +7,8 @@
 
 class Mesh : public Module
 {
-  public:
-    Mesh()
-    {
-        LoadDefaultCube();
-        GenerateBuffers();
-    }
+public:
+    Mesh(){}
     ~Mesh()
     {
         glDeleteBuffers(1, &EBO);
@@ -37,7 +33,10 @@ class Mesh : public Module
             for (int i = 0; i < VERTS_LEN; i++)
             {
                 verts[i] = {
-                    model.positions[i], model.texCoords[i], model.normals[i]};
+                    model.positions[i],
+                    glm::vec4(1.0f, 1.0f, 1.0f, 1.0f),
+                    model.texCoords[i],
+                    model.normals[i]};
             }
 
             for (int i = 0; i < INDICES_LEN; i++)
@@ -59,31 +58,52 @@ class Mesh : public Module
         {
             attached_to->transform.rotation += glm::vec3(0, 50, 0) * delta_time;
         }
+        if (keys_pressed[SDLK_LEFT])
+        {
+            attached_to->transform.rotation += glm::vec3(0, -50, 0) * delta_time;
+        }
         if (keys_pressed[SDLK_UP])
         {
             attached_to->transform.rotation += glm::vec3(50, 0, 0) * delta_time;
+        }
+        if (keys_pressed[SDLK_DOWN])
+        {
+            attached_to->transform.rotation += glm::vec3(-50, 0, 0) * delta_time;
         }
 
         if (surface != nullptr)
         {
             glUseProgram(surface->GetShaderProgram());
-            //Transform
-            GLint mvp_uniform = glGetUniformLocation(surface->GetShaderProgram(), "MVP");
-            glUniformMatrix4fv(mvp_uniform, 1, GL_FALSE, glm::value_ptr(camera->GetProjectionMatrix() * camera->GetViewMatrix() * attached_to->transform.GetWorldMatrix()));
-            //Texture
             
+            //Camera Projection Matrix
+            GLint mvp_uniform = glGetUniformLocation(surface->GetShaderProgram(), "model_view_projection_matrix");
+            glUniformMatrix4fv(mvp_uniform, 1, GL_FALSE, glm::value_ptr(camera->GetProjectionMatrix() * camera->GetViewMatrix() * attached_to->transform.GetWorldMatrix()));
+            
+            //World Matrix
+            GLint model_to_world_uniform = glGetUniformLocation(surface->GetShaderProgram(), "model_to_world_matrix");
+            glUniformMatrix4fv(model_to_world_uniform, 1, GL_FALSE, &attached_to->transform.GetWorldMatrix()[0][0]);
+
+            //Texture
             if (surface->GetTexture() != nullptr)
             {
                 glActiveTexture(GL_TEXTURE0);
                 glBindTexture(GL_TEXTURE_2D, surface->GetTexture()->GetTextureMap());
-                GLint texture_uniform = glGetUniformLocation(surface->GetShaderProgram(), "texture0");
+                GLint texture_uniform = glGetUniformLocation(surface->GetShaderProgram(), "texture_map");
                 glUniform1i(texture_uniform, 0);
             }
-            
+            //Lighting
+            //Ambient
+            glm::vec3 ambientLight = glm::vec3(0.1f, 0.1f, 0.1f);
+            GLint light_ambient_uniform = glGetUniformLocation(surface->GetShaderProgram(), "light_ambient");
+            glUniform3fv(light_ambient_uniform, 1, &ambientLight[0]);
 
-            glm::vec3 light_position = glm::vec3(0.0f, 1.0f, 5.0f);
-            GLint light_position_uniform = glGetUniformLocation(surface->GetShaderProgram(), "lightPosition");
-            glUniform3fv(light_position_uniform, 1, &light_position[0]);
+            //Directional
+            glm::vec3 light_direction = glm::vec3(0.0f, 0.75f, 0.25f);
+            GLint light_direction_uniform = glGetUniformLocation(surface->GetShaderProgram(), "light_direction");
+            glUniform3fv(light_direction_uniform, 1, &light_direction[0]);
+
+            GLint eye_position_uniform = glGetUniformLocation(surface->GetShaderProgram(), "camera_position_world");
+            glUniform3fv(eye_position_uniform, 1, &camera->transform.position[0]);
 
             glBindVertexArray(VAO);
             glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
@@ -91,8 +111,61 @@ class Mesh : public Module
         else
         {
             std::cout << "WARNING: surface is null asigning simpleVS & simpleFS" << std::endl;
-            surface = std::shared_ptr<Surface>(new Surface("simpleVS.glsl", "simpleFS.glsl"));
+            surface = std::shared_ptr<Surface>(new Surface("defaultVS.glsl", "defaultFS.glsl"));
         }
+    }
+
+    void LoadDefaultCube()
+    {
+        verts = {
+            //Front
+            {glm::vec3(-1.0f, 1.0f, 1.0f), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f),
+             glm::vec2(0.0f, 0.0f), glm::vec3(-0.3f, 0.3f, 0.3f) }, // Top Left
+
+            {glm::vec3(-1.0f, -1.0f, 1.0f), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f),
+             glm::vec2(0.0f, 1.0f), glm::vec3(-0.3f, -0.3f, 0.3f)}, // Bottom Left
+
+            {glm::vec3(1.0f, -1.0f, 1.0f), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f),
+             glm::vec2(1.0f, 1.0f), glm::vec3(0.3f, -0.3f, 0.3f)}, //Bottom Right
+
+            {glm::vec3(1.0f, 1.0f, 1.0f), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f),
+             glm::vec2(1.0f, 0.0f), glm::vec3(0.3f, 0.3f, 0.3f)}, // Top Right
+
+            //back
+            {glm::vec3(-1.0f, 1.0f, -1.0f), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f),
+             glm::vec2(0.0f, 0.0f), glm::vec3(-0.3f, 0.3f, -0.3f)}, // Top Left
+
+            {glm::vec3(-1.0f, -1.0f, -1.0f), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f),
+             glm::vec2(0.0f, 1.0f), glm::vec3(-0.3f, -0.3f, -0.3f)}, // Bottom Left
+
+            {glm::vec3(1.0f, -1.0f, -1.0f), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f),
+             glm::vec2(1.0f, 1.0f), glm::vec3(0.3f, -0.3f, -0.3f)}, //Bottom Right
+
+            {glm::vec3(1.0f, 1.0f, -1.0f), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f),
+             glm::vec2(1.0f, 0.0f), glm::vec3(0.3f, 0.3f, -0.3f)}, // Top Right
+        };
+
+        indices = {
+            0, 1, 2,
+            0, 3, 2,
+
+            4, 5, 1,
+            4, 1, 0,
+
+            3, 7, 2,
+            7, 6, 2,
+
+            1, 5, 2,
+            6, 2, 5,
+
+            4, 0, 7,
+            0, 7, 3,
+
+            4, 5, 6,
+            4, 7, 6
+        };
+
+        GenerateBuffers();
     }
 
   private:
@@ -132,60 +205,13 @@ class Mesh : public Module
         glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *)offsetof(Vertex, position));
 
         glEnableVertexAttribArray(1);
-        glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *)offsetof(Vertex, texture));
-
+        glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *)offsetof(Vertex, color));
+    
         glEnableVertexAttribArray(2);
-        glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *)offsetof(Vertex, normal));
-    }
-
-    void LoadDefaultCube()
-    {
-        verts = {
-            //Front
-            {glm::vec3(-1.0f, 1.0f, 1.0f),
-             glm::vec2(0.0f, 0.0f), glm::vec3(-0.3f, 0.3f, 0.3f)}, // Top Left
-
-            {glm::vec3(-1.0f, -1.0f, 1.0f),
-             glm::vec2(0.0f, 1.0f), glm::vec3(-0.3f, -0.3f, 0.3f)}, // Bottom Left
-
-            {glm::vec3(1.0f, -1.0f, 1.0f),
-             glm::vec2(1.0f, 1.0f), glm::vec3(0.3f, -0.3f, 0.3f)}, //Bottom Right
-
-            {glm::vec3(1.0f, 1.0f, 1.0f),
-             glm::vec2(1.0f, 0.0f), glm::vec3(0.3f, 0.3f, 0.3f)}, // Top Right
-
-            //back
-            {glm::vec3(-1.0f, 1.0f, -1.0f),
-             glm::vec2(0.0f, 0.0f), glm::vec3(-0.3f, 0.3f, -0.3f)}, // Top Left
-
-            {glm::vec3(-1.0f, -1.0f, -1.0f),
-             glm::vec2(0.0f, 1.0f), glm::vec3(-0.3f, -0.3f, -0.3f)}, // Bottom Left
-
-            {glm::vec3(1.0f, -1.0f, -1.0f),
-             glm::vec2(1.0f, 1.0f), glm::vec3(0.3f, -0.3f, -0.3f)}, //Bottom Right
-
-            {glm::vec3(1.0f, 1.0f, -1.0f),
-             glm::vec2(1.0f, 0.0f), glm::vec3(0.3f, 0.3f, -0.3f)}, // Top Right
-        };
-
-        indices = {
-            0, 1, 2,
-            0, 3, 2,
-
-            4, 5, 1,
-            4, 1, 0,
-
-            3, 7, 2,
-            7, 6, 2,
-
-            1, 5, 2,
-            6, 2, 5,
-
-            4, 0, 7,
-            0, 7, 3,
-
-            4, 5, 6,
-            4, 7, 6};
+        glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *)offsetof(Vertex, texture));
+    
+        glEnableVertexAttribArray(3);
+        glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *)offsetof(Vertex, normal));
     }
 };
 
