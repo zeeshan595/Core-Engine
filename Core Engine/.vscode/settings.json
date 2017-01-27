@@ -1,0 +1,33 @@
+{
+    "files.associations": {
+        "*h*h*h*hxutility": "cpp",
+        "queue": "cpp",
+        "tuple": "cpp",
+        "functional": "cpp",
+        "xiosbase": "cpp",
+        "istream": "cpp",
+        "xlocnum": "cpp",
+        "xlocmon": "cpp",
+        "xloctime": "cpp",
+        "*H*H*H*H*H*H*H*H*Hxlocmes": "cpp",
+        "xstring": "cpp",
+        "*Hxlocale": "cpp",
+        "xmemory0": "cpp",
+        "iostream": "cpp",
+        "*Halgorithm": "cpp",
+        "algorithm": "cpp",
+        "*H*CPP*H*CPPlocale": "cpp",
+        "*Hvector": "cpp",
+        "vector": "cpp",
+        "deque": "cpp",
+        "list": "cpp",
+        "sstream": "cpp",
+        "xutility": "cpp",
+        "xlocale": "cpp",
+        "IOSTREAM": "cpp",
+        "memory": "cpp",
+        "*Hios": "cpp",
+        "*H*H*Hqueue": "cpp"
+    },
+    "editor.tabSize": 4
+}

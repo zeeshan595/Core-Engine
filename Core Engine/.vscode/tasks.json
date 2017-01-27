@@ -1,0 +1,58 @@
+{
+    "version": "0.1.0",
+    "isShellCommand": true,
+    "showOutput": "always",
+    "suppressTaskName": true,
+    "windows": {
+        "command": "cmd",
+        "args": ["/C"],
+        "tasks": [
+            {
+                "taskName": "Build",
+                "isBuildCommand": false,
+                "suppressTaskName": true,
+                "args": [
+                    "g++ -std=c++11 -o Build/build main.cpp -lglew32 -lglew32mx -lglu32 -lopengl32 -lmingw32 -lSDL2main -lSDL2 -lSDL2_Image -lSDL2_ttf"
+                ]
+            },
+            {
+                "taskName": "Clean",
+                "isBuildCommand": false,
+                "suppressTaskName": true,
+                "args": [
+                    "rmdir Build /s /q & mkdir Build"
+                ]
+            },
+            {
+                "taskName": "Setup",
+                "isBuildCommand": false,
+                "suppressTaskName": true,
+                "args": [
+                    "robocopy .SDK C:/MinGW /E & mkdir Build & robocopy .SDK/bin Build /E"
+                ]
+            }
+        ]
+    },
+    "linux": {
+        "command": "sh",
+        "args": ["-c"],
+        "tasks": [
+            {
+                "taskName": "Build",
+                "isBuildCommand": false,
+                "suppressTaskName": true,
+                "args": [
+                    "g++ -o Build/build main.cpp -lglew32 -lglew32mx  -lopengl32 -lmingw32 -lSDL2main -lSDL2 -lSDL2_Image -lSDL2_ttf"
+                ]
+            },
+            {
+                "taskName": "Clean",
+                "isBuildCommand": false,
+                "suppressTaskName": true,
+                "args": [
+                    "rm -r Build && mkdir Build && [ -d Build ] || mkdir Build"
+                ]
+            }
+        ]
+    }
+}

@@ -1,0 +1,42 @@
+#ifndef _CAMERA
+#define _CAMERA
+
+#include "Transform.h"
+
+class Camera
+{
+public:
+    float fov;
+    float near_clip;
+    float far_clip;
+    float viewport_x;
+    float viewport_y;
+    float viewport_size_x;
+    float viewport_size_y;
+    Transform transform;
+
+    Camera()
+    {
+        fov = 45.0f;
+        near_clip = 0.1f;
+        far_clip = 100.0f;
+        viewport_x = 0;
+        viewport_y = 0;
+        viewport_size_x = 1;
+        viewport_size_y = 1;
+        transform.position = glm::vec3(0.0f, 0.0f, 10.0f);
+        transform.rotation = glm::vec3(0.0f, 180.0f, 0.0f);
+    }
+
+    glm::mat4x4 GetProjectionMatrix()
+    {
+        return glm::perspective(fov, 1024.0f / 768.0f, near_clip, far_clip);
+    }
+
+    glm::mat4x4 GetViewMatrix()
+    {
+        return lookAt(transform.position, transform.position + transform.Forward(), transform.Up());
+    }
+};
+
+#endif
