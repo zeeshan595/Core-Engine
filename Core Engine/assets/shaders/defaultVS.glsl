@@ -1,16 +1,17 @@
 #version 150
 
-in vec3 vertexPosition;
+in vec3 vertex_position;
+in vec2 vertex_uv;
+in vec3 vertex_normal;
 
-
-
-in vec3 vertexABCDEF;
-in vec3 vertexTexCoords;
+out vec3 vertex_position_out;
+out vec2 vertex_uv_out;
+out vec3 vertex_normal_out;
 
 uniform mat4 MVP;
 
 void main()
 {
-    vec3 test = vertexTexCoords;
-    gl_Position = MVP * vec4(vertexPosition, 1.0f);
+    vertex_position_out = vertex_position;
+    gl_Position = MVP * vec4(vertex_position, 1.0f);
 }

@@ -71,7 +71,7 @@ class Mesh : public Module
             GLint mvp_uniform = glGetUniformLocation(surface->GetShaderProgram(), "MVP");
             glUniformMatrix4fv(mvp_uniform, 1, GL_FALSE, glm::value_ptr(camera->GetProjectionMatrix() * camera->GetViewMatrix() * attached_to->transform.GetWorldMatrix()));
             //Texture
-            /*
+            
             if (surface->GetTexture() != nullptr)
             {
                 glActiveTexture(GL_TEXTURE0);
@@ -79,7 +79,7 @@ class Mesh : public Module
                 GLint texture_uniform = glGetUniformLocation(surface->GetShaderProgram(), "texture0");
                 glUniform1i(texture_uniform, 0);
             }
-            */
+            
 
             glm::vec3 light_position = glm::vec3(0.0f, 1.0f, 5.0f);
             GLint light_position_uniform = glGetUniformLocation(surface->GetShaderProgram(), "lightPosition");
@@ -131,11 +131,11 @@ class Mesh : public Module
         glEnableVertexAttribArray(0);
         glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *)offsetof(Vertex, position));
 
-        //glEnableVertexAttribArray(1);
-        //glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *)offsetof(Vertex, texture));
+        glEnableVertexAttribArray(1);
+        glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *)offsetof(Vertex, texture));
 
-        //glEnableVertexAttribArray(2);
-        //glVertexAttribPointer(2, 3, GL_FLOAT, GL_TRUE, sizeof(Vertex), (void *)offsetof(Vertex, normal));
+        glEnableVertexAttribArray(2);
+        glVertexAttribPointer(2, 3, GL_FLOAT, GL_TRUE, sizeof(Vertex), (void *)offsetof(Vertex, normal));
     }
 
     void LoadDefaultCube()

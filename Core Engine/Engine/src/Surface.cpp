@@ -21,9 +21,9 @@ Surface::Surface(std::string vertex_shader_path, std::string fragment_shader_pat
     glDeleteShader(fragment_shader_program);
 
     //Shader Attributes
-    glBindAttribLocation(shader_program, 0, "vertexPosition");
-    //glBindAttribLocation(shader_program, 1, "vertexTexCoords");
-    //glBindAttribLocation(shader_program, 2, "vertexNormal");
+    glBindAttribLocation(shader_program, 0, "vertex_position");
+    glBindAttribLocation(shader_program, 1, "vertex_uv");
+    glBindAttribLocation(shader_program, 2, "vertex_normal");
 }
 
 Surface::~Surface()
