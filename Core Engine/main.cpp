@@ -2,7 +2,7 @@
 
 std::shared_ptr<Core> engine;
 
-class MyCustomModule : public NonRenderingModule
+class PlayerOneKeyboard : public NonRenderingModule
 {
     void Update()
     {
@@ -24,9 +24,32 @@ class MyCustomModule : public NonRenderingModule
         {
             attached_camera->transform.position -= attached_camera->transform.Forward() * delta_time * 5.0f;
         }
-       
 
-       
+    }
+};
+
+class PlayerTwoKeyboard : public NonRenderingModule
+{
+    void Update()
+    {
+        if (keys_pressed[SDLK_i])
+        {
+            attached_camera->transform.rotation -= glm::vec3(0, 50, 0) * delta_time;
+            attached_camera->transform.position += attached_camera->transform.Right() * delta_time * 5.0f;
+        }
+        else if (keys_pressed[SDLK_k])
+        {
+            attached_camera->transform.rotation += glm::vec3(0, 50, 0) * delta_time;
+            attached_camera->transform.position -= attached_camera->transform.Right() * delta_time * 5.0f;
+        }
+        else if (keys_pressed[SDLK_j])
+        {
+            attached_camera->transform.position += attached_camera->transform.Forward() * delta_time * 5.0f;
+        }
+        else if (keys_pressed[SDLK_l])
+        {
+            attached_camera->transform.position -= attached_camera->transform.Forward() * delta_time * 5.0f;
+        }
 
     }
 };
@@ -152,7 +175,7 @@ int main(int argc, char* args[])
     camera_1->viewport_size_y = 0.5;
 
     //Add mycustom Module
-    camera_1->AddModule<MyCustomModule>();
+    camera_1->AddModule<PlayerOneKeyboard>();
     camera_1->AddModule<ControllerInput>();
 
     //Create Camera
@@ -164,7 +187,7 @@ int main(int argc, char* args[])
     camera_2->viewport_size_y = 0.5;
 
     //Add mycustom Module
-    camera_2->AddModule<MyCustomModule>();
+    camera_2->AddModule<PlayerTwoKeyboard>();
 
     //Create Light
     std::shared_ptr<Light> light1 = engine->world->CreateLight(Light::LIGHT_TYPE::POINT);
