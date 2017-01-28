@@ -4,19 +4,21 @@ class MyCustomModule : public NonRenderingModule
 {
     void Update()
     {
-        if (keys_pressed[SDLK_d])
-        {
-            attached_camera->transform.rotation -= glm::vec3(0, 50, 0) * delta_time;
-        }
         if (keys_pressed[SDLK_a])
         {
-            attached_camera->transform.rotation += glm::vec3(0, 50, 0) * delta_time;
+            attached_camera->transform.rotation -= glm::vec3(0, 50, 0) * delta_time;
+            attached_camera->transform.position += attached_camera->transform.Right() * delta_time * 5.0f;
         }
-        if (keys_pressed[SDLK_w])
+        else if (keys_pressed[SDLK_d])
+        {
+            attached_camera->transform.rotation += glm::vec3(0, 50, 0) * delta_time;
+            attached_camera->transform.position -= attached_camera->transform.Right() * delta_time * 5.0f;
+        }
+        else if (keys_pressed[SDLK_w])
         {
             attached_camera->transform.position += attached_camera->transform.Forward() * delta_time * 5.0f;
         }
-        if (keys_pressed[SDLK_s])
+        else if (keys_pressed[SDLK_s])
         {
             attached_camera->transform.position -= attached_camera->transform.Forward() * delta_time * 5.0f;
         }
