@@ -15,6 +15,7 @@
 #include <GL/glew.h>
 #include <GL/glu.h>
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_gamecontroller.h>
 #include <SDL2/SDL_Image.h>
 #include <SDL2/SDL_ttf.h>
 #include <SDL2/SDL_opengl.h>

@@ -26,6 +26,8 @@ class MyCustomModule : public NonRenderingModule
         }
        
 
+       
+
     }
 };
 
@@ -65,12 +67,76 @@ class MyGameManager : public Module
                 isFullScreen=!isFullScreen;
                 engine->ChangeResolution(2560,1440, isFullScreen);
             }
+            
             else if (e->key.keysym.sym == SDLK_ESCAPE) 
             {
                 engine->StopEngine();
             }
         }
+        
     }
+
+};
+
+class ControllerInput : public NonRenderingModule
+{
+    bool isFullScreen = false;
+
+    void Input(SDL_Event* e)
+    {
+        if(e->type==SDL_CONTROLLERBUTTONDOWN){
+            switch(e->cbutton.button)
+            {
+                case SDL_CONTROLLER_BUTTON_BACK:
+                    isFullScreen=!isFullScreen;
+                    engine->ChangeResolution(2560,1440, isFullScreen);
+                    break;
+
+                case SDL_CONTROLLER_BUTTON_A:
+                    attached_camera->transform.position += attached_camera->transform.Forward() * delta_time * 5.0f;
+                    break;
+
+                case SDL_CONTROLLER_BUTTON_DPAD_DOWN:
+                    attached_camera->transform.position -= attached_camera->transform.Forward() * delta_time * 5.0f;
+                    break;
+
+                case SDL_CONTROLLER_BUTTON_DPAD_LEFT:
+                    attached_camera->transform.rotation -= glm::vec3(0, 50, 0) * delta_time;
+                    attached_camera->transform.position += attached_camera->transform.Right() * delta_time * 5.0f;
+                    break;
+
+                case SDL_CONTROLLER_BUTTON_DPAD_RIGHT:
+                    attached_camera->transform.rotation += glm::vec3(0, 50, 0) * delta_time;
+                    attached_camera->transform.position -= attached_camera->transform.Right() * delta_time * 5.0f;
+                    break;
+            }
+        }
+    }
+
+    void CheckForControllers()
+    {
+        SDL_GameController* controller = nullptr;
+
+        for(int i=0; i<SDL_NumJoysticks(); i++)
+        {
+            if(SDL_IsGameController(i))
+            {
+                controller = SDL_GameControllerOpen(0);
+                if (controller)
+                {
+                    printf("Controller Found: %s\n", SDL_GameControllerName(controller));
+                } 
+                break;
+            }
+        }
+
+    }
+
+    void Update()
+    {
+        CheckForControllers();
+    }
+
 };
 
 int main(int argc, char* args[])
@@ -87,6 +153,7 @@ int main(int argc, char* args[])
 
     //Add mycustom Module
     camera_1->AddModule<MyCustomModule>();
+    camera_1->AddModule<ControllerInput>();
 
     //Create Camera
     std::shared_ptr<Camera> camera_2 = engine->world->CreateCamera();
