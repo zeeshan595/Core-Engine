@@ -42,6 +42,10 @@ public:
     {
         return glm::vec3(GetWorldMatrix()[1][0], GetWorldMatrix()[1][1], GetWorldMatrix()[1][2]);
     }
+    glm::vec3 Right()
+    {
+        return glm::vec3(GetWorldMatrix()[0][0], GetWorldMatrix()[0][1], GetWorldMatrix()[0][2]);
+    }
 private:
 	float ToRadians(float d)
 	{
