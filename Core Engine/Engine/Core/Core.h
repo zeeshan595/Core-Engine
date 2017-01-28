@@ -2,7 +2,7 @@
 #define _CORE
 
 #include "../Static/Common.h"
-#include "World.h"
+#include "Environment.h"
 #include "../Modules/Module.h"
 #include "../Modules/Mesh.h"
 #include "../Static/OBJLoader.h"
@@ -10,7 +10,7 @@
 class Core
 {
 public:
-    std::shared_ptr<World> world;
+    std::shared_ptr<Environment> environments;
 
     Core();
     ~Core();

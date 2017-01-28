@@ -46,7 +46,7 @@ Core::Core()
     context = SDL_GL_CreateContext(window);
 
     InitOpenGl();
-    world = std::shared_ptr<World>(new World());
+    environments = std::shared_ptr<Environment>(new Environment());
 }
 Core::~Core()
 {
@@ -143,19 +143,19 @@ void Core::Update()
 
     
     //Camera
-    for (auto i = world->cameras.begin(); i != world->cameras.end(); ++i)
+    for (auto i = environments->cameras.begin(); i != environments->cameras.end(); ++i)
 	{
 		for (std::shared_ptr<NonRenderingModule> j : (*i)->GetModules())
             j->Update();
 	}
     //Light
-    for (auto i = world->lights.begin(); i != world->lights.end(); ++i)
+    for (auto i = environments->lights.begin(); i != environments->lights.end(); ++i)
 	{
 		for (std::shared_ptr<NonRenderingModule> j : (*i)->GetModules())
             j->Update();
 	}
     //Entities
-    for (auto i = world->entities.begin(); i != world->entities.end(); ++i)
+    for (auto i = environments->entities.begin(); i != environments->entities.end(); ++i)
 	{
 		for (std::shared_ptr<Module> j : (*i)->GetModules())
             j->Update();
@@ -167,14 +167,14 @@ void Core::Render()
     glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    for (auto camera_ptr = world->cameras.begin(); camera_ptr < world->cameras.end(); camera_ptr++)
+    for (auto camera_ptr = environments->cameras.begin(); camera_ptr < environments->cameras.end(); camera_ptr++)
     {
         //Setup viewport
         glViewport((int)((*camera_ptr)->viewport_x * WIDTH), (int)((*camera_ptr)->viewport_y * HEIGHT), (GLsizei)((*camera_ptr)->viewport_size_x * WIDTH), (GLsizei)((*camera_ptr)->viewport_size_y * HEIGHT));
-        for (auto i = world->entities.begin(); i != world->entities.end(); ++i)
+        for (auto i = environments->entities.begin(); i != environments->entities.end(); ++i)
         {
             for (std::shared_ptr<Module> j : (*i)->GetModules())
-                j->Render((*camera_ptr), world->lights);
+                j->Render((*camera_ptr), environments->lights);
         }
     }
 }
@@ -182,19 +182,19 @@ void Core::Render()
 void Core::Input(SDL_Event* e)
 {
     //Camera
-    for (auto i = world->cameras.begin(); i != world->cameras.end(); ++i)
+    for (auto i = environments->cameras.begin(); i != environments->cameras.end(); ++i)
     {
         for (std::shared_ptr<NonRenderingModule> j : (*i)->GetModules())
             j->Input(e);
     }
     //Light
-    for (auto i = world->lights.begin(); i != world->lights.end(); ++i)
+    for (auto i = environments->lights.begin(); i != environments->lights.end(); ++i)
     {
         for (std::shared_ptr<NonRenderingModule> j : (*i)->GetModules())
             j->Input(e);
     }
     //Entities
-    for (auto i = world->entities.begin(); i != world->entities.end(); ++i)
+    for (auto i = environments->entities.begin(); i != environments->entities.end(); ++i)
 	{
 		for (std::shared_ptr<Module> j : (*i)->GetModules())
             j->Input(e);

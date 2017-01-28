@@ -5,7 +5,7 @@
 #include "../Rendering/Camera.h"
 #include "../Rendering/Light.h"
 
-class World
+class Environment
 {
 public:
     std::shared_ptr<Entity> CreateEntity(std::string name)

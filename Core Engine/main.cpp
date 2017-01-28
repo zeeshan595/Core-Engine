@@ -172,7 +172,7 @@ int main(int argc, char* args[])
     engine = std::shared_ptr<Core>(new Core());
 
     //Create Camera
-    std::shared_ptr<Camera> camera_1 = engine->world->CreateCamera();
+    std::shared_ptr<Camera> camera_1 = engine->environments->CreateCamera();
     //Specify how much space the camera takes up in the window
     camera_1->viewport_x = 0;
     camera_1->viewport_y = 0;
@@ -185,7 +185,7 @@ int main(int argc, char* args[])
     camera_1->AddModule<ControllerInput>();
 
     //Create Camera
-    std::shared_ptr<Camera> camera_2 = engine->world->CreateCamera();
+    std::shared_ptr<Camera> camera_2 = engine->environments->CreateCamera();
     //Specify how much space the camera takes up in the window
     camera_2->viewport_x = 0;
     camera_2->viewport_y = 0.5;
@@ -194,9 +194,9 @@ int main(int argc, char* args[])
 
     //Add Keyboard Input Module
     camera_2->AddModule<PlayerTwoKeyboard>();
-
+                                                                                                
     //Create Light
-    std::shared_ptr<Light> light1 = engine->world->CreateLight(Light::LIGHT_TYPE::POINT);
+    std::shared_ptr<Light> light1 = engine->environments->CreateLight(Light::LIGHT_TYPE::POINT);
     light1->transform.position = glm::vec3(0, 20, 0);
     light1->light_range = 10.0f;
     light1->brightness = 1.0f;
@@ -206,7 +206,7 @@ int main(int argc, char* args[])
     light1->AddModule<MyCustomModule2>();
 
     //Create a new Cube object
-    std::shared_ptr<Entity> myObj = engine->world->CreateEntity("Cube");
+    std::shared_ptr<Entity> myObj = engine->environments->CreateEntity("Cube");
     //Attach Mesh Component So It Is Renders (If no shader is specified it creates a default one)
     std::shared_ptr<Mesh> myMesh = myObj->AddModule<Mesh>();
     //Load obj mesh
@@ -218,7 +218,7 @@ int main(int argc, char* args[])
     myMesh->ApplySurface(mySurface);
 
     //Create a new Cube object
-    std::shared_ptr<Entity> myObj2 = engine->world->CreateEntity("Cube");
+    std::shared_ptr<Entity> myObj2 = engine->environments->CreateEntity("Cube");
     myObj2->transform.position = glm::vec3(0, -2.0f, 0.0f);
     //Attach Mesh Component So It Is Renders (If no shader is specified it creates a default one)
     std::shared_ptr<Mesh> myMesh2 = myObj2->AddModule<Mesh>();
@@ -230,7 +230,7 @@ int main(int argc, char* args[])
 
 
     //Create A Empty Entity
-    std::shared_ptr<Entity> manager = engine->world->CreateEntity("GameManager");
+    std::shared_ptr<Entity> manager = engine->environments->CreateEntity("GameManager");
     manager->AddModule<MyGameManager>();
 
     engine->Start();
