@@ -1,7 +1,7 @@
 Core::Core()
 {
-    width = 1024;
-    height = 768;
+    WIDTH = 1024;
+    HEIGHT = 768;
     //SDL
     if (SDL_Init(SDL_INIT_EVERYTHING) != 0)
     {
@@ -168,7 +168,7 @@ void Core::Render()
     for (auto camera_ptr = world->cameras.begin(); camera_ptr < world->cameras.end(); camera_ptr++)
     {
         //Setup viewport
-        glViewport((int)((*camera_ptr)->viewport_x * width), (int)((*camera_ptr)->viewport_y * height), (GLsizei)((*camera_ptr)->viewport_size_x * width), (GLsizei)((*camera_ptr)->viewport_size_y * height));
+        glViewport((int)((*camera_ptr)->viewport_x * WIDTH), (int)((*camera_ptr)->viewport_y * HEIGHT), (GLsizei)((*camera_ptr)->viewport_size_x * WIDTH), (GLsizei)((*camera_ptr)->viewport_size_y * HEIGHT));
         for (auto i = world->entities.begin(); i != world->entities.end(); ++i)
         {
             for (std::shared_ptr<Module> j : (*i)->GetModules())
@@ -201,9 +201,9 @@ void Core::Input(SDL_Event* e)
 
 void Core::ChangeResolution(int w, int h, bool fullscreen)
 {
-    width = w;
-    height = h;
-    SDL_SetWindowSize(window, width, height);
+    WIDTH = w;
+    HEIGHT = h;
+    SDL_SetWindowSize(window, WIDTH, HEIGHT);
     if (fullscreen)
         SDL_SetWindowFullscreen(window, SDL_TRUE);
     else

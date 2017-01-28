@@ -17,16 +17,7 @@ public:
     void Start();
     void ChangeResolution(int w, int h, bool fullscreen);
 
-    int GetWidth(){
-        return width;
-    }
-    int GetHeight(){
-        return height;
-    }
-
 private:
-    int width;
-    int height;
     SDL_Window* window;
     SDL_GLContext context;
     float current_time;

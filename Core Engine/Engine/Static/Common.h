@@ -38,5 +38,7 @@ std::map<int, bool> keys_pressed;
 glm::vec2 mouse_delta;
 glm::vec2 mouse_position;
 float delta_time;
+int WIDTH;
+int HEIGHT;
 
 #endif

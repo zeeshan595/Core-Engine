@@ -31,7 +31,7 @@ public:
 
     glm::mat4x4 GetProjectionMatrix()
     {
-        return glm::perspective(fov, 1024.0f / 768.0f, near_clip, far_clip);
+        return glm::perspective(fov, (WIDTH * viewport_size_x) / (HEIGHT * viewport_size_y), near_clip, far_clip);
     }
 
     glm::mat4x4 GetViewMatrix()
