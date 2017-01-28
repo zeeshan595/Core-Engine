@@ -27,6 +27,8 @@ private:
     void Update();
     void Render();
     void Input(SDL_Event* e);
+
+    bool isFullScreen;
 };
 
 #include "Core.cpp"

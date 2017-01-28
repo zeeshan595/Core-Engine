@@ -35,7 +35,8 @@
         "fstream": "cpp",
         "xlocmes": "cpp",
         "ios": "cpp",
-        "*H*hxiosbase": "cpp"
+        "*H*hxiosbase": "cpp",
+        "*hxiosbase": "cpp"
     },
     "editor.tabSize": 4
 }

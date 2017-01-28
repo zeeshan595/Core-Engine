@@ -22,6 +22,8 @@ class MyCustomModule : public NonRenderingModule
         {
             attached_camera->transform.position -= attached_camera->transform.Forward() * delta_time * 5.0f;
         }
+       
+
     }
 };
 
