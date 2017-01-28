@@ -80,7 +80,7 @@ void main()
         specularBrightness = pow(specularBrightness, spec_area) * light_distance;
         specular += (vec4(spec_color, 1.0f) * point_light_color[i]) * specularBrightness * point_light_brightness[i];
     }
-    //Apply
+    //Apply Texture and Light
     vec4 light = vec4(ambient_color, 1.0f) + diffuse + specular;
     FragColor = light * texture;
 }

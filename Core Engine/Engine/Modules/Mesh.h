@@ -5,6 +5,7 @@
 #include "../Rendering/Surface.h"
 #include "../Static/OBJLoader.h"
 #include "../Static/Vertex.h"
+#include "../Static/Cube.h"
 
 class Mesh : public Module
 {
@@ -95,7 +96,8 @@ public:
                 }
                 else if ((*i)->light_type == Light::LIGHT_TYPE::POINT)
                 {
-                    if (glm::distance(attached_to->transform.position, (*i)->transform.position) < (*i)->light_range * 2)
+                    //if point light is too far away do NOT render it
+                    if (glm::distance(attached_to->transform.position, (*i)->transform.position) < ((*i)->light_range * 2) + 5.0f)
                     {
                         light_positions.push_back((*i)->transform.position);
                         light_range.push_back((*i)->light_range);
@@ -155,54 +157,16 @@ public:
 
     void LoadDefaultCube()
     {
-        verts = {
-            //Front
-            {glm::vec3(-1.0f, 1.0f, 1.0f), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f),
-             glm::vec2(0.0f, 0.0f), glm::vec3(-0.3f, 0.3f, 0.3f) }, // Top Left
+        DefaultCube c = DefaultCube();
+        verts = c.GetVertices();
+        indices = c.GetIndices();
+        GenerateBuffers();
+    }
 
-            {glm::vec3(-1.0f, -1.0f, 1.0f), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f),
-             glm::vec2(0.0f, 1.0f), glm::vec3(-0.3f, -0.3f, 0.3f)}, // Bottom Left
-
-            {glm::vec3(1.0f, -1.0f, 1.0f), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f),
-             glm::vec2(1.0f, 1.0f), glm::vec3(0.3f, -0.3f, 0.3f)}, //Bottom Right
-
-            {glm::vec3(1.0f, 1.0f, 1.0f), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f),
-             glm::vec2(1.0f, 0.0f), glm::vec3(0.3f, 0.3f, 0.3f)}, // Top Right
-
-            //back
-            {glm::vec3(-1.0f, 1.0f, -1.0f), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f),
-             glm::vec2(0.0f, 0.0f), glm::vec3(-0.3f, 0.3f, -0.3f)}, // Top Left
-
-            {glm::vec3(-1.0f, -1.0f, -1.0f), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f),
-             glm::vec2(0.0f, 1.0f), glm::vec3(-0.3f, -0.3f, -0.3f)}, // Bottom Left
-
-            {glm::vec3(1.0f, -1.0f, -1.0f), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f),
-             glm::vec2(1.0f, 1.0f), glm::vec3(0.3f, -0.3f, -0.3f)}, //Bottom Right
-
-            {glm::vec3(1.0f, 1.0f, -1.0f), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f),
-             glm::vec2(1.0f, 0.0f), glm::vec3(0.3f, 0.3f, -0.3f)}, // Top Right
-        };
-
-        indices = {
-            0, 1, 2,
-            0, 3, 2,
-
-            4, 5, 1,
-            4, 1, 0,
-
-            3, 7, 2,
-            7, 6, 2,
-
-            1, 5, 2,
-            6, 2, 5,
-
-            4, 0, 7,
-            0, 7, 3,
-
-            4, 5, 6,
-            4, 7, 6
-        };
-
+    void CreateMesh(std::vector<Vertex> vertices, std::vector<GLuint> indices)
+    {
+        verts = vertices;
+        indices = indices;
         GenerateBuffers();
     }
 

@@ -35,6 +35,14 @@ class MyCustomModule2 : public NonRenderingModule
         {
             attached_light->transform.position -= glm::vec3(0, 1, 0) * delta_time * 5.0f;
         }
+        if (keys_pressed[SDLK_LEFT])
+        {
+            attached_light->transform.position -= glm::vec3(1, 0, 0) * delta_time * 5.0f;
+        }
+        if (keys_pressed[SDLK_RIGHT])
+        {
+            attached_light->transform.position += glm::vec3(1, 0, 0) * delta_time * 5.0f;
+        }
     }
 };
 
