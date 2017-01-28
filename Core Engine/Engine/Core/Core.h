@@ -16,8 +16,12 @@ public:
     ~Core();
     void Start();
     void ChangeResolution(int w, int h, bool fullscreen);
+    void StopEngine(){
+        run = false;
+    }
 
 private:
+    bool run;
     SDL_Window* window;
     SDL_GLContext context;
     float current_time;
@@ -27,8 +31,6 @@ private:
     void Update();
     void Render();
     void Input(SDL_Event* e);
-
-    bool isFullScreen;
 };
 
 #include "Core.cpp"

@@ -1,5 +1,7 @@
 #include "Engine/Core/Core.h"
 
+std::shared_ptr<Core> engine;
+
 class MyCustomModule : public NonRenderingModule
 {
     void Update()
@@ -50,11 +52,30 @@ class MyCustomModule2 : public NonRenderingModule
     }
 };
 
+class MyGameManager : public Module
+{
+    bool isFullScreen = false;
+
+    void Input(SDL_Event* e)
+    {
+        if (e->type == SDL_KEYDOWN)
+        {
+            if (e->key.keysym.sym == SDLK_TAB)
+            {
+                isFullScreen=!isFullScreen;
+                engine->ChangeResolution(2560,1440, isFullScreen);
+            }
+            else if (e->key.keysym.sym == SDLK_ESCAPE) 
+            {
+                engine->StopEngine();
+            }
+        }
+    }
+};
+
 int main(int argc, char* args[])
 {
-    std::shared_ptr<Core> engine = std::shared_ptr<Core>(new Core());
-
-    engine->world = std::shared_ptr<World>(new World());
+    engine = std::shared_ptr<Core>(new Core());
 
     //Create Camera
     std::shared_ptr<Camera> camera_1 = engine->world->CreateCamera();
@@ -109,6 +130,12 @@ int main(int argc, char* args[])
     myMesh2->LoadDefaultCube();
     //Apply Texture and shader to the mesh
     myMesh2->ApplySurface(mySurface);
+
+
+
+    //Create A Empty Entity
+    std::shared_ptr<Entity> manager = engine->world->CreateEntity("GameManager");
+    manager->AddModule<MyGameManager>();
 
     engine->Start();
     return 0;

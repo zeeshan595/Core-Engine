@@ -46,6 +46,7 @@ Core::Core()
     context = SDL_GL_CreateContext(window);
 
     InitOpenGl();
+    world = std::shared_ptr<World>(new World());
 }
 Core::~Core()
 {
@@ -101,35 +102,19 @@ void Core::Start()
 {
     current_time = 0;
     prev_time = 0;
-    bool run = true;
+    run = true;
     while (run)
     {
         SDL_Event event;
         while (SDL_PollEvent(&event))
         {
-            switch(event.type)
-            {
-                if (event.type == SDL_QUIT || event.type == SDL_WINDOWEVENT_CLOSE)
-                    run = false;
+            if (event.type == SDL_QUIT || event.type == SDL_WINDOWEVENT_CLOSE)
+                run = false;
 
-                case SDL_KEYDOWN:
-                    keys_pressed[event.key.keysym.sym] = true;
-
-                    if (keys_pressed[SDLK_TAB])
-                    {
-                        isFullScreen=!isFullScreen;
-                        ChangeResolution(2560,1440, isFullScreen);
-                        break;
-                    }
-                    else if (keys_pressed[SDLK_ESCAPE]) 
-                    {
-                        run = false;
-                        break;
-                    }
-                    
-                case SDL_KEYUP:
-                    keys_pressed[event.key.keysym.sym] = false;
-            }
+            if (event.type == SDL_KEYDOWN)
+                keys_pressed[event.key.keysym.sym] = true;
+            if (event.type == SDL_KEYUP)
+                keys_pressed[event.key.keysym.sym] = false;
 
             Input(&event);
         }
