@@ -2,8 +2,8 @@
 #define _WORLD
 
 #include "Entity.h"
-#include "Camera.h"
-#include "Light.h"
+#include "../Rendering/Camera.h"
+#include "../Rendering/Light.h"
 
 class World
 {

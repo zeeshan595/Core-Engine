@@ -34,6 +34,6 @@ private:
 
 };
 
-#include "../src/Surface.cpp"
+#include "Surface.cpp"
 
 #endif

@@ -1,10 +1,11 @@
 #ifndef _CORE
 #define _CORE
 
+#include "../Static/Common.h"
 #include "World.h"
-#include "Modules/Module.h"
-#include "Modules/Mesh.h"
-#include "OBJLoader.h"
+#include "../Modules/Module.h"
+#include "../Modules/Mesh.h"
+#include "../Static/OBJLoader.h"
 
 class Core
 {
@@ -37,6 +38,6 @@ private:
     void Input(SDL_Event* e);
 };
 
-#include "../src/Core.cpp"
+#include "Core.cpp"
 
 #endif

@@ -2,8 +2,9 @@
 #define _MESH
 
 #include "Module.h"
-#include "../Surface.h"
-#include "../OBJLoader.h"
+#include "../Rendering/Surface.h"
+#include "../Static/OBJLoader.h"
+#include "../Static/Vertex.h"
 
 class Mesh : public Module
 {
@@ -74,37 +75,70 @@ public:
                 GLint texture_uniform = glGetUniformLocation(surface->GetShaderProgram(), "texture_map");
                 glUniform1i(texture_uniform, 0);
             }
+            //Gather Lighting Data
             std::vector<glm::vec3> light_directions;
+            std::vector<float> directional_light_brightness;
+            std::vector<glm::vec4> directional_light_color;
+
             std::vector<glm::vec3> light_positions;
+            std::vector<float> light_range;
+            std::vector<float> point_light_brightness;
+            std::vector<glm::vec4> point_light_color;
 
             for (auto i = lights.begin(); i < lights.end(); i++)
             {
                 if ((*i)->light_type == Light::LIGHT_TYPE::DIRECTIONAL)
                 {
                     light_directions.push_back((*i)->transform.Forward());
+                    directional_light_brightness.push_back((*i)->brightness);
+                    directional_light_color.push_back((*i)->color);
                 }
                 else if ((*i)->light_type == Light::LIGHT_TYPE::POINT)
                 {
-                    light_positions.push_back((*i)->transform.position);
+                    if (glm::distance(attached_to->transform.position, (*i)->transform.position) < (*i)->light_range * 2)
+                    {
+                        light_positions.push_back((*i)->transform.position);
+                        light_range.push_back((*i)->light_range);
+                        point_light_brightness.push_back((*i)->brightness);
+                        point_light_color.push_back((*i)->color);
+                    }
                 }
             }
 
             //Directional Light
             int directional_light_count = light_directions.size();
+            //Directional Data
             GLint light_direction_uniform = glGetUniformLocation(surface->GetShaderProgram(), "light_directions");
             glUniform3fv(light_direction_uniform, light_directions.size(), &light_directions[0][0]);
-
+            //Amount
             GLint light_direction_count_uniform = glGetUniformLocation(surface->GetShaderProgram(), "directional_light_count");
             glUniform1iv(light_direction_count_uniform, 1, &directional_light_count);
+            //Brightness
+            GLint directional_light_brightness_uniform = glGetUniformLocation(surface->GetShaderProgram(), "directional_light_brightness");
+            glUniform1fv(directional_light_brightness_uniform, light_directions.size(), &directional_light_brightness[0]);
+            //Color
+            GLint directional_light_color_uniform = glGetUniformLocation(surface->GetShaderProgram(), "directional_light_color");
+            glUniform4fv(directional_light_color_uniform, light_directions.size(), &directional_light_color[0][0]);
 
             //Point Light
             int point_light_size = light_positions.size();
-            GLint light_position_uniform = glGetUniformLocation(surface->GetShaderProgram(), "light_position");
+            //Position Data
+            GLint light_position_uniform = glGetUniformLocation(surface->GetShaderProgram(), "light_positions");
             glUniform3fv(light_position_uniform, light_positions.size(), &light_positions[0][0]);
-
+            //Range Data
+            GLint light_position_range_uniform = glGetUniformLocation(surface->GetShaderProgram(), "light_range");
+            glUniform1fv(light_position_range_uniform, light_positions.size(), &light_range[0]);
+            //Amount
             GLint light_point_count_uniform = glGetUniformLocation(surface->GetShaderProgram(), "point_light_count");
             glUniform1iv(light_point_count_uniform, 1, &point_light_size);
+            //Brightness
+            GLint point_light_brightness_uniform = glGetUniformLocation(surface->GetShaderProgram(), "point_light_brightness");
+            glUniform1fv(point_light_brightness_uniform, light_positions.size(), &point_light_brightness[0]);
+            //Color
+            GLint point_light_color_uniform = glGetUniformLocation(surface->GetShaderProgram(), "point_light_color");
+            glUniform4fv(point_light_color_uniform, light_positions.size(), &point_light_color[0][0]);
 
+            //Camera Position
             GLint eye_position_uniform = glGetUniformLocation(surface->GetShaderProgram(), "camera_position_world");
             glUniform3fv(eye_position_uniform, 1, &camera->transform.position[0]);
             

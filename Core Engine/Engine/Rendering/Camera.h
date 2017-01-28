@@ -1,8 +1,9 @@
 #ifndef _CAMERA
 #define _CAMERA
 
-#include "Transform.h"
+#include "../Static/Transform.h"
 
+class Module;
 class Camera
 {
 public:
@@ -37,6 +38,8 @@ public:
     {
         return lookAt(transform.position, transform.position + transform.Forward(), transform.Up());
     }
+private:
+    std::vector<std::shared_ptr<Module>> modules;
 };
 
 #endif

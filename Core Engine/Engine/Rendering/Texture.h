@@ -16,6 +16,6 @@ private:
     GLuint ConvertSDLSurfaceToTexture(SDL_Surface* surface);
 };
 
-#include "../src/Texture.cpp"
+#include "Texture.cpp"
 
 #endif

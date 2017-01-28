@@ -1,9 +1,8 @@
 #ifndef _ENTITY
 #define _ENTITY
 
-#include "Modules/Module.h"
-#include "Vertex.h"
-#include "Transform.h"
+#include "../Modules/Module.h"
+#include "../Static/Transform.h"
 
 class Entity: public std::enable_shared_from_this<Entity>
 {

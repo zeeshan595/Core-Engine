@@ -1,8 +1,8 @@
 #ifndef _MODULE
 #define _MODULE
 
-#include "../Camera.h"
-#include "../Light.h"
+#include "../Rendering/Camera.h"
+#include "../Rendering/Light.h"
 
 class Entity;
 class Module
