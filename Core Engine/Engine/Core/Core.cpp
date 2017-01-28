@@ -107,11 +107,11 @@ void Core::Start()
         SDL_Event event;
         while (SDL_PollEvent(&event))
         {
+            if (event.type == SDL_QUIT || event.type == SDL_WINDOWEVENT_CLOSE)
+                run = false;
+                
             switch(event.type)
             {
-                if (event.type == SDL_QUIT || event.type == SDL_WINDOWEVENT_CLOSE)
-                    run = false;
-
                 case SDL_KEYDOWN:
                     keys_pressed[event.key.keysym.sym] = true;
 
@@ -119,16 +119,16 @@ void Core::Start()
                     {
                         isFullScreen=!isFullScreen;
                         ChangeResolution(2560,1440, isFullScreen);
-                        break;
                     }
                     else if (keys_pressed[SDLK_ESCAPE]) 
                     {
                         run = false;
-                        break;
                     }
+                    break;
                     
                 case SDL_KEYUP:
                     keys_pressed[event.key.keysym.sym] = false;
+                    break;
             }
 
             Input(&event);
