@@ -138,15 +138,20 @@ class ControllerInput : public NonRenderingModule
 
     void CheckForControllers()
     {
+        //Declare Game controller instance
         SDL_GameController* controller = nullptr;
 
+        //Cycle through Connected Joysticks
         for(int i=0; i<SDL_NumJoysticks(); i++)
         {
+            //If any of those happen to be a controller
             if(SDL_IsGameController(i))
             {
+                //Assigned that controller to defined instance
                 controller = SDL_GameControllerOpen(0);
                 if (controller)
                 {
+                    //Ouput success message to console
                     printf("Controller Found: %s\n", SDL_GameControllerName(controller));
                 } 
                 break;
@@ -174,8 +179,9 @@ int main(int argc, char* args[])
     camera_1->viewport_size_x = 1; //Value between 0 and 1. (0.5 is middle of the screen)
     camera_1->viewport_size_y = 0.5;
 
-    //Add mycustom Module
+    //Add Keyboard Input Module
     camera_1->AddModule<PlayerOneKeyboard>();
+    //Add Controller Input Module
     camera_1->AddModule<ControllerInput>();
 
     //Create Camera
@@ -186,7 +192,7 @@ int main(int argc, char* args[])
     camera_2->viewport_size_x = 1; //Value between 0 and 1. (0.5 is middle of the screen)
     camera_2->viewport_size_y = 0.5;
 
-    //Add mycustom Module
+    //Add Keyboard Input Module
     camera_2->AddModule<PlayerTwoKeyboard>();
 
     //Create Light
