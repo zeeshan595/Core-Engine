@@ -1,32 +1,39 @@
 #include "Engine/Core/Core.h"
 
-class MyCustomModule : public Module
+class MyCustomModule : public NonRenderingModule
 {
-    void Render(std::shared_ptr<Camera> camera, std::vector<std::shared_ptr<Light>> lights)
+    void Update()
     {
         if (keys_pressed[SDLK_d])
         {
-            camera->transform.rotation -= glm::vec3(0, 50, 0) * delta_time;
+            attached_camera->transform.rotation -= glm::vec3(0, 50, 0) * delta_time;
         }
         if (keys_pressed[SDLK_a])
         {
-            camera->transform.rotation += glm::vec3(0, 50, 0) * delta_time;
+            attached_camera->transform.rotation += glm::vec3(0, 50, 0) * delta_time;
         }
         if (keys_pressed[SDLK_w])
         {
-            camera->transform.position += camera->transform.Forward() * delta_time * 5.0f;
+            attached_camera->transform.position += attached_camera->transform.Forward() * delta_time * 5.0f;
         }
         if (keys_pressed[SDLK_s])
         {
-            camera->transform.position -= camera->transform.Forward() * delta_time * 5.0f;
+            attached_camera->transform.position -= attached_camera->transform.Forward() * delta_time * 5.0f;
         }
+    }
+};
+
+class MyCustomModule2 : public NonRenderingModule
+{
+    void Update()
+    {
         if (keys_pressed[SDLK_UP])
         {
-            lights[0]->transform.position += glm::vec3(0, 1, 0) * delta_time * 5.0f;
+            attached_light->transform.position += glm::vec3(0, 1, 0) * delta_time * 5.0f;
         }
         if (keys_pressed[SDLK_DOWN])
         {
-            lights[0]->transform.position -= glm::vec3(0, 1, 0) * delta_time * 5.0f;
+            attached_light->transform.position -= glm::vec3(0, 1, 0) * delta_time * 5.0f;
         }
     }
 };
@@ -45,6 +52,9 @@ int main(int argc, char* args[])
     camera_1->viewport_size_x = 1; //Value between 0 and 1. (0.5 is middle of the screen)
     camera_1->viewport_size_y = 1;
 
+    //Add mycustom Module
+    camera_1->AddModule<MyCustomModule>();
+
     //Create Light
     std::shared_ptr<Light> light1 = engine->world->CreateLight(Light::LIGHT_TYPE::POINT);
     light1->transform.position = glm::vec3(0, 20, 0);
@@ -52,6 +62,8 @@ int main(int argc, char* args[])
     light1->brightness = 1.0f;
     light1->color = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
 
+    //Add mycustom Module
+    light1->AddModule<MyCustomModule2>();
 
     //Create a new Cube object
     std::shared_ptr<Entity> myObj = engine->world->CreateEntity("Cube");
@@ -64,9 +76,6 @@ int main(int argc, char* args[])
     mySurface->ApplyTexture("default.png");
     //Apply Texture and shader to the mesh
     myMesh->ApplySurface(mySurface);
-
-    //Add mycustom Module
-    myObj->AddModule<MyCustomModule>();
 
     //Create a new Cube object
     std::shared_ptr<Entity> myObj2 = engine->world->CreateEntity("Cube");

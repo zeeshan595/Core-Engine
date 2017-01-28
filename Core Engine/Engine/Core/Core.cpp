@@ -139,6 +139,20 @@ void Core::Update()
     current_time = SDL_GetTicks();
     delta_time = (current_time - prev_time) / 1000.0f;
 
+    
+    //Camera
+    for (auto i = world->cameras.begin(); i != world->cameras.end(); ++i)
+	{
+		for (std::shared_ptr<NonRenderingModule> j : (*i)->GetModules())
+            j->Update();
+	}
+    //Light
+    for (auto i = world->lights.begin(); i != world->lights.end(); ++i)
+	{
+		for (std::shared_ptr<NonRenderingModule> j : (*i)->GetModules())
+            j->Update();
+	}
+    //Entities
     for (auto i = world->entities.begin(); i != world->entities.end(); ++i)
 	{
 		for (std::shared_ptr<Module> j : (*i)->GetModules())
@@ -165,6 +179,19 @@ void Core::Render()
 
 void Core::Input(SDL_Event* e)
 {
+    //Camera
+    for (auto i = world->cameras.begin(); i != world->cameras.end(); ++i)
+    {
+        for (std::shared_ptr<NonRenderingModule> j : (*i)->GetModules())
+            j->Input(e);
+    }
+    //Light
+    for (auto i = world->lights.begin(); i != world->lights.end(); ++i)
+    {
+        for (std::shared_ptr<NonRenderingModule> j : (*i)->GetModules())
+            j->Input(e);
+    }
+    //Entities
     for (auto i = world->entities.begin(); i != world->entities.end(); ++i)
 	{
 		for (std::shared_ptr<Module> j : (*i)->GetModules())

@@ -2,8 +2,9 @@
 #define _LIGHT
 
 #include "../Static/Transform.h"
+#include "../Modules/NonRenderingModule.h"
 
-class Light
+class Light : public std::enable_shared_from_this<Light>
 {
 public:
     enum LIGHT_TYPE{
@@ -25,6 +26,34 @@ public:
         transform = Transform();
         light_type = type;
     }
+
+	//Modules
+    std::vector<std::shared_ptr<NonRenderingModule>> GetModules()
+	{
+		return modules;
+	}
+	template <typename T>
+	std::shared_ptr<T> AddModule()
+	{
+		std::shared_ptr<NonRenderingModule> m = std::shared_ptr<T>(new T());
+		m->attached_light = shared_from_this();
+		modules.push_back(m);
+		return std::dynamic_pointer_cast<T>(m);
+	}
+	template <typename T>
+	std::shared_ptr<T> GetModule()
+	{
+		for (std::shared_ptr<NonRenderingModule> i : modules)
+		{
+			if (std::dynamic_pointer_cast<T>(i) != NULL && std::dynamic_pointer_cast<T>(i) != nullptr)
+			{
+				return std::dynamic_pointer_cast<T>(i);
+			}
+		}
+		return nullptr;
+	}
+private:
+    std::vector<std::shared_ptr<NonRenderingModule>> modules;
 };
 
 #endif
