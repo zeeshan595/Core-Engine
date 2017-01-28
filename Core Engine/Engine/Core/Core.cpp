@@ -110,7 +110,7 @@ void Core::Start()
         {
             if (event.type == SDL_QUIT || event.type == SDL_WINDOWEVENT_CLOSE)
                 run = false;
-
+                
             if (event.type == SDL_KEYDOWN)
                 keys_pressed[event.key.keysym.sym] = true;
             if (event.type == SDL_KEYUP)
