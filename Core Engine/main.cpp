@@ -60,10 +60,21 @@ int main(int argc, char* args[])
     camera_1->viewport_x = 0;
     camera_1->viewport_y = 0;
     camera_1->viewport_size_x = 1; //Value between 0 and 1. (0.5 is middle of the screen)
-    camera_1->viewport_size_y = 1;
+    camera_1->viewport_size_y = 0.5;
 
     //Add mycustom Module
     camera_1->AddModule<MyCustomModule>();
+
+    //Create Camera
+    std::shared_ptr<Camera> camera_2 = engine->world->CreateCamera();
+    //Specify how much space the camera takes up in the window
+    camera_2->viewport_x = 0;
+    camera_2->viewport_y = 0.5;
+    camera_2->viewport_size_x = 1; //Value between 0 and 1. (0.5 is middle of the screen)
+    camera_2->viewport_size_y = 0.5;
+
+    //Add mycustom Module
+    camera_2->AddModule<MyCustomModule>();
 
     //Create Light
     std::shared_ptr<Light> light1 = engine->world->CreateLight(Light::LIGHT_TYPE::POINT);
