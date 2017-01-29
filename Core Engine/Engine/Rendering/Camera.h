@@ -8,18 +8,35 @@
 class Camera : public std::enable_shared_from_this<Camera>
 {
 public:
+    enum VIEW_MODE{
+        ORTHOGRAPHIC = 0,
+        PERSPECTIVE = 1
+    };
+
+    VIEW_MODE view_mode;
+    //Perspective
     float fov;
+    //Ortho
+    float size_x;
+    float size_y;
+    //Near / Far clip planes
     float near_clip;
     float far_clip;
+    //View port
     float viewport_x;
     float viewport_y;
     float viewport_size_x;
     float viewport_size_y;
     Transform transform;
+    int layer;
 
     Camera()
     {
+        layer = 0;
+        view_mode = PERSPECTIVE;
         fov = 45.0f;
+        size_x = 10.0f;
+        size_y = 10.0f;
         near_clip = 0.1f;
         far_clip = 100.0f;
         viewport_x = 0;
@@ -43,7 +60,10 @@ public:
     //=======
     glm::mat4x4 GetProjectionMatrix()
     {
-        return glm::perspective(fov, (WIDTH * viewport_size_x) / (HEIGHT * viewport_size_y), near_clip, far_clip);
+        if (view_mode == PERSPECTIVE)
+            return glm::perspective(fov, (WIDTH * viewport_size_x) / (HEIGHT * viewport_size_y), near_clip, far_clip);
+        else
+            return glm::ortho(-size_x * viewport_size_x, size_x * viewport_size_x, -size_y * viewport_size_y, size_y * viewport_size_y, near_clip, far_clip);
     }
 
     glm::mat4x4 GetViewMatrix()

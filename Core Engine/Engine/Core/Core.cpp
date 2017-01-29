@@ -170,7 +170,10 @@ void Core::Render()
     for (auto camera_ptr = environments->cameras.begin(); camera_ptr < environments->cameras.end(); camera_ptr++)
     {
         if ((*camera_ptr)->GetRenderTarget() != nullptr)
+        {
             glBindFramebuffer(GL_FRAMEBUFFER, (*camera_ptr)->GetRenderTarget()->GetFBO());
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        }
         else
             glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
@@ -178,8 +181,12 @@ void Core::Render()
         glViewport((int)((*camera_ptr)->viewport_x * WIDTH), (int)((*camera_ptr)->viewport_y * HEIGHT), (GLsizei)((*camera_ptr)->viewport_size_x * WIDTH), (GLsizei)((*camera_ptr)->viewport_size_y * HEIGHT));
         for (auto i = environments->entities.begin(); i != environments->entities.end(); ++i)
         {
-            for (std::shared_ptr<Module> j : (*i)->GetModules())
-                j->Render((*camera_ptr), environments->lights);
+            //Render only objects that match the camera's layer
+            if ((*camera_ptr)->layer == (*i)->layer)
+            {
+                for (std::shared_ptr<Module> j : (*i)->GetModules())
+                    j->Render((*camera_ptr), environments->lights);
+            }
         }
     }
 }

@@ -233,9 +233,38 @@ int main(int argc, char* args[])
     manager->AddModule<MyGameManager>();
 
 
+    // POST PROCESSING
+
     //FBO Tests (Renders the camera to an FBO rather then to the screen)
     std::shared_ptr<RendererTexture> rend = std::shared_ptr<RendererTexture>(new RendererTexture(WIDTH, HEIGHT));
     camera_1->SetRenderTarget(rend);
+
+    //Create Post Processing Camera
+    std::shared_ptr<Camera> camera_post_proc = engine->environments->CreateCamera();
+    camera_post_proc->layer = 1;
+    camera_post_proc->view_mode = Camera::VIEW_MODE::ORTHOGRAPHIC;
+    //Specify how much space the camera takes up in the window
+    camera_post_proc->viewport_x = 0;
+    camera_post_proc->viewport_y = 0;
+    camera_post_proc->viewport_size_x = 1; //Value between 0 and 1. (0.5 is middle of the screen)
+    camera_post_proc->viewport_size_y = 0.5;
+    camera_post_proc->size_x = 1.0f;
+    camera_post_proc->size_y = 1.0f;
+
+    //Create a new Cube object
+    std::shared_ptr<Entity> post_procc = engine->environments->CreateEntity("Post Processing Plane");
+    post_procc->layer = 1;
+    post_procc->transform.position = glm::vec3(0, -0.5f, 0);
+    post_procc->transform.rotation = glm::vec3(180, 0, 0);
+    //Attach Mesh Component So It Is Renders (If no shader is specified it creates a default one)
+    std::shared_ptr<Mesh> post_proc_mesh = post_procc->AddModule<Mesh>();
+    //Load obj mesh
+    post_proc_mesh->LoadDefaultPlane();
+    //Create new Surface (this includes shader and texture)
+    std::shared_ptr<Surface> post_proc_surface = std::shared_ptr<Surface>(new Surface("post_processingVS.glsl", "post_processingFS.glsl"));
+    post_proc_surface->ApplyTexture(rend->GetTexture());
+    //Apply Texture and shader to the mesh
+    post_proc_mesh->ApplySurface(post_proc_surface);
 
     engine->Start();
     return 0;

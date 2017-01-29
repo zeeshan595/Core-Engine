@@ -9,10 +9,12 @@ class Entity: public std::enable_shared_from_this<Entity>
 public:
     std::string name;
 	Transform transform;
+	int layer;
 
     Entity(std::string n)
     {
         name = n;
+		layer = 0;
     }
 
 	//Modules

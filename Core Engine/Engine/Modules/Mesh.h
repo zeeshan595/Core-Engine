@@ -6,6 +6,7 @@
 #include "../Static/OBJLoader.h"
 #include "../Static/Vertex.h"
 #include "../Static/Cube.h"
+#include "../Static/Plane.h"
 
 class Mesh : public Module
 {
@@ -155,18 +156,23 @@ public:
         }
     }
 
-    void LoadDefaultCube()
-    {
+    void LoadDefaultCube(){
         DefaultCube c = DefaultCube();
         verts = c.GetVertices();
         indices = c.GetIndices();
         GenerateBuffers();
     }
+    void LoadDefaultPlane(){
+        DefualtPlane c = DefualtPlane();
+        verts = c.GetVertices();
+        indices = c.GetIndices();
+        GenerateBuffers();
+    }
 
-    void CreateMesh(std::vector<Vertex> vertices, std::vector<GLuint> indices)
+    void CreateMesh(std::vector<Vertex> vertices, std::vector<GLuint> ind)
     {
         verts = vertices;
-        indices = indices;
+        indices = ind;
         GenerateBuffers();
     }
 
