@@ -35,16 +35,9 @@ Surface::~Surface()
     glDeleteProgram(shader_program);
 }
 
-void Surface::ApplyTexture(std::string filename)
+void Surface::ApplyTexture(std::shared_ptr<Texture> tex)
 {
-    texture = std::shared_ptr<Texture>(new Texture(TEXTURE_PATH + filename));
-
-    glBindTexture(GL_TEXTURE_2D, texture->GetTextureMap());
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
-    glGenerateMipmap(GL_TEXTURE_2D);
+    texture = tex;
 }
 
 GLuint Surface::LoadShaderFromMemory(const char * pMem, SHADER_TYPE shader_type)

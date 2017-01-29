@@ -1,6 +1,32 @@
+Texture::Texture(int width, int height, bool is_depth)
+{
+	//Delete the old loaded texture if it is still there.
+	if (texture_map != 0)
+		glDeleteTextures(1, &texture_map);
+
+	//Generate a new texture
+	glGenTextures(1, &texture_map);
+	glBindTexture(GL_TEXTURE_2D, texture_map);
+	if (!is_depth)
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_FLOAT, NULL);
+	else
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, width, height, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
+
+	//Set Texture Parameters
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+}
+
 Texture::Texture(const std::string& filename)
 {
-	SDL_Surface* image_surface = IMG_Load(filename.c_str());
+	//Delete the old loaded texture if it is still there.
+	if (texture_map != 0)
+		glDeleteTextures(1, &texture_map);
+	
+	//Use SDL surface to load texture from a file.
+	SDL_Surface* image_surface = IMG_Load((TEXTURE_PATH + filename).c_str());
     if (!image_surface)
     {
         std::cout << "ERROR [IMG_Load]: " << filename << " - " << IMG_GetError();
@@ -9,6 +35,14 @@ Texture::Texture(const std::string& filename)
 
     texture_map = ConvertSDLSurfaceToTexture(image_surface);
     SDL_FreeSurface(image_surface);
+	
+	//Set Texture Parameters
+	glBindTexture(GL_TEXTURE_2D, texture_map);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
+    glGenerateMipmap(GL_TEXTURE_2D);
 }
 
 Texture::~Texture()

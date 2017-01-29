@@ -213,7 +213,8 @@ int main(int argc, char* args[])
     myMesh->LoadModel("monkey3.obj");  // OR myMesh->LoadDefaultCube();
     //Create new Surface (this includes shader and texture)
     std::shared_ptr<Surface> mySurface = std::shared_ptr<Surface>(new Surface("defaultVS.glsl", "defaultFS.glsl"));
-    mySurface->ApplyTexture("default.png");
+    std::shared_ptr<Texture> myTexture = std::shared_ptr<Texture>(new Texture("default.png"));
+    mySurface->ApplyTexture(myTexture);
     //Apply Texture and shader to the mesh
     myMesh->ApplySurface(mySurface);
 

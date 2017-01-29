@@ -4,6 +4,7 @@
 class Texture
 {
 public:
+    Texture(int width, int height, bool is_depth = false);
     Texture(const std::string& filename);
     ~Texture();
 

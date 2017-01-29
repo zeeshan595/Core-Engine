@@ -14,7 +14,7 @@ public:
 
     Surface(std::string vertex_shader_path, std::string fragment_shader_path);
     ~Surface();
-    void ApplyTexture(std::string filename);
+    void ApplyTexture(std::shared_ptr<Texture> tex);
 
     GLuint GetShaderProgram(){
         return shader_program;
