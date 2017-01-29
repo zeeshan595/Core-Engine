@@ -169,6 +169,11 @@ void Core::Render()
 
     for (auto camera_ptr = environments->cameras.begin(); camera_ptr < environments->cameras.end(); camera_ptr++)
     {
+        if ((*camera_ptr)->GetRenderTarget() != nullptr)
+            glBindFramebuffer(GL_FRAMEBUFFER, (*camera_ptr)->GetRenderTarget()->GetFBO());
+        else
+            glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
         //Setup viewport
         glViewport((int)((*camera_ptr)->viewport_x * WIDTH), (int)((*camera_ptr)->viewport_y * HEIGHT), (GLsizei)((*camera_ptr)->viewport_size_x * WIDTH), (GLsizei)((*camera_ptr)->viewport_size_y * HEIGHT));
         for (auto i = environments->entities.begin(); i != environments->entities.end(); ++i)

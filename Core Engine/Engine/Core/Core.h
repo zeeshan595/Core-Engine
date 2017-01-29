@@ -5,7 +5,7 @@
 #include "Environment.h"
 #include "../Modules/Module.h"
 #include "../Modules/Mesh.h"
-#include "../Static/OBJLoader.h"
+
 
 class Core
 {

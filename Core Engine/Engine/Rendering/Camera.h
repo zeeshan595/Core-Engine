@@ -3,6 +3,7 @@
 
 #include "../Static/Transform.h"
 #include "../Modules/NonRenderingModule.h"
+#include "RendererTexture.h"
 
 class Camera : public std::enable_shared_from_this<Camera>
 {
@@ -29,6 +30,17 @@ public:
         transform.rotation = glm::vec3(0.0f, 180.0f, 0.0f);
     }
 
+    void SetRenderTarget(std::shared_ptr<RendererTexture> r){
+        render_target = r;
+    }
+
+    std::shared_ptr<RendererTexture> GetRenderTarget(){
+        return render_target;
+    }
+
+    //=======
+    // MATHS 
+    //=======
     glm::mat4x4 GetProjectionMatrix()
     {
         return glm::perspective(fov, (WIDTH * viewport_size_x) / (HEIGHT * viewport_size_y), near_clip, far_clip);
@@ -39,7 +51,9 @@ public:
         return lookAt(transform.position, transform.position + transform.Forward(), transform.Up());
     }
 
-    //Modules
+    //=========
+    // MODULES  
+    //=========
     std::vector<std::shared_ptr<NonRenderingModule>> GetModules()
 	{
 		return modules;
@@ -66,6 +80,7 @@ public:
 	}
 private:
     std::vector<std::shared_ptr<NonRenderingModule>> modules;
+    std::shared_ptr<RendererTexture> render_target;
 };
 
 #endif

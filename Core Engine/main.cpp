@@ -228,11 +228,14 @@ int main(int argc, char* args[])
     //Apply Texture and shader to the mesh
     myMesh2->ApplySurface(mySurface);
 
-
-
     //Create A Empty Entity
     std::shared_ptr<Entity> manager = engine->environments->CreateEntity("GameManager");
     manager->AddModule<MyGameManager>();
+
+
+    //FBO Tests (Renders the camera to an FBO rather then to the screen)
+    std::shared_ptr<RendererTexture> rend = std::shared_ptr<RendererTexture>(new RendererTexture(WIDTH, HEIGHT));
+    camera_1->SetRenderTarget(rend);
 
     engine->Start();
     return 0;
