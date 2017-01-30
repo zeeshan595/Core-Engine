@@ -33,8 +33,8 @@ void main()
     //Your allowed to edit these
     vec3 ambient_color  = vec3(0.1f, 0.1f, 0.1f);
     vec3 diffuse_color  = vec3(1.0f, 1.0f, 1.0f);
-    vec3 spec_color     = vec3(1.0f, 0.0f, 0.0f);
-    float spec_amount   = 1.0f;
+    vec3 spec_color     = vec3(1.0f, 1.0f, 1.0f);
+    float spec_amount   = 1.5f;
     float spec_area     = 80.0f;
     
     //Setup default diffuse and specular values if no light is there
