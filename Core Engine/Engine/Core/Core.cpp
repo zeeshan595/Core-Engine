@@ -189,7 +189,7 @@ void Core::Render()
             {
                 for (std::shared_ptr<Module> module : (*j)->GetModules())
                 {
-                    module->Render((*i), Environment::GetLights(Environment::current_environment));
+                    module->Render((*i), Environment::environments[Environment::current_environment]->lights);
                 }
             }
         }
@@ -198,7 +198,7 @@ void Core::Render()
         {
             for (std::shared_ptr<Module> module : (*j)->GetModules())
             {
-                module->Render((*i), Environment::GetLights(Environment::current_environment));
+                module->Render((*i), Environment::environments[Environment::current_environment]->lights);
             }
         }
         //Entities
@@ -206,7 +206,7 @@ void Core::Render()
         {
             for (std::shared_ptr<Module> module : (*j)->GetModules())
             {
-                module->Render((*i), Environment::GetLights(Environment::current_environment));
+                module->Render((*i), Environment::environments[Environment::current_environment]->lights);
             }
         }
     }
