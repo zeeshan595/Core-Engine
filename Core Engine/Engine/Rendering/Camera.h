@@ -1,11 +1,7 @@
 #ifndef _CAMERA
 #define _CAMERA
 
-#include "../Static/Transform.h"
-#include "../Modules/NonRenderingModule.h"
-#include "RendererTexture.h"
-
-class Camera : public std::enable_shared_from_this<Camera>
+class Camera : public Entity
 {
 public:
     enum VIEW_MODE{
@@ -14,56 +10,28 @@ public:
     };
 
     VIEW_MODE view_mode;
-    //Perspective
     float fov;
-    //Ortho
-    float size_x;
-    float size_y;
-    //Near / Far clip planes
-    float near_clip;
-    float far_clip;
-    //View port
-    float viewport_x;
-    float viewport_y;
-    float viewport_size_x;
-    float viewport_size_y;
-    Transform transform;
-    int layer;
+    glm::vec2 orthographic_size;
+    float near_clip_plane;
+    float far_clip_plane;
+    glm::vec4 viewport;
 
-    Camera()
-    {
-        layer = 0;
+    Camera(std::string name) : Entity(name){
         view_mode = PERSPECTIVE;
         fov = 45.0f;
-        size_x = 10.0f;
-        size_y = 10.0f;
-        near_clip = 0.1f;
-        far_clip = 100.0f;
-        viewport_x = 0;
-        viewport_y = 0;
-        viewport_size_x = 1;
-        viewport_size_y = 1;
-        transform.position = glm::vec3(0.0f, 0.0f, 10.0f);
-        transform.rotation = glm::vec3(0.0f, 180.0f, 0.0f);
+        orthographic_size = glm::vec2(10.0f, 10.0f);
+        near_clip_plane = 0.01f;
+        far_clip_plane = 100.0f;
+        viewport = glm::vec4(0, 0, 1, 1);
+        transform.position = glm::vec3(0.0f, 0.0f, -10.0f);
     }
 
-    void SetRenderTarget(std::shared_ptr<RendererTexture> r){
-        render_target = r;
-    }
-
-    std::shared_ptr<RendererTexture> GetRenderTarget(){
-        return render_target;
-    }
-
-    //=======
-    // MATHS 
-    //=======
     glm::mat4x4 GetProjectionMatrix()
     {
         if (view_mode == PERSPECTIVE)
-            return glm::perspective(fov, (WIDTH * viewport_size_x) / (HEIGHT * viewport_size_y), near_clip, far_clip);
+            return glm::perspective(fov, (Screen::width * viewport.z) / (Screen::height * viewport.w), near_clip_plane, far_clip_plane);
         else
-            return glm::ortho(-size_x * viewport_size_x, size_x * viewport_size_x, -size_y * viewport_size_y, size_y * viewport_size_y, near_clip, far_clip);
+            return glm::ortho(-orthographic_size.x * viewport.z, orthographic_size.x * viewport.z, -orthographic_size.y * viewport.z, orthographic_size.y * viewport.z, near_clip_plane, far_clip_plane);
     }
 
     glm::mat4x4 GetViewMatrix()
@@ -71,25 +39,20 @@ public:
         return lookAt(transform.position, transform.position + transform.Forward(), transform.Up());
     }
 
-    //=========
-    // MODULES  
-    //=========
-    std::vector<std::shared_ptr<NonRenderingModule>> GetModules()
-	{
+    //Modules
+    std::vector<std::shared_ptr<Module>> GetModules(){
 		return modules;
 	}
 	template <typename T>
-	std::shared_ptr<T> AddModule()
-	{
-		std::shared_ptr<NonRenderingModule> m = std::shared_ptr<T>(new T());
-        m->attached_camera = shared_from_this();
+	std::shared_ptr<T> AddModule(){
+		std::shared_ptr<Module> m = std::shared_ptr<T>(new T());
+		m->attached_to = shared_from_this();
 		modules.push_back(m);
 		return std::dynamic_pointer_cast<T>(m);
 	}
 	template <typename T>
-	std::shared_ptr<T> GetModule()
-	{
-		for (std::shared_ptr<NonRenderingModule> i : modules)
+	std::shared_ptr<T> GetModule(){
+		for (std::shared_ptr<Module> i : modules)
 		{
 			if (std::dynamic_pointer_cast<T>(i) != NULL && std::dynamic_pointer_cast<T>(i) != nullptr)
 			{
@@ -99,8 +62,7 @@ public:
 		return nullptr;
 	}
 private:
-    std::vector<std::shared_ptr<NonRenderingModule>> modules;
-    std::shared_ptr<RendererTexture> render_target;
+    std::vector<std::shared_ptr<Module>> modules;
 };
 
 #endif

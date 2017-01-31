@@ -1,35 +1,61 @@
-#ifndef _WORLD
-#define _WORLD
-
-#include "Entity.h"
-#include "../Rendering/Camera.h"
-#include "../Rendering/Light.h"
+#ifndef _ENVIRONMENT
+#define _ENVIRONMENT
 
 class Environment
 {
 public:
-    std::shared_ptr<Entity> CreateEntity(std::string name)
-    {
-        std::shared_ptr<Entity> e = std::shared_ptr<Entity>(new Entity(name));
-        entities.push_back(e);
-        return e;
-    }
-    std::shared_ptr<Camera> CreateCamera()
-    {
-        std::shared_ptr<Camera> c = std::shared_ptr<Camera>(new Camera());
-        cameras.push_back(c);
-        return c;
-    }
-    std::shared_ptr<Light> CreateLight(Light::LIGHT_TYPE light_type)
-    {
-        std::shared_ptr<Light> l = std::shared_ptr<Light>(new Light(light_type));
-        lights.push_back(l);
-        return l;
+    static std::vector<std::shared_ptr<Environment>> environments;
+    static int current_environment;
+
+    std::string name;
+
+    Environment(std::string environment_name){
+        name = environment_name;
     }
 
+    static void ChangeEnvironment(int id){
+        current_environment = id;
+    }
+    static int CreateEnvironment(std::string environment_name){
+        environments.push_back(std::shared_ptr<Environment>(new Environment(environment_name)));
+        return environments.size() - 1;
+    }
+    static std::shared_ptr<Entity> CreateEntity(std::string name){
+        int environment_id = Environment::current_environment;
+        std::shared_ptr<Entity> e = std::shared_ptr<Entity>(new Entity(name));
+        Environment::environments[environment_id]->entities.push_back(e);
+        return e;
+    }
+    static std::shared_ptr<Camera> CreateCamera(std::string name){
+        int environment_id = Environment::current_environment;
+        std::shared_ptr<Camera> e = std::shared_ptr<Camera>(new Camera(name));
+        Environment::environments[environment_id]->cameras.push_back(e);
+        return e;
+    }
+    static std::shared_ptr<Light> CreateLight(std::string name){
+        int environment_id = Environment::current_environment;
+        std::shared_ptr<Light> e = std::shared_ptr<Light>(new Light(name));
+        Environment::environments[environment_id]->lights.push_back(e);
+        return e;
+    }
+
+    static std::vector<std::shared_ptr<Entity>> GetEntities(){
+        int environment_id = Environment::current_environment;
+        return Environment::environments[environment_id]->entities;
+    }
+    static std::vector<std::shared_ptr<Camera>> GetCameras(){
+        int environment_id = Environment::current_environment;
+        return Environment::environments[environment_id]->cameras;
+    }
+    static std::vector<std::shared_ptr<Light>> GetLights(){
+        int environment_id = Environment::current_environment;
+        return Environment::environments[environment_id]->lights;
+    }
     std::vector<std::shared_ptr<Entity>> entities;
     std::vector<std::shared_ptr<Camera>> cameras;
     std::vector<std::shared_ptr<Light>> lights;
 };
+int Environment::current_environment = 0;
+std::vector<std::shared_ptr<Environment>> Environment::environments;
 
 #endif

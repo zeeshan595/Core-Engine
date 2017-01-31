@@ -1,4 +1,4 @@
-Surface::Surface(std::string vertex_shader_path, std::string fragment_shader_path)
+Shader::Shader(std::string vertex_shader_path, std::string fragment_shader_path)
 {
     //Get Shaders
     GLuint vertex_shader_program = 0;
@@ -30,17 +30,16 @@ Surface::Surface(std::string vertex_shader_path, std::string fragment_shader_pat
     glDeleteShader(fragment_shader_program);
 }
 
-Surface::~Surface()
+Shader::~Shader()
 {
     glDeleteProgram(shader_program);
 }
 
-void Surface::ApplyTexture(std::shared_ptr<Texture> tex)
-{
-    texture = tex;
+GLuint Shader::GetShaderProgram(){
+    return shader_program;
 }
 
-GLuint Surface::LoadShaderFromMemory(const char * pMem, SHADER_TYPE shader_type)
+GLuint Shader::LoadShaderFromMemory(const char * pMem, SHADER_TYPE shader_type)
 {
     GLuint program = glCreateShader(shader_type);
     glShaderSource(program, 1, &pMem, NULL);
@@ -48,7 +47,7 @@ GLuint Surface::LoadShaderFromMemory(const char * pMem, SHADER_TYPE shader_type)
     return program;
 }
 
-GLuint Surface::LoadShaderFromFile(const std::string& filename, SHADER_TYPE shader_type)
+GLuint Shader::LoadShaderFromFile(const std::string& filename, SHADER_TYPE shader_type)
 {
     std::string file_contents;
     std::ifstream file(filename, std::ios::in);
@@ -75,7 +74,7 @@ GLuint Surface::LoadShaderFromFile(const std::string& filename, SHADER_TYPE shad
     return 0;
 }
 
-bool Surface::CheckForCompilerErrors(GLuint shader_program)
+bool Shader::CheckForCompilerErrors(GLuint shader_program)
 {
     GLint isCompiled = 0;
     glGetShaderiv(shader_program, GL_COMPILE_STATUS, &isCompiled);
@@ -96,7 +95,7 @@ bool Surface::CheckForCompilerErrors(GLuint shader_program)
     return false;
 }
 
-bool Surface::CheckForLinkErrors(GLuint program)
+bool Shader::CheckForLinkErrors(GLuint program)
 {
     GLint isLinked = 0;
     glGetProgramiv(program, GL_LINK_STATUS, &isLinked);

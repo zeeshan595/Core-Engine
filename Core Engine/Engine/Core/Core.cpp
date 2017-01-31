@@ -1,7 +1,5 @@
-Core::Core()
+Core::Core(std::string window_title)
 {
-    WIDTH = 1024;
-    HEIGHT = 768;
     //SDL
     if (SDL_Init(SDL_INIT_EVERYTHING) != 0)
     {
@@ -34,57 +32,40 @@ Core::Core()
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 
     //Create Window
-    window = SDL_CreateWindow(
-        "Core Engine",
+    Screen::window = SDL_CreateWindow(
+        window_title.c_str(),
         SDL_WINDOWPOS_CENTERED,
         SDL_WINDOWPOS_CENTERED,
-        1024,
-        768,
+        Screen::width,
+        Screen::height,
         SDL_WINDOW_OPENGL
     );
     
-    context = SDL_GL_CreateContext(window);
+    context = SDL_GL_CreateContext(Screen::window);
 
-    InitOpenGl();
-    environments = std::shared_ptr<Environment>(new Environment());
+    InitOpenGL();
 }
+
 Core::~Core()
 {
     SDL_GL_DeleteContext(context);
-    SDL_DestroyWindow(window);
+    SDL_DestroyWindow(Screen::window);
     IMG_Quit();
     TTF_Quit();
     SDL_Quit();
 }
 
-void Core::InitOpenGl()
+void Core::InitOpenGL()
 {
-	//Smooth shading
 	glShadeModel(GL_SMOOTH);
-	
-	//Set clear color to black
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-
-	//Clear depth buffer
 	glClearDepth(1.0f);
-
-	//Enable depth testing
 	glEnable(GL_DEPTH_TEST);
-
     glEnable(GL_LIGHTING);
-
-	//the depth test to go
 	glDepthFunc(GL_LEQUAL);
-
-	//Enable Culling
 	//glEnable(GL_CULL_FACE);
-
-	//Back face culling
 	//glCullFace(GL_BACK);
-
-	//GL_CCW for counter clock-wise
 	//glFrontFace(GL_CCW);
-
 	//Turn on the best perspective correction
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
 
@@ -98,24 +79,27 @@ void Core::InitOpenGl()
     std::cout << "SUCCESS [glewInit]" << std::endl;
 }
 
+void Core::Quit()
+{
+    is_running = false;
+}
+
 void Core::Start()
 {
-    current_time = 0;
-    prev_time = 0;
-    run = true;
-    while (run)
+    if (Environment::environments.size() < 1)
+    {
+        std::cout << "No Environment Loaded. Exiting Core Engine" << std::endl;
+        is_running = false;
+    }
+    else
+        is_running = true;
+
+    Environment::current_environment = 0;
+    while(is_running)
     {
         SDL_Event event;
         while (SDL_PollEvent(&event))
-        {
-            if (event.type == SDL_QUIT || event.type == SDL_WINDOWEVENT_CLOSE)
-                run = false;
-                
-            if (event.type == SDL_KEYDOWN)
-                keys_pressed[event.key.keysym.sym] = true;
-            if (event.type == SDL_KEYUP)
-                keys_pressed[event.key.keysym.sym] = false;
-
+        {            
             Input(&event);
         }
 
@@ -123,43 +107,70 @@ void Core::Start()
 
         Render();
 
-        SDL_GL_SwapWindow(window);
+        SDL_GL_SwapWindow(Screen::window);
+    }
+}
+
+void Core::Input(SDL_Event* e)
+{
+    //Update Mouse Input
+    int x, y;
+    SDL_GetMouseState(&x, &y);
+    Input::mouse_position = glm::vec2(static_cast<float>(x), static_cast<float>(y));
+    SDL_GetRelativeMouseState(&x, &y);
+    Input::mouse_delta = glm::vec2(static_cast<float>(x), static_cast<float>(y));
+
+    if (e->type == SDL_QUIT || e->type == SDL_WINDOWEVENT_CLOSE)
+        is_running = false;
+
+    Input::keys_down.clear();
+    Input::keys_up.clear();
+
+    if (e->type == SDL_KEYDOWN)
+    {
+        if (!Input::keys[e->key.keysym.sym])
+            Input::keys_down[e->key.keysym.sym] = true;
+
+        Input::keys[e->key.keysym.sym] = true;
+    }
+    if (e->type == SDL_KEYUP)
+    {
+        Input::keys[e->key.keysym.sym] = true;
+        Input::keys[e->key.keysym.sym] = false;
     }
 }
 
 void Core::Update()
 {
-    //Mouse
-    int x, y;
-    SDL_GetMouseState(&x, &y);
-    mouse_position = glm::vec2(static_cast<float>(x), static_cast<float>(y));
-    SDL_GetRelativeMouseState(&x, &y);
-    mouse_delta = glm::vec2(static_cast<float>(x), static_cast<float>(y));
+    //compute time
+    Time::last_frame_time = Time::current_time;
+    Time::current_time = SDL_GetTicks();
+    Time::delta_time = (Time::current_time - Time::last_frame_time) / 1000.0f;
 
-    //Time
-    prev_time = current_time;
-    current_time = SDL_GetTicks();
-    delta_time = (current_time - prev_time) / 1000.0f;
-
-    
-    //Camera
-    for (auto i = environments->cameras.begin(); i != environments->cameras.end(); ++i)
-	{
-		for (std::shared_ptr<NonRenderingModule> j : (*i)->GetModules())
-            j->Update();
-	}
-    //Light
-    for (auto i = environments->lights.begin(); i != environments->lights.end(); ++i)
-	{
-		for (std::shared_ptr<NonRenderingModule> j : (*i)->GetModules())
-            j->Update();
-	}
+    //Cameras
+    for (auto i = Environment::environments[Environment::current_environment]->cameras.begin(); i != Environment::environments[Environment::current_environment]->cameras.end(); ++i)
+    {
+        for (std::shared_ptr<Module> module : (*i)->GetModules())
+        {
+            module->Update();
+        }
+    }
+    //Lights
+    for (auto i = Environment::environments[Environment::current_environment]->lights.begin(); i != Environment::environments[Environment::current_environment]->lights.end(); ++i)
+    {
+        for (std::shared_ptr<Module> module : (*i)->GetModules())
+        {
+            module->Update();
+        }
+    }
     //Entities
-    for (auto i = environments->entities.begin(); i != environments->entities.end(); ++i)
-	{
-		for (std::shared_ptr<Module> j : (*i)->GetModules())
-            j->Update();
-	}
+    for (auto i = Environment::environments[Environment::current_environment]->entities.begin(); i != Environment::environments[Environment::current_environment]->entities.end(); ++i)
+    {
+        for (std::shared_ptr<Module> module : (*i)->GetModules())
+        {
+            module->Update();
+        }
+    }
 }
 
 void Core::Render()
@@ -167,59 +178,36 @@ void Core::Render()
     glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    for (auto camera_ptr = environments->cameras.begin(); camera_ptr < environments->cameras.end(); camera_ptr++)
+    for (auto i = Environment::environments[Environment::current_environment]->cameras.begin(); i != Environment::environments[Environment::current_environment]->cameras.end(); ++i)
     {
-        if ((*camera_ptr)->GetRenderTarget() != nullptr)
-        {
-            glBindFramebuffer(GL_FRAMEBUFFER, (*camera_ptr)->GetRenderTarget()->GetFBO());
-            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        }
-        else
-            glBindFramebuffer(GL_FRAMEBUFFER, 0);
+        glViewport((int)((*i)->viewport.x * Screen::width), (int)((*i)->viewport.y * Screen::height), (int)((*i)->viewport.z * Screen::width), (int)((*i)->viewport.w * Screen::height));
 
-        //Setup viewport
-        glViewport((int)((*camera_ptr)->viewport_x * WIDTH), (int)((*camera_ptr)->viewport_y * HEIGHT), (GLsizei)((*camera_ptr)->viewport_size_x * WIDTH), (GLsizei)((*camera_ptr)->viewport_size_y * HEIGHT));
-        for (auto i = environments->entities.begin(); i != environments->entities.end(); ++i)
+        //Cameras
+        for (auto j = Environment::environments[Environment::current_environment]->cameras.begin(); j != Environment::environments[Environment::current_environment]->cameras.end(); ++j)
         {
-            //Render only objects that match the camera's layer
-            if ((*camera_ptr)->layer == (*i)->layer)
+            if (j != i)
             {
-                for (std::shared_ptr<Module> j : (*i)->GetModules())
-                    j->Render((*camera_ptr), environments->lights);
+                for (std::shared_ptr<Module> module : (*j)->GetModules())
+                {
+                    module->Render((*i), Environment::GetLights(Environment::current_environment));
+                }
+            }
+        }
+        //Lights
+        for (auto j = Environment::environments[Environment::current_environment]->lights.begin(); j != Environment::environments[Environment::current_environment]->lights.end(); ++j)
+        {
+            for (std::shared_ptr<Module> module : (*j)->GetModules())
+            {
+                module->Render((*i), Environment::GetLights(Environment::current_environment));
+            }
+        }
+        //Entities
+        for (auto j = Environment::environments[Environment::current_environment]->entities.begin(); j != Environment::environments[Environment::current_environment]->entities.end(); ++j)
+        {
+            for (std::shared_ptr<Module> module : (*j)->GetModules())
+            {
+                module->Render((*i), Environment::GetLights(Environment::current_environment));
             }
         }
     }
-}
-
-void Core::Input(SDL_Event* e)
-{
-    //Camera
-    for (auto i = environments->cameras.begin(); i != environments->cameras.end(); ++i)
-    {
-        for (std::shared_ptr<NonRenderingModule> j : (*i)->GetModules())
-            j->Input(e);
-    }
-    //Light
-    for (auto i = environments->lights.begin(); i != environments->lights.end(); ++i)
-    {
-        for (std::shared_ptr<NonRenderingModule> j : (*i)->GetModules())
-            j->Input(e);
-    }
-    //Entities
-    for (auto i = environments->entities.begin(); i != environments->entities.end(); ++i)
-	{
-		for (std::shared_ptr<Module> j : (*i)->GetModules())
-            j->Input(e);
-	}
-}
-
-void Core::ChangeResolution(int w, int h, bool fullscreen)
-{
-    WIDTH = w;
-    HEIGHT = h;
-    SDL_SetWindowSize(window, WIDTH, HEIGHT);
-    if (fullscreen)
-        SDL_SetWindowFullscreen(window, SDL_TRUE);
-    else
-        SDL_SetWindowFullscreen(window, SDL_FALSE);
 }

@@ -10,6 +10,7 @@
 #include <memory>
 #include <list>
 #include <map>
+#include <stdio.h>
 
 //OPEN GL
 #include <GL/glew.h>
@@ -34,12 +35,23 @@ const std::string TEXTURE_PATH  = ASSET_PATH + "textures/";
 const std::string FONT_PATH     = ASSET_PATH + "fonts/";
 const std::string MODEL_PATH    = ASSET_PATH + "models/";
 
-//GLOBAL VARIABLES
-std::map<int, bool> keys_pressed;
-glm::vec2 mouse_delta;
-glm::vec2 mouse_position;
-float delta_time;
-int WIDTH;
-int HEIGHT;
+#include "Screen.h"
+#include "Time.h"
+#include "Input.h"
+#include "Transform.h"
+#include "Vertex.h"
+#include "OBJLoader.h"
+
+#include "../Modules/Module.h"
+#include "../Core/Entity.h"
+#include "../Rendering/Camera.h"
+#include "../Rendering/Light.h"
+
+#include "../Core/Environment.h"
+
+#include "../Rendering/Texture.h"
+#include "../Rendering/Shader.h"
+#include "../Rendering/Surface.h"
+#include "../Modules/Mesh.h"
 
 #endif

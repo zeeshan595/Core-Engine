@@ -1,10 +1,7 @@
 #ifndef _LIGHT
 #define _LIGHT
 
-#include "../Static/Transform.h"
-#include "../Modules/NonRenderingModule.h"
-
-class Light : public std::enable_shared_from_this<Light>
+class Light : public Entity
 {
 public:
     enum LIGHT_TYPE{
@@ -12,38 +9,34 @@ public:
         DIRECTIONAL = 1
     };
 
+    LIGHT_TYPE type;
     glm::vec4 color;
     float brightness;
     float light_range;
-    Transform transform;
-    LIGHT_TYPE light_type;
 
-    Light(LIGHT_TYPE type)
+    Light(std::string name) : Entity(name)
     {
         color = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
         brightness = 1.0f;
         light_range = 10.0f;
-        transform = Transform();
-        light_type = type;
+        type = DIRECTIONAL;
+		transform.rotation = glm::vec3(-90.0f, 0.0f, 25.0f);
     }
 
-	//Modules
-    std::vector<std::shared_ptr<NonRenderingModule>> GetModules()
-	{
+    //Modules
+    std::vector<std::shared_ptr<Module>> GetModules(){
 		return modules;
 	}
 	template <typename T>
-	std::shared_ptr<T> AddModule()
-	{
-		std::shared_ptr<NonRenderingModule> m = std::shared_ptr<T>(new T());
-		m->attached_light = shared_from_this();
+	std::shared_ptr<T> AddModule(){
+		std::shared_ptr<Module> m = std::shared_ptr<T>(new T());
+		m->attached_to = shared_from_this();
 		modules.push_back(m);
 		return std::dynamic_pointer_cast<T>(m);
 	}
 	template <typename T>
-	std::shared_ptr<T> GetModule()
-	{
-		for (std::shared_ptr<NonRenderingModule> i : modules)
+	std::shared_ptr<T> GetModule(){
+		for (std::shared_ptr<Module> i : modules)
 		{
 			if (std::dynamic_pointer_cast<T>(i) != NULL && std::dynamic_pointer_cast<T>(i) != nullptr)
 			{
@@ -53,7 +46,7 @@ public:
 		return nullptr;
 	}
 private:
-    std::vector<std::shared_ptr<NonRenderingModule>> modules;
+    std::vector<std::shared_ptr<Module>> modules;
 };
 
 #endif

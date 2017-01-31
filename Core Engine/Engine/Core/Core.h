@@ -2,32 +2,20 @@
 #define _CORE
 
 #include "../Static/Common.h"
-#include "Environment.h"
-#include "../Modules/Module.h"
-#include "../Modules/Mesh.h"
-
 
 class Core
 {
 public:
-    std::shared_ptr<Environment> environments;
-
-    Core();
+    Core(std::string window_title);
     ~Core();
     void Start();
-    void ChangeResolution(int w, int h, bool fullscreen);
-    void StopEngine(){
-        run = false;
-    }
+    void Quit();
 
 private:
-    bool run;
-    SDL_Window* window;
     SDL_GLContext context;
-    float current_time;
-    float prev_time;
-
-    void InitOpenGl();
+    bool is_running = true;
+    
+    void InitOpenGL();
     void Update();
     void Render();
     void Input(SDL_Event* e);
