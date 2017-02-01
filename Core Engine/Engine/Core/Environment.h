@@ -11,7 +11,14 @@ public:
     Environment(std::string environment_name){
         name = environment_name;
     }
-
+    static std::shared_ptr<Entity> FindEntity(std::string name){
+        int environment_id = Environment::current_environment;
+        for (int i = 0; i < Environment::environments[environment_id]->entities.size(); i++){
+            if (Environment::environments[environment_id]->entities[i]->name == name){
+                return Environment::environments[environment_id]->entities[i];
+            }
+        }
+    }
     static void ChangeEnvironment(int id){
         current_environment = id;
     }

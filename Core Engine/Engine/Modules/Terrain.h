@@ -20,6 +20,7 @@ public:
 private:
     const int MAX_PIXEL_COLOUR = 256 * 256 * 256;
     SDL_Surface* height_map_surface;
+    std::vector<std::vector<float> > heights;
 
     glm::vec3 CalculateNormal(int x, int z);
     float GetPixelColor(int x, int y);
