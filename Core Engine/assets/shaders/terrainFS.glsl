@@ -7,7 +7,7 @@ in vec4 the_color;
 in vec2 the_uv;
 in vec3 vertex_normal_world;
 
-uniform sampler2D texture_map0;
+uniform sampler2D texture_map;
 
 //Light Variables
 #define MAX_LIGHTS 10
@@ -48,7 +48,7 @@ void main()
     vec4 specular = vec4(0.0f, 0.0f, 0.0f, 1.0f);
 
     //Texture
-    vec4 texture = texture(texture_map0, the_uv);
+    vec4 texture = texture(texture_map, the_uv);
 
     //directional lights
     for (int i = 0; i < directional_light_count; ++i)

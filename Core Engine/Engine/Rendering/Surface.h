@@ -11,18 +11,18 @@ public:
         this->shader = shader;
     }
     void ApplyTexture(std::shared_ptr<Texture> texture){
-        this->texture = texture;
+        textures.push_back(texture);
     }
     std::shared_ptr<Shader> GetShader(){
         return shader;
     }
-    std::shared_ptr<Texture> GetTexture(){
-        return texture;
+    std::vector<std::shared_ptr<Texture>>* GetTextures(){
+        return &textures;
     }
 
 private:
     std::shared_ptr<Shader> shader;
-    std::shared_ptr<Texture> texture;
+    std::vector<std::shared_ptr<Texture>> textures;
 };
 
 #endif

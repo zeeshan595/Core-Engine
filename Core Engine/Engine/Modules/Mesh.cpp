@@ -19,12 +19,13 @@ void Mesh::Render(std::shared_ptr<Camera> camera, std::vector<std::shared_ptr<Li
         GLint model_to_world_uniform = glGetUniformLocation(surface->GetShader()->GetShaderProgram(), "model_to_world_matrix");
         glUniformMatrix4fv(model_to_world_uniform, 1, GL_FALSE, &attached_to->transform.GetWorldMatrix()[0][0]);
 
-        //Texture
-        if (surface->GetTexture() != nullptr)
+        //Textures
+        std::vector<std::shared_ptr<Texture>>* textures = surface->GetTextures();
+        for (int i = 0; i < (*textures).size(); i++)
         {
-            glActiveTexture(GL_TEXTURE0);
-            glBindTexture(GL_TEXTURE_2D, surface->GetTexture()->GetTextureMap());
-            GLint texture_uniform = glGetUniformLocation(surface->GetShader()->GetShaderProgram(), "texture_map");
+            glActiveTexture(i);
+            glBindTexture(GL_TEXTURE_2D, (*textures)[i]->GetTextureMap());
+            GLint texture_uniform = glGetUniformLocation(surface->GetShader()->GetShaderProgram(), "texture_map" + i);
             glUniform1i(texture_uniform, 0);
         }
         //Gather Lighting Data
