@@ -51,7 +51,7 @@ void main()
     //Setup default diffuse and specular values if no light is there
     vec4 diffuse = vec4(0.0f, 0.0f, 0.0f, 1.0f);
     vec4 specular = vec4(0.0f, 0.0f, 0.0f, 1.0f);
-/*
+
     //Textures
     vec4 blend_map = texture(texture_map0, the_uv);
     vec2 tiled_uv = the_uv * terrain_tile_amount;
@@ -61,7 +61,7 @@ void main()
     vec4 texture3 = texture(texture_map4, tiled_uv) * blend_map.b;
 
     vec4 texture = texture0 + texture1 + texture2 + texture3;
-*/
+
     //directional lights
     for (int i = 0; i < directional_light_count; ++i)
     {
@@ -120,5 +120,5 @@ void main()
     fog = clamp(fog, 0.0f, 1.0f);
 
     //FragColor = mix(fog_color, light * texture2, fog);
-    FragColor = texture(texture_map1, the_uv);
+    FragColor = texture;
 }

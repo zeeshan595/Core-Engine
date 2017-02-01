@@ -22,10 +22,12 @@ void Terrain::CreateTerrain(int size_x, int size_y, float density)
 
     for (int x = 0; x < terrain_size_x + 1; x++){
         for (int y = 0; y < terrain_size_y + 1; y++){
+            float normal_x = (float)x / (float)terrain_size_x;
+            float normal_y = (float)y / (float)terrain_size_y;
             vertices[GetVertexPosition(x, y)] = {
                 glm::vec3(density * x, 0.0f, density * y),
                 glm::vec4(1.0f, 1.0f, 1.0f, 1.0f),
-                glm::vec2(x, y),
+                glm::vec2(normal_x, normal_y),
                 glm::vec3(0.0f, 1.0f, 0.0f)
             };
         }
