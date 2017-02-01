@@ -5,9 +5,13 @@ void Terrain::CreateTerrain(int size_x, int size_y, float density)
     std::shared_ptr<Mesh> attached_mesh = attached_to->GetModule<Mesh>();
     if (attached_mesh == nullptr){
         attached_mesh = attached_to->AddModule<Mesh>();
-        std::shared_ptr<Shader> myShader = std::shared_ptr<Shader>(new Shader("defaultVS.glsl", "defaultFS.glsl"));
+        std::shared_ptr<Shader> myShader = std::shared_ptr<Shader>(new Shader("terrainVS.glsl", "terrainFS.glsl"));
         std::shared_ptr<Surface> mySurface = std::shared_ptr<Surface>(new Surface(myShader));
-        mySurface->ApplyTexture(std::shared_ptr<Texture>(new Texture("texture.png")));
+        mySurface->ApplyTexture(std::shared_ptr<Texture>(new Texture("blend_map.png")));
+        mySurface->ApplyTexture(std::shared_ptr<Texture>(new Texture("grassy2.png")));
+        mySurface->ApplyTexture(std::shared_ptr<Texture>(new Texture("grassFlowers.png")));
+        mySurface->ApplyTexture(std::shared_ptr<Texture>(new Texture("mud.png")));
+        mySurface->ApplyTexture(std::shared_ptr<Texture>(new Texture("path.png")));
         attached_mesh->ApplySurface(mySurface);
     }
     

@@ -7,7 +7,11 @@ in vec4 the_color;
 in vec2 the_uv;
 in vec3 vertex_normal_world;
 
-uniform sampler2D texture_map;
+uniform sampler2D texture_map0;
+uniform sampler2D texture_map1;
+uniform sampler2D texture_map2;
+uniform sampler2D texture_map3;
+uniform sampler2D texture_map4;
 
 //Light Variables
 #define MAX_LIGHTS 10
@@ -36,6 +40,7 @@ uniform vec4 fog_color;
 
 void main()
 {
+    float terrain_tile_amount = 100.0f;
     //Your allowed to edit these
     vec3 ambient_color  = vec3(0.1f, 0.1f, 0.1f);
     vec3 diffuse_color  = vec3(1.0f, 1.0f, 1.0f);
@@ -46,10 +51,17 @@ void main()
     //Setup default diffuse and specular values if no light is there
     vec4 diffuse = vec4(0.0f, 0.0f, 0.0f, 1.0f);
     vec4 specular = vec4(0.0f, 0.0f, 0.0f, 1.0f);
+/*
+    //Textures
+    vec4 blend_map = texture(texture_map0, the_uv);
+    vec2 tiled_uv = the_uv * terrain_tile_amount;
+    vec4 texture0 = texture(texture_map1, tiled_uv) * blend_map;
+    vec4 texture1 = texture(texture_map2, tiled_uv) * blend_map.r;
+    vec4 texture2 = texture(texture_map3, tiled_uv) * blend_map.g;
+    vec4 texture3 = texture(texture_map4, tiled_uv) * blend_map.b;
 
-    //Texture
-    vec4 texture = texture(texture_map, the_uv);
-
+    vec4 texture = texture0 + texture1 + texture2 + texture3;
+*/
     //directional lights
     for (int i = 0; i < directional_light_count; ++i)
     {
@@ -106,5 +118,7 @@ void main()
     distance_from_camera = distance_from_camera * fog_distance;
     float fog = exp(-pow(distance_from_camera * fog_density, fog_gradient));
     fog = clamp(fog, 0.0f, 1.0f);
-    FragColor = mix(fog_color, light * texture, fog);
+
+    //FragColor = mix(fog_color, light * texture2, fog);
+    FragColor = texture(texture_map1, the_uv);
 }

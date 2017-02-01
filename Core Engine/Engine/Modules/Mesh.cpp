@@ -23,9 +23,12 @@ void Mesh::Render(std::shared_ptr<Camera> camera, std::vector<std::shared_ptr<Li
         std::vector<std::shared_ptr<Texture>>* textures = surface->GetTextures();
         for (int i = 0; i < (*textures).size(); i++)
         {
-            glActiveTexture(i);
+            std::stringstream ss;
+            ss << i;
+            std::string texture_name = "texture_map" + ss.str();
+            glActiveTexture(GL_TEXTURE0 + i);
             glBindTexture(GL_TEXTURE_2D, (*textures)[i]->GetTextureMap());
-            GLint texture_uniform = glGetUniformLocation(surface->GetShader()->GetShaderProgram(), "texture_map" + i);
+            GLint texture_uniform = glGetUniformLocation(surface->GetShader()->GetShaderProgram(), texture_name.c_str());
             glUniform1i(texture_uniform, i);
         }
         //Gather Lighting Data
@@ -114,7 +117,7 @@ void Mesh::Render(std::shared_ptr<Camera> camera, std::vector<std::shared_ptr<Li
     }
     else
     {
-        std::cout << "WARNING: surface is null asigning simpleVS & simpleFS" << std::endl;
+        std::cout << "WARNING: surface is null asigning defaultVS & defaultFS" << std::endl;
         std::shared_ptr<Shader> myShader = std::shared_ptr<Shader>(new Shader("defaultVS.glsl", "defaultFS.glsl"));
         std::shared_ptr<Surface> mySurface = std::shared_ptr<Surface>(new Surface(myShader));
         mySurface->ApplyTexture(std::shared_ptr<Texture>(new Texture("default.png")));
