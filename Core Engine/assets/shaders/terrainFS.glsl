@@ -40,12 +40,12 @@ uniform vec4 fog_color;
 
 void main()
 {
-    float terrain_tile_amount = 100.0f;
     //Your allowed to edit these
+    float terrain_tile_amount = 80.0f;
     vec3 ambient_color  = vec3(0.1f, 0.1f, 0.1f);
-    vec3 diffuse_color  = vec3(1.0f, 1.0f, 1.0f);
+    vec3 diffuse_color  = vec3(0.3f, 0.3f, 0.3f);
     vec3 spec_color     = vec3(1.0f, 1.0f, 1.0f);
-    float spec_amount   = 1.0f;
+    float spec_amount   = 0.1f;
     float spec_area     = 150.0f;
     
     //Setup default diffuse and specular values if no light is there
@@ -54,8 +54,10 @@ void main()
 
     //Textures
     vec4 blend_map = texture(texture_map0, the_uv);
+    float black_amount = 1 - (blend_map.r + blend_map.g + blend_map.b);
+    
     vec2 tiled_uv = the_uv * terrain_tile_amount;
-    vec4 texture0 = texture(texture_map1, tiled_uv) * blend_map;
+    vec4 texture0 = texture(texture_map1, tiled_uv) * black_amount;
     vec4 texture1 = texture(texture_map2, tiled_uv) * blend_map.r;
     vec4 texture2 = texture(texture_map3, tiled_uv) * blend_map.g;
     vec4 texture3 = texture(texture_map4, tiled_uv) * blend_map.b;
@@ -119,6 +121,5 @@ void main()
     float fog = exp(-pow(distance_from_camera * fog_density, fog_gradient));
     fog = clamp(fog, 0.0f, 1.0f);
 
-    //FragColor = mix(fog_color, light * texture2, fog);
-    FragColor = texture;
+    FragColor = mix(fog_color, light * texture, fog);
 }
