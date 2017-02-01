@@ -46,6 +46,9 @@ void Terrain::CreateTerrain()
                 glm::vec2(uv_x, uv_y),
                 CalculateNormal((int)(height_map_surface->w * uv_x), (int)(height_map_surface->h * uv_y))
             };
+            //glm::vec3 nor = CalculateNormal((int)(height_map_surface->w * uv_x), (int)(height_map_surface->h * uv_y));
+            //std::cout << nor.x << "," << nor.y << "," << nor.z << std::endl;
+            //std::cin.get();
         }
     }
 
@@ -71,7 +74,7 @@ glm::vec3 Terrain::CalculateNormal(int x, int z)
     float heightD = GetPixelColor(x  , z-1);
     float heightU = GetPixelColor(x  , z+1);
 
-    glm::vec3 normal = glm::vec3(heightL - heightR, 2.0f, heightD - heightU);
+    glm::vec3 normal = glm::vec3(heightL - heightR, 0.5f, heightD - heightU);
     return glm::normalize(normal);
 }
 
