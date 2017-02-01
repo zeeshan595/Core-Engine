@@ -26,7 +26,7 @@ void Mesh::Render(std::shared_ptr<Camera> camera, std::vector<std::shared_ptr<Li
             glActiveTexture(i);
             glBindTexture(GL_TEXTURE_2D, (*textures)[i]->GetTextureMap());
             GLint texture_uniform = glGetUniformLocation(surface->GetShader()->GetShaderProgram(), "texture_map" + i);
-            glUniform1i(texture_uniform, 0);
+            glUniform1i(texture_uniform, i);
         }
         //Gather Lighting Data
         std::vector<glm::vec3> light_directions;
