@@ -33,14 +33,15 @@ void Terrain::CreateTerrain()
     std::vector<Vertex> vertices;
     std::vector<GLuint> indices;
     vertices.resize((terrain_size_x + 1) * (terrain_size_y + 1));
-    heights.resize((terrain_size_x + 1) * (terrain_size_y + 1));
+    heights.resize((terrain_size_x + 1));
 
     for (int x = 0; x < terrain_size_x + 1; x++){
+        heights[x].resize((terrain_size_y + 1));
         for (int y = 0; y < terrain_size_y + 1; y++){
             float uv_x = (float)x / (float)terrain_size_x;
             float uv_y = (float)y / (float)terrain_size_y;
             float height = GetPixelColor((int)(height_map_surface->w * uv_x), (int)(height_map_surface->h * uv_y));
-            //heights[x][y] = height;
+            heights[x][y] = height;
             vertices[GetVertexPosition(x, y)] = {
                 glm::vec3(density * x, height, density * y),
                 glm::vec4(1.0f, 1.0f, 1.0f, 1.0f),
