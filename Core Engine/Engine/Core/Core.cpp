@@ -181,7 +181,6 @@ void Core::Render()
     for (auto i = Environment::environments[Environment::current_environment]->cameras.begin(); i != Environment::environments[Environment::current_environment]->cameras.end(); ++i)
     {
         glViewport((int)((*i)->viewport.x * Screen::width), (int)((*i)->viewport.y * Screen::height), (int)((*i)->viewport.z * Screen::width), (int)((*i)->viewport.w * Screen::height));
-
         //Cameras
         for (auto j = Environment::environments[Environment::current_environment]->cameras.begin(); j != Environment::environments[Environment::current_environment]->cameras.end(); ++j)
         {

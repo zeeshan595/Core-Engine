@@ -21,6 +21,14 @@ public:
         {
             attached_to->transform.position -= glm::vec3(0.0f, 0.0f, 1.0f) * Time::delta_time;
         }
+        if (Input::keys[SDLK_e])
+        {
+            attached_to->transform.rotation += glm::vec3(0.0f, 10.0f, 0.0f) * Time::delta_time;
+        }
+        if (Input::keys[SDLK_q])
+        {
+            attached_to->transform.rotation -= glm::vec3(0.0f, 10.0f, 1.0f) * Time::delta_time;
+        }
     }
 };
 
@@ -74,12 +82,14 @@ int main(int argc, char* args[])
     //Create Default Light
     std::shared_ptr<Light> myLight = Environment::CreateLight("My Light");
     myLight->type = Light::LIGHT_TYPE::POINT;
+    myLight->transform.position = glm::vec3(0.0f, 10.0f, 0.0f);
     //Create Object
 
     std::shared_ptr<Shader> myShader = std::shared_ptr<Shader>(new Shader("defaultVS.glsl", "defaultFS.glsl"));
     std::shared_ptr<Surface> mySurface = std::shared_ptr<Surface>(new Surface(myShader));
     mySurface->ApplyTexture(std::shared_ptr<Texture>(new Texture("default.png")));
     std::shared_ptr<Entity> myObj = Environment::CreateEntity("My Object");
+    myObj->transform.rotation = glm::vec3(0.0f, 180.0f, 0.0f);
     std::shared_ptr<Mesh> myMesh = myObj->AddModule<Mesh>();
     myMesh->LoadOBJFile("monkey3.obj");
     myMesh->ApplySurface(mySurface);

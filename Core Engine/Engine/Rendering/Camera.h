@@ -31,7 +31,7 @@ public:
         if (view_mode == PERSPECTIVE)
             return glm::perspective(fov, (Screen::width * viewport.z) / (Screen::height * viewport.w), near_clip_plane, far_clip_plane);
         else
-            return glm::ortho(-orthographic_size.x * viewport.z, orthographic_size.x * viewport.z, -orthographic_size.y * viewport.z, orthographic_size.y * viewport.z, near_clip_plane, far_clip_plane);
+            return glm::ortho(-orthographic_size.x * viewport.z, orthographic_size.x * viewport.z, -orthographic_size.y * viewport.w, orthographic_size.y * viewport.w, near_clip_plane, far_clip_plane);
     }
 
     glm::mat4x4 GetViewMatrix()
