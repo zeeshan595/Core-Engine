@@ -5,7 +5,7 @@ Mesh::~Mesh()
     glDeleteVertexArrays(1, &VAO);
 }
 
-void Mesh::Render(std::shared_ptr<Camera> camera, std::vector<std::shared_ptr<Light>> lights)
+void Mesh::Render(std::shared_ptr<Camera> camera, std::vector<std::shared_ptr<Light>>* lights)
 {
     if (surface != nullptr)
     {
@@ -37,7 +37,7 @@ void Mesh::Render(std::shared_ptr<Camera> camera, std::vector<std::shared_ptr<Li
         std::vector<float> point_light_brightness;
         std::vector<glm::vec4> point_light_color;
 
-        for (auto i = lights.begin(); i < lights.end(); i++)
+        for (auto i = (*lights).begin(); i < (*lights).end(); i++)
         {
             if ((*i)->type == Light::LIGHT_TYPE::DIRECTIONAL)
             {

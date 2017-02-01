@@ -39,7 +39,8 @@
         "*hxiosbase": "cpp",
         "*hppfunctional": "cpp",
         "*inltuple": "cpp",
-        "*h*h*h*hxlocale": "cpp"
+        "*h*h*h*hxlocale": "cpp",
+        "*h*h*h*h*h*h*h*hxlocale": "cpp"
     },
     "editor.tabSize": 4
 }

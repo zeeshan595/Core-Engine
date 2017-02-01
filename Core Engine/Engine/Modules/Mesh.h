@@ -6,7 +6,7 @@ class Mesh : public Module
 public:
     ~Mesh();
 
-    void Render(std::shared_ptr<Camera> camera, std::vector<std::shared_ptr<Light>> lights);
+    void Render(std::shared_ptr<Camera> camera, std::vector<std::shared_ptr<Light>>* lights);
 
     void LoadOBJFile(std::string filename);
     void LoadDefaultCube();

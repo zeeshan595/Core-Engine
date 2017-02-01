@@ -148,7 +148,7 @@ void Core::Update()
     Time::delta_time = (Time::current_time - Time::last_frame_time) / 1000.0f;
 
     //Cameras
-    for (auto i = Environment::environments[Environment::current_environment]->cameras.begin(); i != Environment::environments[Environment::current_environment]->cameras.end(); ++i)
+    for (auto i = (*Environment::environments[Environment::current_environment]->GetCameras()).begin(); i != (*Environment::environments[Environment::current_environment]->GetCameras()).end(); ++i)
     {
         for (std::shared_ptr<Module> module : (*i)->GetModules())
         {
@@ -156,7 +156,7 @@ void Core::Update()
         }
     }
     //Lights
-    for (auto i = Environment::environments[Environment::current_environment]->lights.begin(); i != Environment::environments[Environment::current_environment]->lights.end(); ++i)
+    for (auto i = (*Environment::environments[Environment::current_environment]->GetLights()).begin(); i != (*Environment::environments[Environment::current_environment]->GetLights()).end(); ++i)
     {
         for (std::shared_ptr<Module> module : (*i)->GetModules())
         {
@@ -164,7 +164,7 @@ void Core::Update()
         }
     }
     //Entities
-    for (auto i = Environment::environments[Environment::current_environment]->entities.begin(); i != Environment::environments[Environment::current_environment]->entities.end(); ++i)
+    for (auto i = (*Environment::environments[Environment::current_environment]->GetEntities()).begin(); i != (*Environment::environments[Environment::current_environment]->GetEntities()).end(); ++i)
     {
         for (std::shared_ptr<Module> module : (*i)->GetModules())
         {
@@ -178,34 +178,34 @@ void Core::Render()
     glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    for (auto i = Environment::environments[Environment::current_environment]->cameras.begin(); i != Environment::environments[Environment::current_environment]->cameras.end(); ++i)
+    for (auto i = (*Environment::environments[Environment::current_environment]->GetCameras()).begin(); i != (*Environment::environments[Environment::current_environment]->GetCameras()).end(); ++i)
     {
         glViewport((int)((*i)->viewport.x * Screen::width), (int)((*i)->viewport.y * Screen::height), (int)((*i)->viewport.z * Screen::width), (int)((*i)->viewport.w * Screen::height));
         //Cameras
-        for (auto j = Environment::environments[Environment::current_environment]->cameras.begin(); j != Environment::environments[Environment::current_environment]->cameras.end(); ++j)
+        for (auto j = (*Environment::environments[Environment::current_environment]->GetCameras()).begin(); j != (*Environment::environments[Environment::current_environment]->GetCameras()).end(); ++j)
         {
             if (j != i)
             {
                 for (std::shared_ptr<Module> module : (*j)->GetModules())
                 {
-                    module->Render((*i), Environment::environments[Environment::current_environment]->lights);
+                    module->Render((*i), Environment::environments[Environment::current_environment]->GetLights());
                 }
             }
         }
         //Lights
-        for (auto j = Environment::environments[Environment::current_environment]->lights.begin(); j != Environment::environments[Environment::current_environment]->lights.end(); ++j)
+        for (auto j = (*Environment::environments[Environment::current_environment]->GetLights()).begin(); j != (*Environment::environments[Environment::current_environment]->GetLights()).end(); ++j)
         {
             for (std::shared_ptr<Module> module : (*j)->GetModules())
             {
-                module->Render((*i), Environment::environments[Environment::current_environment]->lights);
+                module->Render((*i), Environment::environments[Environment::current_environment]->GetLights());
             }
         }
         //Entities
-        for (auto j = Environment::environments[Environment::current_environment]->entities.begin(); j != Environment::environments[Environment::current_environment]->entities.end(); ++j)
+        for (auto j = (*Environment::environments[Environment::current_environment]->GetEntities()).begin(); j != (*Environment::environments[Environment::current_environment]->GetEntities()).end(); ++j)
         {
             for (std::shared_ptr<Module> module : (*j)->GetModules())
             {
-                module->Render((*i), Environment::environments[Environment::current_environment]->lights);
+                module->Render((*i), Environment::environments[Environment::current_environment]->GetLights());
             }
         }
     }

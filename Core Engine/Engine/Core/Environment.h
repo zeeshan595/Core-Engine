@@ -39,18 +39,19 @@ public:
         return e;
     }
 
-    static std::vector<std::shared_ptr<Entity>> GetEntities(){
+    static std::vector<std::shared_ptr<Entity>>* GetEntities(){
         int environment_id = Environment::current_environment;
-        return Environment::environments[environment_id]->entities;
+        return &Environment::environments[environment_id]->entities;
     }
-    static std::vector<std::shared_ptr<Camera>> GetCameras(){
+    static std::vector<std::shared_ptr<Camera>>* GetCameras(){
         int environment_id = Environment::current_environment;
-        return Environment::environments[environment_id]->cameras;
+        return &Environment::environments[environment_id]->cameras;
     }
-    static std::vector<std::shared_ptr<Light>> GetLights(){
+    static std::vector<std::shared_ptr<Light>>* GetLights(){
         int environment_id = Environment::current_environment;
-        return Environment::environments[environment_id]->lights;
+        return &Environment::environments[environment_id]->lights;
     }
+private:
     std::vector<std::shared_ptr<Entity>> entities;
     std::vector<std::shared_ptr<Camera>> cameras;
     std::vector<std::shared_ptr<Light>> lights;
