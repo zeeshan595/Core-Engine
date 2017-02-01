@@ -40,7 +40,16 @@
         "*hppfunctional": "cpp",
         "*inltuple": "cpp",
         "*h*h*h*hxlocale": "cpp",
-        "*h*h*h*h*h*h*h*hxlocale": "cpp"
+        "*h*h*h*h*h*h*h*hxlocale": "cpp",
+        "*inlxutility": "cpp",
+        "*htype_traits": "cpp",
+        "type_traits": "cpp",
+        "*h*h*h*h*h*h*h*h*h*h*h*h*h*h*h*h*h*h*h*h*h*h*h*h*h*h*h*h*h*h*h*h*h*h*h*hppxmemory0": "cpp",
+        "xstddef": "cpp",
+        "*h*h*h*h*h*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hppxtr1common": "cpp",
+        "xtr1common": "cpp",
+        "utility": "cpp",
+        "*h*h*hpp*h*h*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hppfunctional": "cpp"
     },
     "editor.tabSize": 4
 }

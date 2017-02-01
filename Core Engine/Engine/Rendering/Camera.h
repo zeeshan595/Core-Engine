@@ -23,7 +23,6 @@ public:
         near_clip_plane = 0.01f;
         far_clip_plane = 100.0f;
         viewport = glm::vec4(0, 0, 1, 1);
-        transform.position = glm::vec3(0.0f, 0.0f, -10.0f);
     }
 
     glm::mat4x4 GetProjectionMatrix()

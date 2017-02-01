@@ -6,7 +6,6 @@ class Environment
 public:
     static std::vector<std::shared_ptr<Environment>> environments;
     static int current_environment;
-
     std::string name;
 
     Environment(std::string environment_name){

@@ -95,6 +95,7 @@ void Core::Start()
         is_running = true;
 
     Environment::current_environment = 0;
+    StartModules();
     while(is_running)
     {
         SDL_Event event;
@@ -137,6 +138,34 @@ void Core::Input(SDL_Event* e)
     {
         Input::keys[e->key.keysym.sym] = true;
         Input::keys[e->key.keysym.sym] = false;
+    }
+}
+
+void Core::StartModules()
+{
+    //Cameras
+    for (auto i = (*Environment::environments[Environment::current_environment]->GetCameras()).begin(); i != (*Environment::environments[Environment::current_environment]->GetCameras()).end(); ++i)
+    {
+        for (std::shared_ptr<Module> module : (*i)->GetModules())
+        {
+            module->Start();
+        }
+    }
+    //Lights
+    for (auto i = (*Environment::environments[Environment::current_environment]->GetLights()).begin(); i != (*Environment::environments[Environment::current_environment]->GetLights()).end(); ++i)
+    {
+        for (std::shared_ptr<Module> module : (*i)->GetModules())
+        {
+            module->Start();
+        }
+    }
+    //Entities
+    for (auto i = (*Environment::environments[Environment::current_environment]->GetEntities()).begin(); i != (*Environment::environments[Environment::current_environment]->GetEntities()).end(); ++i)
+    {
+        for (std::shared_ptr<Module> module : (*i)->GetModules())
+        {
+            module->Start();
+        }
     }
 }
 

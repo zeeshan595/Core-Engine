@@ -20,7 +20,6 @@ public:
         brightness = 1.0f;
         light_range = 10.0f;
         type = DIRECTIONAL;
-		transform.rotation = glm::vec3(-90.0f, 0.0f, 25.0f);
     }
 
     //Modules

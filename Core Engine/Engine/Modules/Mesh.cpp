@@ -94,7 +94,19 @@ void Mesh::Render(std::shared_ptr<Camera> camera, std::vector<std::shared_ptr<Li
         //Camera Position
         GLint eye_position_uniform = glGetUniformLocation(surface->GetShader()->GetShaderProgram(), "camera_position_world");
         glUniform3fv(eye_position_uniform, 1, &camera->transform.position[0]);
-        
+
+        //Fog distance
+        GLint fog_distance_uniform = glGetUniformLocation(surface->GetShader()->GetShaderProgram(), "fog_distance");
+        glUniform1fv(fog_distance_uniform, 1, &Fog::distance);
+        //Fog density
+        GLint fog_density_uniform = glGetUniformLocation(surface->GetShader()->GetShaderProgram(), "fog_density");
+        glUniform1fv(fog_density_uniform, 1, &Fog::density);
+        //Fog gradient
+        GLint fog_gradient_uniform = glGetUniformLocation(surface->GetShader()->GetShaderProgram(), "fog_gradient");
+        glUniform1fv(fog_gradient_uniform, 1, &Fog::gradient);
+        //Fog color
+        GLint fog_color_uniform = glGetUniformLocation(surface->GetShader()->GetShaderProgram(), "fog_color");
+        glUniform4fv(fog_color_uniform, 1, &Fog::fog_color[0]);
 
         glBindVertexArray(VAO);
         glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
@@ -102,7 +114,10 @@ void Mesh::Render(std::shared_ptr<Camera> camera, std::vector<std::shared_ptr<Li
     else
     {
         std::cout << "WARNING: surface is null asigning simpleVS & simpleFS" << std::endl;
-        surface = std::shared_ptr<Surface>();
+        std::shared_ptr<Shader> myShader = std::shared_ptr<Shader>(new Shader("defaultVS.glsl", "defaultFS.glsl"));
+        std::shared_ptr<Surface> mySurface = std::shared_ptr<Surface>(new Surface(myShader));
+        mySurface->ApplyTexture(std::shared_ptr<Texture>(new Texture("default.png")));
+        ApplySurface(mySurface);
     }
 }
 
@@ -135,62 +150,21 @@ void Mesh::LoadOBJFile(std::string filename)
 }
 void Mesh::LoadDefaultCube()
 {
-    vertices = {
-        //Front
-        {glm::vec3(-1.0f, 1.0f, 1.0f), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f),
-            glm::vec2(0.0f, 0.0f), glm::vec3(-0.3f, 0.3f, 0.3f) }, // Top Left
-
-        {glm::vec3(-1.0f, -1.0f, 1.0f), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f),
-            glm::vec2(0.0f, 1.0f), glm::vec3(-0.3f, -0.3f, 0.3f)}, // Bottom Left
-
-        {glm::vec3(1.0f, -1.0f, 1.0f), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f),
-            glm::vec2(1.0f, 1.0f), glm::vec3(0.3f, -0.3f, 0.3f)}, //Bottom Right
-
-        {glm::vec3(1.0f, 1.0f, 1.0f), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f),
-            glm::vec2(1.0f, 0.0f), glm::vec3(0.3f, 0.3f, 0.3f)}, // Top Right
-
-        //back
-        {glm::vec3(-1.0f, 1.0f, -1.0f), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f),
-            glm::vec2(0.0f, 0.0f), glm::vec3(-0.3f, 0.3f, -0.3f)}, // Top Left
-
-        {glm::vec3(-1.0f, -1.0f, -1.0f), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f),
-            glm::vec2(0.0f, 1.0f), glm::vec3(-0.3f, -0.3f, -0.3f)}, // Bottom Left
-
-        {glm::vec3(1.0f, -1.0f, -1.0f), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f),
-            glm::vec2(1.0f, 1.0f), glm::vec3(0.3f, -0.3f, -0.3f)}, //Bottom Right
-
-        {glm::vec3(1.0f, 1.0f, -1.0f), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f),
-            glm::vec2(1.0f, 0.0f), glm::vec3(0.3f, 0.3f, -0.3f)}, // Top Right
-    };
-    indices = {
-        0, 1, 2,
-        0, 3, 2,
-
-        4, 5, 1,
-        4, 1, 0,
-
-        3, 7, 2,
-        7, 6, 2,
-
-        1, 5, 2,
-        6, 2, 5,
-
-        4, 0, 7,
-        0, 7, 3,
-
-        4, 5, 6,
-        4, 7, 6
-    };
+    vertices = Cube::vertices;
+    indices = Cube::indices;
     GenerateBuffers();
 }
 void Mesh::LoadDefaultPlane()
 {
-
+    vertices = Plane::vertices;
+    indices = Plane::indices;
+    GenerateBuffers();
 }
 void Mesh::CreateMesh(std::vector<Vertex> verts, std::vector<GLuint> ind)
 {
     vertices = verts;
     indices = ind;
+    GenerateBuffers();
 }
 
 void Mesh::GenerateBuffers()

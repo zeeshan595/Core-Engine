@@ -35,23 +35,29 @@ const std::string TEXTURE_PATH  = ASSET_PATH + "textures/";
 const std::string FONT_PATH     = ASSET_PATH + "fonts/";
 const std::string MODEL_PATH    = ASSET_PATH + "models/";
 
+//Static
 #include "Screen.h"
 #include "Time.h"
 #include "Input.h"
 #include "Transform.h"
 #include "Vertex.h"
 #include "OBJLoader.h"
-
+#include "Cube.h"
+#include "Plane.h"
+#include "Fog.h"
+//Base classes
 #include "../Modules/Module.h"
 #include "../Core/Entity.h"
+//Rendering
 #include "../Rendering/Camera.h"
 #include "../Rendering/Light.h"
-
-#include "../Core/Environment.h"
-
 #include "../Rendering/Texture.h"
 #include "../Rendering/Shader.h"
 #include "../Rendering/Surface.h"
+//Environment
+#include "../Core/Environment.h"
+//Modules
 #include "../Modules/Mesh.h"
+#include "../Modules/Terrain.h"
 
 #endif
