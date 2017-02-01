@@ -7,11 +7,14 @@ in vec4 the_color;
 in vec2 the_uv;
 in vec3 vertex_normal_world;
 
-uniform sampler2D texture_map0;
-uniform sampler2D texture_map1;
+//terrain maps
+uniform sampler2D texture_map0;//blend map
+uniform sampler2D texture_map1;//spec map
+
 uniform sampler2D texture_map2;
 uniform sampler2D texture_map3;
 uniform sampler2D texture_map4;
+uniform sampler2D texture_map5;
 
 //Light Variables
 #define MAX_LIGHTS 10
@@ -43,9 +46,9 @@ void main()
     //Your allowed to edit these
     float terrain_tile_amount = 80.0f;
     vec3 ambient_color  = vec3(0.1f, 0.1f, 0.1f);
-    vec3 diffuse_color  = vec3(0.3f, 0.3f, 0.3f);
-    vec3 spec_color     = vec3(1.0f, 1.0f, 1.0f);
-    float spec_amount   = 0.1f;
+    vec3 diffuse_color  = vec3(1.0f, 1.0f, 1.0f) * texture(texture_map1, the_uv).r;
+    vec3 spec_color     = vec3(1.0f, 1.0f, 1.0f) * texture(texture_map1, the_uv).g;
+    float spec_amount   = 2.0f;
     float spec_area     = 150.0f;
     
     //Setup default diffuse and specular values if no light is there
@@ -57,10 +60,10 @@ void main()
     float black_amount = 1 - (blend_map.r + blend_map.g + blend_map.b);
     
     vec2 tiled_uv = the_uv * terrain_tile_amount;
-    vec4 texture0 = texture(texture_map1, tiled_uv) * black_amount;
-    vec4 texture1 = texture(texture_map2, tiled_uv) * blend_map.r;
-    vec4 texture2 = texture(texture_map3, tiled_uv) * blend_map.g;
-    vec4 texture3 = texture(texture_map4, tiled_uv) * blend_map.b;
+    vec4 texture0 = texture(texture_map2, tiled_uv) * black_amount;
+    vec4 texture1 = texture(texture_map3, tiled_uv) * blend_map.r;
+    vec4 texture2 = texture(texture_map4, tiled_uv) * blend_map.g;
+    vec4 texture3 = texture(texture_map5, tiled_uv) * blend_map.b;
 
     vec4 texture = texture0 + texture1 + texture2 + texture3;
 
@@ -71,7 +74,7 @@ void main()
         float diffuse_brightness = dot(normalize(light_directions[i]), normalize(vertex_normal_world));
         diffuse_brightness = clamp(diffuse_brightness, 0, 1);
         //Apply results
-        vec4 apply_diffuse_color = vec4(diffuse_color, 1.0f) + directional_light_color[i];
+        vec4 apply_diffuse_color = vec4(diffuse_color, 1.0f) * directional_light_color[i];
         diffuse += apply_diffuse_color * diffuse_brightness * directional_light_brightness[i];
     
         //Calculate light's reflected vector & camera viewing vector
@@ -83,8 +86,8 @@ void main()
         //Make the result less bright by using pow (between 0-1)
         specular_brightness = pow(specular_brightness, spec_area);
         //Apply results
-        vec4 apply_spec_color = vec4(spec_color, 1.0f) + directional_light_color[i];
-        specular += apply_spec_color * specular_brightness * directional_light_brightness[i];
+        vec4 apply_spec_color = vec4(spec_color, 1.0f) * directional_light_color[i];
+        //specular += apply_spec_color * specular_brightness * directional_light_brightness[i];
     }
     //Point Lights
     for (int i = 0; i < point_light_count; i++)
@@ -98,7 +101,7 @@ void main()
         float diffuse_brightness = dot(normalize(vertex_normal_world), normalize(point_light_direction));
         diffuse_brightness = clamp(diffuse_brightness, 0.0f, 1.0f);
         //Apply results
-        vec4 apply_diffuse_color = vec4(diffuse_color, 1.0f) + point_light_color[i];
+        vec4 apply_diffuse_color = vec4(diffuse_color, 1.0f) * point_light_color[i];
         diffuse += apply_diffuse_color * diffuse_brightness * point_light_brightness[i] * point_light_formula;
     
         //Calculate light's reflected vector & camera viewing vector
@@ -110,8 +113,8 @@ void main()
         //Make the result less bright by using pow (between 0-1)
         specular_brightness = pow(specular_brightness, spec_area);
         //Apply results
-        vec4 apply_spec_color = vec4(spec_color, 1.0f) + point_light_color[i];
-        specular += apply_spec_color * specular_brightness * point_light_brightness[i] * point_light_formula;
+        vec4 apply_spec_color = vec4(spec_color, 1.0f) * point_light_color[i];
+        //specular += apply_spec_color * specular_brightness * point_light_brightness[i] * point_light_formula;
     }
     //Combine all light calculations
     vec4 light = vec4(ambient_color, 1.0f) + diffuse + specular;

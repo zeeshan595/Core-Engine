@@ -55,7 +55,7 @@ int main(int argc, char* args[])
     //Create Default Light
     std::shared_ptr<Light> myLight = Environment::CreateLight("My Light");
     myLight->type = Light::LIGHT_TYPE::DIRECTIONAL;
-    myLight->transform.Rotate(glm::vec3(-90.0f, 0.0f, 0.0f));
+    myLight->transform.Rotate(glm::vec3(-90.0f, 0.0f, 25.0f));
     //Light Monkey Mesh
     std::shared_ptr<Shader> myShader = std::shared_ptr<Shader>(new Shader("GUI_3DVS.glsl", "GUI_3DFS.glsl"));
     std::shared_ptr<Surface> mySurface = std::shared_ptr<Surface>(new Surface(myShader));
@@ -64,13 +64,10 @@ int main(int argc, char* args[])
     myMesh->LoadOBJFile("monkey3.obj");
     myMesh->ApplySurface(mySurface);
 
-
-
     std::shared_ptr<Entity> myObj = Environment::CreateEntity("My Terrain");
     myObj->transform.Rotate(glm::vec3(0.0f, 180.0f, 0.0f));
     std::shared_ptr<Terrain> myTerrain = myObj->AddModule<Terrain>();
-    myTerrain->CreateTerrain(100, 100, 1.0f);
-
+    myTerrain->CreateTerrain();
 
     std::shared_ptr<Entity> myObj2 = Environment::CreateEntity("My Object");
     myObj2->transform.position = glm::vec3(0.0f, 0.0f, -50.0f);

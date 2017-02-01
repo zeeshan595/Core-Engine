@@ -1,20 +1,35 @@
-void Terrain::CreateTerrain(int size_x, int size_y, float density)
+Terrain::Terrain()
 {
-    terrain_size_x = size_x;
-    terrain_size_y = size_y;
+    max_height      = 10.0f;
+    terrain_size_x  = 100.0f;
+    terrain_size_y  = 100.0f;
+    density         = 1.0f;
+    blend_map       = "blend_map.png";
+    height_map      = "height_map.png";
+    spec_map        = "spec_map.png";
+    tile_textures.push_back("grassy2.png");
+    tile_textures.push_back("grassFlowers.png");
+    tile_textures.push_back("mud.png");
+    tile_textures.push_back("path.png");
+    terrain_shader = std::shared_ptr<Shader>(new Shader("terrainVS.glsl", "terrainFS.glsl"));
+}
+
+void Terrain::CreateTerrain()
+{
     std::shared_ptr<Mesh> attached_mesh = attached_to->GetModule<Mesh>();
     if (attached_mesh == nullptr){
         attached_mesh = attached_to->AddModule<Mesh>();
-        std::shared_ptr<Shader> myShader = std::shared_ptr<Shader>(new Shader("terrainVS.glsl", "terrainFS.glsl"));
-        std::shared_ptr<Surface> mySurface = std::shared_ptr<Surface>(new Surface(myShader));
-        mySurface->ApplyTexture(std::shared_ptr<Texture>(new Texture("blend_map.png")));
-        mySurface->ApplyTexture(std::shared_ptr<Texture>(new Texture("grassy2.png")));
-        mySurface->ApplyTexture(std::shared_ptr<Texture>(new Texture("grassFlowers.png")));
-        mySurface->ApplyTexture(std::shared_ptr<Texture>(new Texture("mud.png")));
-        mySurface->ApplyTexture(std::shared_ptr<Texture>(new Texture("path.png")));
-        attached_mesh->ApplySurface(mySurface);
     }
+    std::shared_ptr<Surface> mySurface = std::shared_ptr<Surface>(new Surface(terrain_shader));
+    mySurface->ApplyTexture(std::shared_ptr<Texture>(new Texture(blend_map)));
+    mySurface->ApplyTexture(std::shared_ptr<Texture>(new Texture(spec_map)));
+    for (int i = 0; i < tile_textures.size(); i++){
+        mySurface->ApplyTexture(std::shared_ptr<Texture>(new Texture(tile_textures[i])));
+    }
+    attached_mesh->ApplySurface(mySurface);
     
+    height_map_surface = Texture::LoadImage(height_map);
+
     std::vector<Vertex> vertices;
     std::vector<GLuint> indices;
 
@@ -22,13 +37,14 @@ void Terrain::CreateTerrain(int size_x, int size_y, float density)
 
     for (int x = 0; x < terrain_size_x + 1; x++){
         for (int y = 0; y < terrain_size_y + 1; y++){
-            float normal_x = (float)x / (float)terrain_size_x;
-            float normal_y = (float)y / (float)terrain_size_y;
+            float uv_x = (float)x / (float)terrain_size_x;
+            float uv_y = (float)y / (float)terrain_size_y;
+            float height = GetPixelColor((int)(height_map_surface->w * uv_x), (int)(height_map_surface->h * uv_y));
             vertices[GetVertexPosition(x, y)] = {
-                glm::vec3(density * x, 0.0f, density * y),
+                glm::vec3(density * x, height, density * y),
                 glm::vec4(1.0f, 1.0f, 1.0f, 1.0f),
-                glm::vec2(normal_x, normal_y),
-                glm::vec3(0.0f, 1.0f, 0.0f)
+                glm::vec2(uv_x, uv_y),
+                CalculateNormal((int)(height_map_surface->w * uv_x), (int)(height_map_surface->h * uv_y))
             };
         }
     }
@@ -46,4 +62,59 @@ void Terrain::CreateTerrain(int size_x, int size_y, float density)
     }
 
     attached_mesh->CreateMesh(vertices, indices);
+}
+
+glm::vec3 Terrain::CalculateNormal(int x, int z)
+{
+    float heightL = GetPixelColor(x-1, z  );
+    float heightR = GetPixelColor(x+1, z  );
+    float heightD = GetPixelColor(x  , z-1);
+    float heightU = GetPixelColor(x  , z+1);
+
+    glm::vec3 normal = glm::vec3(heightL - heightR, 2.0f, heightD - heightU);
+    return glm::normalize(normal);
+}
+
+float Terrain::GetPixelColor(int x, int y)
+{
+    if (x < 0 || x > height_map_surface->w || y < 0 || y > height_map_surface->h)
+        return 0;
+
+    Uint8 r, g, b;
+    SDL_GetRGB(GetPixel(x, y), height_map_surface->format, &r, &g, &b);
+    float height = r * g * b;
+    height /= MAX_PIXEL_COLOUR / 2.0f;
+    height *= max_height;
+    return height;
+}
+
+Uint32 Terrain::GetPixel(int x, int y)
+{
+    int bpp = height_map_surface->format->BytesPerPixel;
+    /* Here p is the address to the pixel we want to retrieve */
+    Uint8 *p = (Uint8 *)height_map_surface->pixels + y * height_map_surface->pitch + x * bpp;
+
+    switch(bpp) {
+    case 1:
+        return *p;
+        break;
+
+    case 2:
+        return *(Uint16 *)p;
+        break;
+
+    case 3:
+        if(SDL_BYTEORDER == SDL_BIG_ENDIAN)
+            return p[0] << 16 | p[1] << 8 | p[2];
+        else
+            return p[0] | p[1] << 8 | p[2] << 16;
+        break;
+
+    case 4:
+        return *(Uint32 *)p;
+        break;
+
+    default:
+        return 0;       /* shouldn't happen, but avoids warnings */
+    }
 }
