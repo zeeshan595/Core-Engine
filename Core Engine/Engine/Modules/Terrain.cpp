@@ -2,7 +2,7 @@ Terrain::Terrain()
 {
     max_height      = 10.0f;
     terrain_size_x  = 100.0f;
-    terrain_size_y  = 100.0f;
+    terrain_size_z  = 100.0f;
     density         = 1.0f;
     blend_map       = "blend_map.png";
     height_map      = "height_map.png";
@@ -66,14 +66,14 @@ void Terrain::CreateTerrain()
 
     std::vector<Vertex> vertices;
     std::vector<GLuint> indices;
-    vertices.resize((terrain_size_x + 1) * (terrain_size_y + 1));
+    vertices.resize((terrain_size_x + 1) * (terrain_size_z + 1));
     heights.resize((terrain_size_x + 1));
 
     for (int x = 0; x < terrain_size_x + 1; x++){
-        heights[x].resize((terrain_size_y + 1));
-        for (int y = 0; y < terrain_size_y + 1; y++){
+        heights[x].resize((terrain_size_z + 1));
+        for (int y = 0; y < terrain_size_z + 1; y++){
             float uv_x = (float)x / (float)terrain_size_x;
-            float uv_y = (float)y / (float)terrain_size_y;
+            float uv_y = (float)y / (float)terrain_size_z;
             float height = GetPixelColor((int)(height_map_surface->w * uv_x), (int)(height_map_surface->h * uv_y));
             heights[x][y] = height;
             vertices[GetVertexPosition(x, y)] = {
@@ -86,7 +86,7 @@ void Terrain::CreateTerrain()
     }
 
     for (int x = 0; x < terrain_size_x; x++){
-        for (int y = 0; y < terrain_size_y; y++){
+        for (int y = 0; y < terrain_size_z; y++){
             indices.push_back(GetVertexPosition(x, y));
             indices.push_back(GetVertexPosition(x + 1, y + 1));
             indices.push_back(GetVertexPosition(x + 1, y));

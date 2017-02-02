@@ -66,7 +66,7 @@ int main(int argc, char* args[])
     myLight->type = Light::LIGHT_TYPE::DIRECTIONAL;
     myLight->transform.rotation = (glm::vec3(-90.0f, 0.0f, 25.0f));
     //Light Monkey Mesh
-    std::shared_ptr<Shader> myShader = std::shared_ptr<Shader>(new Shader("GUI_3DVS.glsl", "GUI_3DFS.glsl"));
+    std::shared_ptr<Shader> myShader = std::shared_ptr<Shader>(new Shader("ui_3dVS.glsl", "ui_3dFS.glsl"));
     std::shared_ptr<Surface> mySurface = std::shared_ptr<Surface>(new Surface(myShader));
     mySurface->ApplyTexture(std::shared_ptr<Texture>(new Texture("default.png")));
     std::shared_ptr<Mesh> myMesh = myLight->AddModule<Mesh>();
@@ -83,6 +83,11 @@ int main(int argc, char* args[])
     myMesh2->LoadOBJFile("monkey3.obj");
     myObj2->AddModule<PlayerMovment>();
 
+    std::shared_ptr<Entity> UIobj = Environment::CreateEntity("My GUI");
+    std::shared_ptr<UIMesh> myUI = UIobj->AddModule<UIMesh>();
+    myUI->rect = glm::vec4(-Screen::width, Screen::height - 500.0f, 500.0f, 500.0f);
+    myUI->rotation = 0.0f;
+    
     engine.Start();
     
     return 0;

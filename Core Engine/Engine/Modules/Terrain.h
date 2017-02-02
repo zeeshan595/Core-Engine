@@ -6,7 +6,7 @@ class Terrain : public Module
 public:
     float max_height;
     int terrain_size_x;
-    int terrain_size_y;
+    int terrain_size_z;
     float density;
     std::string blend_map;
     std::string height_map;
