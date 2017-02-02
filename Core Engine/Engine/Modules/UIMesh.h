@@ -15,11 +15,6 @@ public:
         if (UIMesh::shader == nullptr)        
             GenerateBuffers();
     }
-    ~UIMesh(){
-        glDeleteBuffers(1, &UIMesh::EBO);
-        glDeleteBuffers(1, &UIMesh::VBO);
-        glDeleteVertexArrays(1, &UIMesh::VAO);
-    }
     void Render(std::shared_ptr<Camera> camera, std::vector<std::shared_ptr<Light>>* lights){
 
         glUseProgram(UIMesh::shader->GetShaderProgram());
@@ -39,6 +34,15 @@ public:
 
         glBindVertexArray(UIMesh::VAO);
         glDrawElements(GL_TRIANGLES, UIMesh::indices.size(), GL_UNSIGNED_INT, 0);
+    }
+    static GLuint* GetVAO(){
+        return &UIMesh::VAO;
+    }
+    static GLuint* GetVBO(){
+        return &UIMesh::VAO;
+    }
+    static GLuint* GetEBO(){
+        return &UIMesh::VAO;
     }
 
 private:

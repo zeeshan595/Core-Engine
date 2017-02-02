@@ -48,6 +48,16 @@ Core::Core(std::string window_title)
 
 Core::~Core()
 {
+    //Delete ui data
+    glDeleteBuffers(1, UIMesh::GetEBO());
+    glDeleteBuffers(1, UIMesh::GetVBO());
+    glDeleteVertexArrays(1, UIMesh::GetVAO());
+
+    //Delete skybox data
+    glDeleteBuffers(1, Skybox::GetEBO());
+    glDeleteBuffers(1, Skybox::GetVBO());
+    glDeleteVertexArrays(1, Skybox::GetVAO());
+
     SDL_GL_DeleteContext(context);
     SDL_DestroyWindow(Screen::window);
     IMG_Quit();

@@ -12,12 +12,6 @@ public:
         if (Skybox::shader == nullptr)
             GenerateBuffers();
     }
-    ~Skybox()
-    {
-        glDeleteBuffers(1, &Skybox::EBO);
-        glDeleteBuffers(1, &Skybox::VBO);
-        glDeleteVertexArrays(1, &Skybox::VAO);
-    }
     void Render(std::shared_ptr<Camera> camera)
     {
         glUseProgram(Skybox::shader->GetShaderProgram());
@@ -43,6 +37,16 @@ public:
         glBindVertexArray(Skybox::VAO);
         glDrawElements(GL_TRIANGLES, Skybox::indices.size(), GL_UNSIGNED_INT, 0);
     }
+    static GLuint* GetVAO(){
+        return &Skybox::VAO;
+    }
+    static GLuint* GetVBO(){
+        return &Skybox::VAO;
+    }
+    static GLuint* GetEBO(){
+        return &Skybox::VAO;
+    }
+
 private:
     static std::shared_ptr<Shader> shader;
     static GLuint VAO;
