@@ -16,7 +16,7 @@ public:
         attached_to->transform.position = myPlayer->transform.position + offset;
 
         camera_rotation += Input::mouse_delta.y * Time::delta_time * rotation_speed;
-        camera_rotation = Transform::ToRadians(glm::clamp(Transform::ToDegrees(camera_rotation), -60.0f, 60.0f));
+        camera_rotation = Transform::ToRadians(glm::clamp(Transform::ToDegrees(camera_rotation), -60.0f, 90.0f));
         attached_to->transform.rotation = glm::vec3(camera_rotation, myPlayer->transform.rotation.y, 0.0f);
     }
 };
@@ -63,6 +63,8 @@ public:
         if (attached_to->transform.position.y < min_y_pos){
             attached_to->transform.position.y = min_y_pos;
         }
+
+        glm::vec3 ray = Raycast::GetRay(glm::vec2(Screen::width / 2, Screen::height / 2));
     }
 };
 

@@ -62,5 +62,7 @@ const std::string MODEL_PATH    = ASSET_PATH + "models/";
 //Modules
 #include "../Modules/Mesh.h"
 #include "../Modules/Terrain.h"
+//Physics
+#include "../Physics/Raycast.h"
 
 #endif
