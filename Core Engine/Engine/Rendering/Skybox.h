@@ -5,12 +5,16 @@ class Skybox
 {
 public:
     float rotation_speed = 0.05f;
+    float blend_amount = 0.0f;
 
     Skybox();
     void Render(std::shared_ptr<Camera> camera);
 
     void SetTexture(std::shared_ptr<CubeTexture> tex){
         texture = tex;
+    }
+    void SetTexture2(std::shared_ptr<CubeTexture> tex){
+        texture2 = tex;
     }
     void SetShader(std::shared_ptr<Shader> shad){
         shader = shad;
@@ -28,6 +32,7 @@ public:
 private:
     float current_rotation = 0.0f;
     std::shared_ptr<CubeTexture> texture;
+    std::shared_ptr<CubeTexture> texture2;
     std::shared_ptr<Shader> shader;
 
     static GLuint VAO;

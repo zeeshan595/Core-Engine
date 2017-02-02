@@ -1,6 +1,7 @@
 Skybox::Skybox()
 {
     texture = std::shared_ptr<CubeTexture>(new CubeTexture("left.png", "right.png", "top.png", "bottom.png", "front.png", "back.png"));
+    texture2 = std::shared_ptr<CubeTexture>(new CubeTexture("ashcanyon_lf.png", "ashcanyon_rt.png", "ashcanyon_up.png", "ashcanyon_dn.png", "ashcanyon_ft.png", "ashcanyon_bk.png"));
     shader = std::shared_ptr<Shader>(new Shader("skyboxVS.glsl", "skyboxFS.glsl"));
     if (Skybox::VAO == 0)
         GenerateBuffers();
@@ -30,6 +31,18 @@ void Skybox::Render(std::shared_ptr<Camera> camera)
         GLint texture_uniform = glGetUniformLocation(shader->GetShaderProgram(), "cube_map");
         glUniform1i(texture_uniform, 0);
     }
+    //Cube map texture2
+    if (texture2 != nullptr)
+    {
+        glActiveTexture(GL_TEXTURE1);
+        glBindTexture(GL_TEXTURE_CUBE_MAP, texture2->GetTextureMap());
+        GLint texture_uniform2 = glGetUniformLocation(shader->GetShaderProgram(), "cube_map2");
+        glUniform1i(texture_uniform2, 1);
+    }
+
+    //Blend Amount
+    GLint blend_uniform = glGetUniformLocation(shader->GetShaderProgram(), "blend_amount");
+    glUniform1fv(blend_uniform, 1, &blend_amount);
 
     //Fog color
     GLint fog_color_uniform = glGetUniformLocation(shader->GetShaderProgram(), "fog_color");
