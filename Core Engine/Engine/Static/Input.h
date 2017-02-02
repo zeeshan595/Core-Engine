@@ -7,6 +7,10 @@ public:
     static std::map<int, bool> keys_up;
     static std::map<int, bool> keys_down;
     static std::map<int, bool> keys;
+
+    static std::map<Uint8, bool> mouse_down;
+    static std::map<Uint8, bool> mouse_up;
+    static std::map<Uint8, bool> mouse;
     static glm::vec2 mouse_delta;
     static glm::vec2 mouse_position;
 
@@ -20,6 +24,10 @@ public:
 std::map<int, bool> Input::keys_up;
 std::map<int, bool> Input::keys_down;
 std::map<int, bool> Input::keys;
+
+std::map<Uint8, bool> Input::mouse_down;
+std::map<Uint8, bool> Input::mouse_up;
+std::map<Uint8, bool> Input::mouse;
 glm::vec2 Input::mouse_delta;
 glm::vec2 Input::mouse_position;
 

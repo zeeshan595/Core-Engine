@@ -109,14 +109,8 @@ void Core::Start()
     StartModules();
     while(is_running)
     {
-        Input::keys_down.clear();
-        Input::keys_up.clear();
-        Input::mouse_delta = glm::vec2(0, 0);
         SDL_Event event;
-        while (SDL_PollEvent(&event))
-        {            
-            Input(&event);
-        }
+        Input(&event);
 
         Update();
 
@@ -128,6 +122,11 @@ void Core::Start()
 
 void Core::Input(SDL_Event* e)
 {
+    Input::keys_down.clear();
+    Input::keys_up.clear();
+    Input::mouse_down.clear();
+    Input::mouse_up.clear();
+    
     //Update Mouse Input
     int x, y;
     SDL_GetMouseState(&x, &y);
@@ -135,18 +134,34 @@ void Core::Input(SDL_Event* e)
     SDL_GetRelativeMouseState(&x, &y);
     Input::mouse_delta = glm::vec2(static_cast<float>(x), static_cast<float>(y));
 
-    if (e->type == SDL_QUIT || e->type == SDL_WINDOWEVENT_CLOSE)
-        is_running = false;
+    while (SDL_PollEvent(e))
+    {
+        switch(e->type)
+        {
+            case SDL_QUIT:
+            case SDL_WINDOWEVENT_CLOSE:
+                is_running = false;
+                break;
 
-    if (e->type == SDL_KEYDOWN && e->key.repeat == 0)
-    {
-        Input::keys_down[e->key.keysym.sym] = true;
-        Input::keys[e->key.keysym.sym] = true;
-    }
-    if (e->type == SDL_KEYUP && e->key.repeat == 0)
-    {
-        Input::keys_up[e->key.keysym.sym] = true;
-        Input::keys[e->key.keysym.sym] = false;
+            case SDL_KEYDOWN:
+                if (e->key.repeat == 0){
+                    Input::keys_down[e->key.keysym.sym] = true;
+                    Input::keys[e->key.keysym.sym] = true;
+                }
+                break;
+            case SDL_KEYUP:
+                Input::keys_up[e->key.keysym.sym] = true;
+                Input::keys[e->key.keysym.sym] = false;
+                break;
+            case SDL_MOUSEBUTTONDOWN:
+                Input::mouse_down[e->button.button] = true;
+                Input::mouse[e->button.button] = true;
+                break;
+            case SDL_MOUSEBUTTONUP:
+                Input::mouse_up[e->button.button] = true;
+                Input::mouse[e->button.button] = false;
+                break;
+        }
     }
 }
 

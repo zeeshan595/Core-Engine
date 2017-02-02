@@ -12,6 +12,6 @@ public:
 float Fog::distance = 5.0f;
 float Fog::density  = 0.007f;
 float Fog::gradient = 1.5f;
-glm::vec4 Fog::fog_color = glm::vec4(0.7f, 0.7f, 0.7f, 1.0f);
+glm::vec4 Fog::fog_color = glm::vec4(0.7f, 0.7f, 0.75f, 1.0f);
 
 #endif

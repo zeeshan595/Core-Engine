@@ -51,6 +51,9 @@ public:
         if (Input::keys_down[SDLK_ESCAPE]){
             Input::LockCursor(false);
         }
+        if (Input::mouse_down[SDL_BUTTON_LEFT]){
+            Input::LockCursor(true);
+        }
         //Rotation
         attached_to->transform.rotation -= glm::vec3(0.0f, 1.0f, 0.0f) * rotation_speed * Time::delta_time * Input::mouse_delta.x;
 
