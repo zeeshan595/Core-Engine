@@ -21,9 +21,14 @@ class PlayerMovment : public Module
 public:
     float speed = 10.0f;
     float rotation_speed = 1.0f;
+    float gravity = 9.8f;
+    std::shared_ptr<Terrain> myTerrain;
 
-    void Update()
-    {
+    void Start(){
+        myTerrain = Environment::FindEntity("My Terrain")->GetModule<Terrain>();
+    }
+
+    void Update(){
         if (Input::keys[SDLK_a]){
             attached_to->transform.rotation += glm::vec3(0.0f, 1.0f, 0.0f) * rotation_speed * Time::delta_time;
         }
@@ -35,6 +40,12 @@ public:
         }
         if (Input::keys[SDLK_s]){
             attached_to->transform.position -= attached_to->transform.Forward() * speed * Time::delta_time;
+        }
+        //Gravity
+        attached_to->transform.position.y -= gravity * Time::delta_time;
+        float min_y_pos = myTerrain->TerrainHeight(attached_to->transform.position.x, attached_to->transform.position.z);
+        if (attached_to->transform.position.y < min_y_pos){
+            attached_to->transform.position.y = min_y_pos;
         }
     }
 };
@@ -67,7 +78,7 @@ int main(int argc, char* args[])
     myTerrain->CreateTerrain();
 
     std::shared_ptr<Entity> myObj2 = Environment::CreateEntity("Player");
-    myObj2->transform.position = glm::vec3(0.0f, 3.0f, 0.0f);
+    myObj2->transform.position = glm::vec3(20.0f, 5.0f, 20.0f);
     std::shared_ptr<Mesh> myMesh2 = myObj2->AddModule<Mesh>();
     myMesh2->LoadOBJFile("monkey3.obj");
     myObj2->AddModule<PlayerMovment>();

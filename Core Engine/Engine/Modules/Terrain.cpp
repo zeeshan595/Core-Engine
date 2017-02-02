@@ -14,6 +14,40 @@ Terrain::Terrain()
     terrain_shader = std::shared_ptr<Shader>(new Shader("terrainVS.glsl", "terrainFS.glsl"));
 }
 
+float Terrain::TerrainHeight(float world_x, float world_z)
+{
+    float terrain_x = world_x - attached_to->transform.position.x;
+    float terrain_z = world_z - attached_to->transform.position.z;
+    int grid_x = (int)(terrain_x / density);
+    int grid_z = (int)(terrain_z / density);
+
+    if (grid_x >= (heights.size() - 1) || grid_z >= (heights[0].size() - 1) || grid_x < 0 || grid_z < 0)
+        return 0;
+    
+    float xCoord = fmod(terrain_x, density) / density;
+    float zCoord = fmod(terrain_z, density) / density;
+    float answer = 0;
+    if (xCoord <= (1 - zCoord))
+    {
+        answer = barryCentric(
+            glm::vec3(0, heights[grid_x    ][grid_z    ], 0),
+            glm::vec3(1, heights[grid_x + 1][grid_z    ], 0),
+            glm::vec3(0, heights[grid_x    ][grid_z + 1], 1),
+            glm::vec2(xCoord, zCoord)
+        );
+    }
+    else
+    {
+        answer = barryCentric(
+            glm::vec3(1, heights[grid_x + 1][grid_z    ], 0),
+            glm::vec3(1, heights[grid_x + 1][grid_z + 1], 1),
+            glm::vec3(0, heights[grid_x    ][grid_z + 1], 1),
+            glm::vec2(xCoord, zCoord)
+        );
+    }
+    return answer;
+}
+
 void Terrain::CreateTerrain()
 {
     std::shared_ptr<Mesh> attached_mesh = attached_to->GetModule<Mesh>();
