@@ -18,6 +18,7 @@ void Skybox::Render(std::shared_ptr<Camera> camera)
     view_mat[3][0] = 0;
     view_mat[3][1] = 0;
     view_mat[3][2] = 0;
+    view_mat = glm::rotate(view_mat, current_rotation, glm::vec3(0, 1, 0));
     GLint view_uniform = glGetUniformLocation(shader->GetShaderProgram(), "view_matrix");
     glUniformMatrix4fv(view_uniform, 1, GL_FALSE, glm::value_ptr(view_mat));
 
@@ -36,6 +37,10 @@ void Skybox::Render(std::shared_ptr<Camera> camera)
 
     glBindVertexArray(Skybox::VAO);
     glDrawElements(GL_TRIANGLES, Skybox::indices.size(), GL_UNSIGNED_INT, 0);
+    
+    current_rotation += rotation_speed * Time::delta_time;
+    if (current_rotation > 360.0f)
+        current_rotation = 0.0f;
 }
 
 void Skybox::GenerateBuffers()

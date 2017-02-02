@@ -4,6 +4,8 @@
 class Skybox
 {
 public:
+    float rotation_speed = 0.05f;
+
     Skybox();
     void Render(std::shared_ptr<Camera> camera);
 
@@ -24,6 +26,7 @@ public:
     }
 
 private:
+    float current_rotation = 0.0f;
     std::shared_ptr<CubeTexture> texture;
     std::shared_ptr<Shader> shader;
 
