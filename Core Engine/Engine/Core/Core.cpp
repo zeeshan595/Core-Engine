@@ -136,31 +136,31 @@ void Core::Input(SDL_Event* e)
 
     while (SDL_PollEvent(e))
     {
-        switch(e->type)
-        {
-            case SDL_QUIT:
-            case SDL_WINDOWEVENT_CLOSE:
-                is_running = false;
-                break;
+        if (e->key.repeat == 0){
+            switch(e->type)
+            {
+                case SDL_QUIT:
+                case SDL_WINDOWEVENT_CLOSE:
+                    is_running = false;
+                    break;
 
-            case SDL_KEYDOWN:
-                if (e->key.repeat == 0){
+                case SDL_KEYDOWN:
                     Input::keys_down[e->key.keysym.sym] = true;
                     Input::keys[e->key.keysym.sym] = true;
-                }
-                break;
-            case SDL_KEYUP:
-                Input::keys_up[e->key.keysym.sym] = true;
-                Input::keys[e->key.keysym.sym] = false;
-                break;
-            case SDL_MOUSEBUTTONDOWN:
-                Input::mouse_down[e->button.button] = true;
-                Input::mouse[e->button.button] = true;
-                break;
-            case SDL_MOUSEBUTTONUP:
-                Input::mouse_up[e->button.button] = true;
-                Input::mouse[e->button.button] = false;
-                break;
+                    break;
+                case SDL_KEYUP:
+                    Input::keys_up[e->key.keysym.sym] = true;
+                    Input::keys[e->key.keysym.sym] = false;
+                    break;
+                case SDL_MOUSEBUTTONDOWN:
+                    Input::mouse_down[e->button.button] = true;
+                    Input::mouse[e->button.button] = true;
+                    break;
+                case SDL_MOUSEBUTTONUP:
+                    Input::mouse_up[e->button.button] = true;
+                    Input::mouse[e->button.button] = false;
+                    break;
+            }
         }
     }
 }
