@@ -8,7 +8,7 @@ public:
 
     Skybox()
     {
-        texture = std::shared_ptr<CubeTexture>(new CubeTexture("right-1.png", "left-1.png", "top-1.png", "bottom-1.png", "front-1.png", "back-1.png"));
+        texture = std::shared_ptr<CubeTexture>(new CubeTexture("left.png", "right.png", "top.png", "bottom.png", "front.png", "back.png"));
         if (Skybox::shader == nullptr)
             GenerateBuffers();
     }
@@ -61,7 +61,26 @@ private:
         vertices.resize(Cube::vertices.size());
         for (int i = 0; i < Cube::vertices.size(); i++)
             vertices[i] = Cube::vertices[i].position * 500.0f;
-        indices = Cube::indices;
+        indices  = {
+            // front
+            0, 2, 1,
+            2, 0, 3,
+            // top
+            1, 6, 5,
+            6, 1, 2,
+            // back
+            7, 5, 6,
+            5, 7, 4,
+            // bottom
+            4, 3, 0,
+            3, 4, 7,
+            // left
+            4, 1, 5,
+            1, 4, 0,
+            // right
+            3, 6, 2,
+            6, 3, 7,
+        };
         //Create VAO
         glGenVertexArrays(1, &Skybox::VAO);
         glBindVertexArray(Skybox::VAO);
