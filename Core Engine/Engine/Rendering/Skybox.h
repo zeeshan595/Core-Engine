@@ -8,7 +8,7 @@ public:
 
     Skybox()
     {
-        texture = std::shared_ptr<CubeTexture>(new CubeTexture("right.png", "left.png", "top.png", "bottom.png", "front.png", "back.png"));
+        texture = std::shared_ptr<CubeTexture>(new CubeTexture("right-1.png", "left-1.png", "top-1.png", "bottom-1.png", "front-1.png", "back-1.png"));
         if (Skybox::shader == nullptr)
             GenerateBuffers();
     }

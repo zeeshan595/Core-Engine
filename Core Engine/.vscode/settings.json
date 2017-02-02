@@ -51,7 +51,9 @@
         "utility": "cpp",
         "*h*h*hpp*h*h*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hpp*hppfunctional": "cpp",
         "*h*hxlocnum": "cpp",
-        "*inlxlocmes": "cpp"
+        "*inlxlocmes": "cpp",
+        "*h*hxiosbase": "cpp",
+        "*h*h*hxiosbase": "cpp"
     },
     "editor.tabSize": 4
 }
