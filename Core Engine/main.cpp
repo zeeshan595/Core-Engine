@@ -97,10 +97,8 @@ int main(int argc, char* args[])
     myObj2->transform.position = glm::vec3(20.0f, 5.0f, 20.0f);
     myObj2->AddModule<PlayerMovment>();
 
-    std::shared_ptr<Entity> UIobj = Environment::CreateEntity("My GUI");
-    std::shared_ptr<UIMesh> myUI = UIobj->AddModule<UIMesh>();
-    myUI->rect = glm::vec4(-Screen::width, Screen::height - 100.0f, 100.0f, 100.0f);
-    myUI->rotation = 0.0f;
+    UI::CreateUI("texture.png", glm::vec4(0, 0, 500.0f, 500.0f));
+    UI::CreateUI("top.png", glm::vec4(0, 500, 500.0f, 500.0f));
 
     //Environment::GetSkybox(); //use this to edit skybox
 

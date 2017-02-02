@@ -56,11 +56,11 @@ const std::string MODEL_PATH    = ASSET_PATH + "models/";
 #include "../Rendering/Shader.h"
 #include "../Rendering/Surface.h"
 #include "../Rendering/Skybox.h"
+#include "../Rendering/UI.h"
 //Environment
 #include "../Core/Environment.h"
 //Modules
 #include "../Modules/Mesh.h"
 #include "../Modules/Terrain.h"
-#include "../Modules/UIMesh.h"
 
 #endif
