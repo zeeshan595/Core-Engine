@@ -13,6 +13,10 @@ public:
         name = environment_name;
         skybox = std::shared_ptr<Skybox>(new Skybox());
     }
+    static std::shared_ptr<Skybox> GetSkybox(){
+        int environment_id = Environment::current_environment;
+        return Environment::environments[environment_id]->skybox;
+    }
     static std::shared_ptr<Entity> FindEntity(std::string name){
         int environment_id = Environment::current_environment;
         for (int i = 0; i < Environment::environments[environment_id]->entities.size(); i++){

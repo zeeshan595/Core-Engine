@@ -88,6 +88,8 @@ int main(int argc, char* args[])
     myUI->rect = glm::vec4(-Screen::width, Screen::height - 100.0f, 100.0f, 100.0f);
     myUI->rotation = 0.0f;
 
+    //Environment::GetSkybox(); //use this to edit skybox
+
     engine.Start();
     return 0;
 }
