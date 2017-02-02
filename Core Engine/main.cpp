@@ -4,6 +4,8 @@ class CameraMovment : public Module
 {
 public:
     std::shared_ptr<Entity> myPlayer;
+    float rotation_speed = 1.0f;
+    float camera_rotation = 0.0f;
 
     void Start(){
         myPlayer = Environment::FindEntity("Player");
@@ -12,7 +14,10 @@ public:
     void Update(){
         glm::vec3 offset =  myPlayer->transform.Up() * 0.5f;
         attached_to->transform.position = myPlayer->transform.position + offset;
-        attached_to->transform.rotation = glm::vec3(-25.0f, myPlayer->transform.rotation.y, 0.0f);
+
+        camera_rotation += Input::mouse_delta.y * Time::delta_time * rotation_speed;
+        camera_rotation = Transform::ToRadians(glm::clamp(Transform::ToDegrees(camera_rotation), -60.0f, 60.0f));
+        attached_to->transform.rotation = glm::vec3(camera_rotation, myPlayer->transform.rotation.y, 0.0f);
     }
 };
 
