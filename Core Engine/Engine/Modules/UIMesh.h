@@ -6,6 +6,7 @@ class UIMesh : public Module
 public:
     glm::vec4 rect;
     float rotation;
+    std::shared_ptr<Texture> texture;
 
     UIMesh(){
         texture = std::shared_ptr<Texture>(new Texture("texture.png"));
@@ -41,8 +42,6 @@ public:
     }
 
 private:
-    std::shared_ptr<Texture> texture;
-
     static std::shared_ptr<Shader> shader;
     static GLuint VAO;
     static GLuint VBO;
