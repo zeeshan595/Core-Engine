@@ -1,6 +1,6 @@
 #include "Engine/Core/Core.h"
 
-class CameraMovment : public Module
+class CameraMovement : public Module
 {
 public:
     std::shared_ptr<Entity> myPlayer;
@@ -10,13 +10,13 @@ public:
     }
 
     void Update(){
-        glm::vec3 offset = (-myPlayer->transform.Forward() * 5.0f) + (myPlayer->transform.Up() * 3.0f) +(myPlayer->transform.Right() * -0.5f);
+        glm::vec3 offset = (-myPlayer->transform.Forward()) + (myPlayer->transform.Up() * 3.0f); //+(myPlayer->transform.Right() * f);
         attached_to->transform.position = myPlayer->transform.position + offset;
         attached_to->transform.rotation = glm::vec3(-25.0f, myPlayer->transform.rotation.y, 0.0f);
     }
 };
 
-class PlayerMovment : public Module
+class PlayerMovement : public Module
 {
 public:
     float speed = 10.0f;
@@ -59,7 +59,7 @@ int main(int argc, char* args[])
 
     //Create Default Camera
     std::shared_ptr<Camera> myCamera = Environment::CreateCamera("My Camera 1");
-    myCamera->AddModule<CameraMovment>();
+    myCamera->AddModule<CameraMovement>();
 
     //Create Default Light
     std::shared_ptr<Light> myLight = Environment::CreateLight("My Light");
@@ -81,7 +81,7 @@ int main(int argc, char* args[])
     myObj2->transform.position = glm::vec3(20.0f, 5.0f, 20.0f);
     std::shared_ptr<Mesh> myMesh2 = myObj2->AddModule<Mesh>();
     myMesh2->LoadOBJFile("monkey3.obj");
-    myObj2->AddModule<PlayerMovment>();
+    myObj2->AddModule<PlayerMovement>();
 
     std::shared_ptr<Entity> UIobj = Environment::CreateEntity("My GUI");
     std::shared_ptr<UIMesh> myUI = UIobj->AddModule<UIMesh>();

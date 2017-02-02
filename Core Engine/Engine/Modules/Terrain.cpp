@@ -6,9 +6,9 @@ Terrain::Terrain()
     density         = 1.0f;
     blend_map       = "blend_map.png";
     height_map      = "height_map.png";
-    spec_map        = "spec_map.png";
+    spec_map        = "specular.png";
     tile_textures.push_back("grassy2.png");
-    tile_textures.push_back("grassFlowers.png");
+    tile_textures.push_back("diffuse.png");
     tile_textures.push_back("mud.png");
     tile_textures.push_back("path.png");
     terrain_shader = std::shared_ptr<Shader>(new Shader("terrainVS.glsl", "terrainFS.glsl"));
