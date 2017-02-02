@@ -111,6 +111,7 @@ void Core::Start()
     {
         Input::keys_down.clear();
         Input::keys_up.clear();
+        Input::mouse_delta = glm::vec2(0, 0);
         SDL_Event event;
         while (SDL_PollEvent(&event))
         {            
