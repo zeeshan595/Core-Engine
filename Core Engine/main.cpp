@@ -97,8 +97,7 @@ int main(int argc, char* args[])
     myObj2->transform.position = glm::vec3(20.0f, 5.0f, 20.0f);
     myObj2->AddModule<PlayerMovment>();
 
-    UI::CreateUI("texture.png", glm::vec4(0, 0, 500.0f, 500.0f));
-    UI::CreateUI("top.png", glm::vec4(0, 500, 500.0f, 500.0f));
+    UI::CreateUI("texture.png", glm::vec4(0.0f, 0, 500.0f, 500.0f));
 
     //Environment::GetSkybox(); //use this to edit skybox
 

@@ -63,6 +63,8 @@ glm::mat4x4 UI::GetTransformationMatrix()
 {
     glm::vec4 mapped_rect = rect;
     mapped_rect = glm::vec4(mapped_rect.x / Screen::width, mapped_rect.y / Screen::height, mapped_rect.z / Screen::width, mapped_rect.w  / Screen::height);
+    mapped_rect.x = (mapped_rect.x * 2.0f) - 1.0f;
+    mapped_rect.y = 1.0 - ((mapped_rect.y * 2.0f) + mapped_rect.w);
 
     glm::mat4x4 model_matrix = glm::mat4x4(1.0f);
     model_matrix = glm::translate(model_matrix, glm::vec3(mapped_rect.x, mapped_rect.y, 0.0f));
