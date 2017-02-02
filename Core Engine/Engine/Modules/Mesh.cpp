@@ -117,7 +117,7 @@ void Mesh::Render(std::shared_ptr<Camera> camera, std::vector<std::shared_ptr<Li
     }
     else
     {
-        std::cout << "WARNING: surface is null asigning defaultVS & defaultFS" << std::endl;
+        std::cout << "WARNING: surface is null assigning defaultVS & defaultFS shaders" << std::endl;
         std::shared_ptr<Shader> myShader = std::shared_ptr<Shader>(new Shader("defaultVS.glsl", "defaultFS.glsl"));
         std::shared_ptr<Surface> mySurface = std::shared_ptr<Surface>(new Surface(myShader));
         mySurface->ApplyTexture(std::shared_ptr<Texture>(new Texture("default.png")));

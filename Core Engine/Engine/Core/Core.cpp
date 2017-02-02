@@ -63,9 +63,10 @@ void Core::InitOpenGL()
 	glEnable(GL_DEPTH_TEST);
     glEnable(GL_LIGHTING);
 	glDepthFunc(GL_LEQUAL);
-	glEnable(GL_CULL_FACE);
-	glCullFace(GL_BACK);
-	glFrontFace(GL_CCW);
+    glEnable(GL_TEXTURE_CUBE_MAP);
+	//glEnable(GL_CULL_FACE);
+	//glCullFace(GL_BACK);
+	//glFrontFace(GL_CCW);
 	//Turn on the best perspective correction
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
 
@@ -210,6 +211,10 @@ void Core::Render()
     for (auto i = (*Environment::environments[Environment::current_environment]->GetCameras()).begin(); i != (*Environment::environments[Environment::current_environment]->GetCameras()).end(); ++i)
     {
         glViewport((int)((*i)->viewport.x * Screen::width), (int)((*i)->viewport.y * Screen::height), (int)((*i)->viewport.z * Screen::width), (int)((*i)->viewport.w * Screen::height));
+        
+        //Render Skybox
+        Environment::environments[Environment::current_environment]->skybox->Render((*i));
+
         //Cameras
         for (auto j = (*Environment::environments[Environment::current_environment]->GetCameras()).begin(); j != (*Environment::environments[Environment::current_environment]->GetCameras()).end(); ++j)
         {

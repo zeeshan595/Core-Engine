@@ -85,10 +85,9 @@ int main(int argc, char* args[])
 
     std::shared_ptr<Entity> UIobj = Environment::CreateEntity("My GUI");
     std::shared_ptr<UIMesh> myUI = UIobj->AddModule<UIMesh>();
-    myUI->rect = glm::vec4(-Screen::width, Screen::height - 500.0f, 500.0f, 500.0f);
+    myUI->rect = glm::vec4(-Screen::width, Screen::height - 100.0f, 100.0f, 100.0f);
     myUI->rotation = 0.0f;
-    
+
     engine.Start();
-    
     return 0;
 }

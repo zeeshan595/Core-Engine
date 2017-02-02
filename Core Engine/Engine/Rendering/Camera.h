@@ -21,7 +21,7 @@ public:
         fov = 45.0f;
         orthographic_size = glm::vec2(10.0f, 10.0f);
         near_clip_plane = 0.01f;
-        far_clip_plane = 100.0f;
+        far_clip_plane = 1000.0f;
         viewport = glm::vec4(0, 0, 1, 1);
     }
 

@@ -7,9 +7,11 @@ public:
     static std::vector<std::shared_ptr<Environment>> environments;
     static int current_environment;
     std::string name;
+    std::shared_ptr<Skybox> skybox;
 
     Environment(std::string environment_name){
         name = environment_name;
+        skybox = std::shared_ptr<Skybox>(new Skybox());
     }
     static std::shared_ptr<Entity> FindEntity(std::string name){
         int environment_id = Environment::current_environment;

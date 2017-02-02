@@ -52,8 +52,10 @@ const std::string MODEL_PATH    = ASSET_PATH + "models/";
 #include "../Rendering/Camera.h"
 #include "../Rendering/Light.h"
 #include "../Rendering/Texture.h"
+#include "../Rendering/CubeTexture.h"
 #include "../Rendering/Shader.h"
 #include "../Rendering/Surface.h"
+#include "../Rendering/Skybox.h"
 //Environment
 #include "../Core/Environment.h"
 //Modules
