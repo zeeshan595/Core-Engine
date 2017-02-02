@@ -10,7 +10,7 @@ public:
     }
 
     void Update(){
-        glm::vec3 offset = (-myPlayer->transform.Forward() * 5.0f) + (myPlayer->transform.Up() * 3.0f);
+        glm::vec3 offset =  myPlayer->transform.Up() * 0.5f;
         attached_to->transform.position = myPlayer->transform.position + offset;
         attached_to->transform.rotation = glm::vec3(-25.0f, myPlayer->transform.rotation.y, 0.0f);
     }
@@ -22,18 +22,20 @@ public:
     float speed = 10.0f;
     float rotation_speed = 1.0f;
     float gravity = 9.8f;
+    int tester = 0;
     std::shared_ptr<Terrain> myTerrain;
 
     void Start(){
         myTerrain = Environment::FindEntity("My Terrain")->GetModule<Terrain>();
+        Input::LockCursor(true);
     }
 
     void Update(){
         if (Input::keys[SDLK_a]){
-            attached_to->transform.rotation += glm::vec3(0.0f, 1.0f, 0.0f) * rotation_speed * Time::delta_time;
+            attached_to->transform.position += attached_to->transform.Right() * speed * Time::delta_time;
         }
         if (Input::keys[SDLK_d]){
-            attached_to->transform.rotation -= glm::vec3(0.0f, 1.0f, 0.0f) * rotation_speed * Time::delta_time;
+            attached_to->transform.position -= attached_to->transform.Right() * speed * Time::delta_time;
         }
         if (Input::keys[SDLK_w]){
             attached_to->transform.position += attached_to->transform.Forward() * speed * Time::delta_time;
@@ -41,6 +43,12 @@ public:
         if (Input::keys[SDLK_s]){
             attached_to->transform.position -= attached_to->transform.Forward() * speed * Time::delta_time;
         }
+        if (Input::keys_down[SDLK_ESCAPE]){
+            Input::LockCursor(false);
+        }
+        //Rotation
+        attached_to->transform.rotation -= glm::vec3(0.0f, 1.0f, 0.0f) * rotation_speed * Time::delta_time * Input::mouse_delta.x;
+
         //Gravity
         attached_to->transform.position.y -= gravity * Time::delta_time;
         float min_y_pos = myTerrain->TerrainHeight(attached_to->transform.position.x, attached_to->transform.position.z);
@@ -79,8 +87,6 @@ int main(int argc, char* args[])
 
     std::shared_ptr<Entity> myObj2 = Environment::CreateEntity("Player");
     myObj2->transform.position = glm::vec3(20.0f, 5.0f, 20.0f);
-    std::shared_ptr<Mesh> myMesh2 = myObj2->AddModule<Mesh>();
-    myMesh2->LoadOBJFile("monkey3.obj");
     myObj2->AddModule<PlayerMovment>();
 
     std::shared_ptr<Entity> UIobj = Environment::CreateEntity("My GUI");

@@ -9,6 +9,13 @@ public:
     static std::map<int, bool> keys;
     static glm::vec2 mouse_delta;
     static glm::vec2 mouse_position;
+
+    static void LockCursor(bool lock){
+        if (lock)
+            SDL_SetRelativeMouseMode(SDL_TRUE);
+        else
+            SDL_SetRelativeMouseMode(SDL_FALSE);
+    }
 };
 std::map<int, bool> Input::keys_up;
 std::map<int, bool> Input::keys_down;

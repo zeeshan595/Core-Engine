@@ -109,6 +109,8 @@ void Core::Start()
     StartModules();
     while(is_running)
     {
+        Input::keys_down.clear();
+        Input::keys_up.clear();
         SDL_Event event;
         while (SDL_PollEvent(&event))
         {            
@@ -135,19 +137,14 @@ void Core::Input(SDL_Event* e)
     if (e->type == SDL_QUIT || e->type == SDL_WINDOWEVENT_CLOSE)
         is_running = false;
 
-    Input::keys_down.clear();
-    Input::keys_up.clear();
-
-    if (e->type == SDL_KEYDOWN)
+    if (e->type == SDL_KEYDOWN && e->key.repeat == 0)
     {
-        if (!Input::keys[e->key.keysym.sym])
-            Input::keys_down[e->key.keysym.sym] = true;
-
+        Input::keys_down[e->key.keysym.sym] = true;
         Input::keys[e->key.keysym.sym] = true;
     }
-    if (e->type == SDL_KEYUP)
+    if (e->type == SDL_KEYUP && e->key.repeat == 0)
     {
-        Input::keys[e->key.keysym.sym] = true;
+        Input::keys_up[e->key.keysym.sym] = true;
         Input::keys[e->key.keysym.sym] = false;
     }
 }
