@@ -20,7 +20,9 @@
                 "isBuildCommand": false,
                 "suppressTaskName": true,
                 "args": [
-                    "rmdir Build /s /q & mkdir Build"
+                    "rmdir Build /s /q ",
+                    "& mkdir Build",
+                    "& robocopy .SDK/bin Build /E"
                 ]
             },
             {
@@ -28,7 +30,9 @@
                 "isBuildCommand": false,
                 "suppressTaskName": true,
                 "args": [
-                    "robocopy .SDK C:/MinGW /E & mkdir Build & robocopy .SDK/bin Build /E"
+                    "robocopy .SDK C:/MinGW /E ",
+                    "& mkdir Build ",
+                    "& robocopy .SDK/bin Build /E"
                 ]
             }
         ]
