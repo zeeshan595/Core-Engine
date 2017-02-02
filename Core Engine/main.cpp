@@ -10,7 +10,7 @@ public:
     }
 
     void Update(){
-        glm::vec3 offset = (-myPlayer->transform.Forward() * 5.0f) + (myPlayer->transform.Up() * 3.0f);
+        glm::vec3 offset = (-myPlayer->transform.Forward() * 5.0f) + (myPlayer->transform.Up() * 3.0f) +(myPlayer->transform.Right() * -0.5f);
         attached_to->transform.position = myPlayer->transform.position + offset;
         attached_to->transform.rotation = glm::vec3(-25.0f, myPlayer->transform.rotation.y, 0.0f);
     }
