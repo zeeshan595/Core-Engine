@@ -71,6 +71,15 @@ public:
 
 int main(int argc, char* args[])
 {
+    ALCdevice *device;
+
+    device = alcOpenDevice(NULL);
+    if (!device)
+    {
+        
+    }
+
+
     Core engine("Core Engine");
     //Create a new environment
     Environment::CreateEnvironment("default");

@@ -12,6 +12,10 @@
 #include <map>
 #include <stdio.h>
 
+//OPEN AL
+#include <AL/al.h>
+#include <AL/alc.h>
+
 //OPEN GL
 #include <GL/glew.h>
 #include <GL/glu.h>
