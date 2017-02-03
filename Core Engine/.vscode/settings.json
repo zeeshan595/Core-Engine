@@ -53,7 +53,10 @@
         "*h*hxlocnum": "cpp",
         "*inlxlocmes": "cpp",
         "*h*hxiosbase": "cpp",
-        "*h*h*hxiosbase": "cpp"
+        "*h*h*hxiosbase": "cpp",
+        "*hpp*hpp*hpp*h*h*h*h*h*h*h*h*h*h*h*h*h*h*h*h*h*h*h*h*h*h*h*h*h*h*h*h*h*h*h*h*h*h*hchrono": "cpp",
+        "chrono": "cpp",
+        "ratio": "cpp"
     },
     "editor.tabSize": 4
 }

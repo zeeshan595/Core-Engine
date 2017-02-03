@@ -71,18 +71,11 @@ public:
 
 int main(int argc, char* args[])
 {
-    ALCdevice *device;
-
-    device = alcOpenDevice(NULL);
-    if (!device)
-    {
-        
-    }
-
-
     Core engine("Core Engine");
     //Create a new environment
     Environment::CreateEnvironment("default");
+
+    AudioSource();
 
     //Create Default Camera
     std::shared_ptr<Camera> myCamera = Environment::CreateCamera("My Camera 1");

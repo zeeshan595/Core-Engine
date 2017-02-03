@@ -1,6 +1,10 @@
 #ifndef _COMMON
 #define _COMMON
 
+#ifdef __MINGW32__
+#include <windows.h>
+#endif
+
 //GENERAL
 #include <iostream>
 #include <string>
@@ -38,6 +42,7 @@ const std::string SHADER_PATH   = ASSET_PATH + "shaders/";
 const std::string TEXTURE_PATH  = ASSET_PATH + "textures/";
 const std::string FONT_PATH     = ASSET_PATH + "fonts/";
 const std::string MODEL_PATH    = ASSET_PATH + "models/";
+const std::string SOUND_PATH    = ASSET_PATH + "sound/";
 
 //Static
 #include "Screen.h"
@@ -63,10 +68,12 @@ const std::string MODEL_PATH    = ASSET_PATH + "models/";
 #include "../Rendering/UI.h"
 //Environment
 #include "../Core/Environment.h"
+//Physics
+#include "../Physics/Raycast.h"
 //Modules
 #include "../Modules/Mesh.h"
 #include "../Modules/Terrain.h"
-//Physics
-#include "../Physics/Raycast.h"
+#include "../Modules/AudioSource.h"
+
 
 #endif
