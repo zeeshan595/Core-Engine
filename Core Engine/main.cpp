@@ -4,7 +4,7 @@ class CameraMovment : public Module
 {
 public:
     std::shared_ptr<Entity> myPlayer;
-    float rotation_speed = 1.0f;
+    float rotation_speed = 5.0f;
     float camera_rotation = 0.0f;
 
     void Start(){
@@ -16,8 +16,12 @@ public:
         attached_to->transform.position = myPlayer->transform.position + offset;
 
         camera_rotation += Input::mouse_delta.y * Time::delta_time * rotation_speed;
-        camera_rotation = Transform::ToRadians(glm::clamp(Transform::ToDegrees(camera_rotation), -60.0f, 90.0f));
+        camera_rotation = Transform::ToRadians(glm::clamp(Transform::ToDegrees(camera_rotation), -60.0f, 60.0f));
         attached_to->transform.rotation = glm::vec3(camera_rotation, myPlayer->transform.rotation.y, 0.0f);
+
+        //Set listner to camera position
+        Audio::ChangeListenerPosition(attached_to->transform.position);
+        Audio::ChangeListenerOrientation(attached_to->transform.Forward(), attached_to->transform.Up());
     }
 };
 
@@ -25,7 +29,7 @@ class PlayerMovment : public Module
 {
 public:
     float speed = 10.0f;
-    float rotation_speed = 1.0f;
+    float rotation_speed = 5.0f;
     float gravity = 9.8f;
     int tester = 0;
     std::shared_ptr<Terrain> myTerrain;
@@ -75,8 +79,6 @@ int main(int argc, char* args[])
     //Create a new environment
     Environment::CreateEnvironment("default");
 
-    AudioSource();
-
     //Create Default Camera
     std::shared_ptr<Camera> myCamera = Environment::CreateCamera("My Camera 1");
     myCamera->AddModule<CameraMovment>();
@@ -102,6 +104,10 @@ int main(int argc, char* args[])
     myObj2->AddModule<PlayerMovment>();
 
     UI::CreateUI("texture.png", glm::vec4(0.0f, 0, 500.0f, 500.0f));
+
+    std::shared_ptr<AudioSource> myAudio = myLight->AddModule<AudioSource>();
+    myAudio->LoadAudioFile("Sound.wav");
+    myAudio->SetLooping(true);
 
     //Environment::GetSkybox(); //use this to edit skybox
 

@@ -56,7 +56,12 @@
         "*h*h*hxiosbase": "cpp",
         "*hpp*hpp*hpp*h*h*h*h*h*h*h*h*h*h*h*h*h*h*h*h*h*h*h*h*h*h*h*h*h*h*h*h*h*h*h*h*h*h*hchrono": "cpp",
         "chrono": "cpp",
-        "ratio": "cpp"
+        "ratio": "cpp",
+        "*h*hpp*h*hpp*inl*inl*inl*inl*h*h*h*HPP*HPP*HPP*HPP*HPP*HPP*HPP*HPP*HPP*HPP*HPP*HPP*HPP*HPP*HPP*HPParray": "cpp",
+        "array": "cpp",
+        "*h*h*h*cpp*cpp*h*HPP*HPP*HPP*HPP*CPP*CPP*H*Hregex": "cpp",
+        "*h*h*HPPstack": "cpp",
+        "stack": "cpp"
     },
     "editor.tabSize": 4
 }

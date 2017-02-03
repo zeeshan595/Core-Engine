@@ -44,6 +44,7 @@ Core::Core(std::string window_title)
     context = SDL_GL_CreateContext(Screen::window);
 
     InitOpenGL();
+    InitOpenAL();
 }
 
 Core::~Core()
@@ -58,6 +59,11 @@ Core::~Core()
     glDeleteBuffers(1, Skybox::GetVBO());
     glDeleteVertexArrays(1, Skybox::GetVAO());
 
+    //OpenAL
+    alcDestroyContext(al_context);
+    alcCloseDevice(al_device);
+
+    //Close OpenGL
     SDL_GL_DeleteContext(context);
     SDL_DestroyWindow(Screen::window);
     IMG_Quit();
@@ -88,6 +94,25 @@ void Core::InitOpenGL()
         return;
     }
     std::cout << "SUCCESS [glewInit]" << std::endl;
+}
+
+void Core::InitOpenAL()
+{
+    al_device = alcOpenDevice(NULL);
+    if(!al_device)
+    {
+        std::cout << "no sound device" << std::endl;
+        return;
+    }
+    al_context = alcCreateContext(al_device, NULL);
+    alcMakeContextCurrent(al_context);
+    if (!al_context)
+    {
+        std::cout << "no sound context" << std::endl;
+        return;
+    }
+    alDistanceModel(AL_EXPONENT_DISTANCE_CLAMPED);
+    std::cout << "SUCCESS [OpenAL]" << std::endl;
 }
 
 void Core::Quit()

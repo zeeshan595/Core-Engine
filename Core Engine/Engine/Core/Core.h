@@ -12,10 +12,13 @@ public:
     void Quit();
 
 private:
+    ALCdevice* al_device;
+    ALCcontext* al_context;
     SDL_GLContext context;
     bool is_running = true;
     
     void InitOpenGL();
+    void InitOpenAL();
     void StartModules();
     void Update();
     void Render();
