@@ -181,7 +181,7 @@ void AudioSource::GenerateOpenALAudio(unsigned char* data, DWORD data_size, DWOR
     alSourcef(source, AL_PITCH, 1.0f);
     alSourcef(source, AL_GAIN, 1.0f);
     alSourcei(source, AL_LOOPING, AL_FALSE);
-    alSourcef(source, AL_ROLLOFF_FACTOR, roll);
+    alSourcef(source, AL_ROLLOFF_FACTOR, roll_off);
     alSourcef(source, AL_REFERENCE_DISTANCE, 10.0f);
 
     ALfloat source_position[] = { 0.0, 0.0, 0.0 };
