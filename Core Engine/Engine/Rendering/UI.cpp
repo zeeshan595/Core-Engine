@@ -41,7 +41,7 @@ void UI::GenerateBuffers()
         0, 1, 2,
         1, 3, 2
     };
-    UI::shader = std::shared_ptr<Shader>(new Shader("uiVS.glsl","uiFS.glsl"));
+    UI::shader = std::shared_ptr<Shader>(new Shader("default/uiVS.glsl","default/uiFS.glsl"));
     //Create VAO
     glGenVertexArrays(1, &UI::VAO);
     glBindVertexArray(UI::VAO);

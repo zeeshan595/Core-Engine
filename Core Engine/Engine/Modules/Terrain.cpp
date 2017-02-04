@@ -11,7 +11,7 @@ Terrain::Terrain()
     tile_textures.push_back("grassFlowers.png");
     tile_textures.push_back("mud.png");
     tile_textures.push_back("path.png");
-    terrain_shader = std::shared_ptr<Shader>(new Shader("terrainVS.glsl", "terrainFS.glsl"));
+    terrain_shader = std::shared_ptr<Shader>(new Shader("default/terrainVS.glsl", "default/terrainFS.glsl"));
 }
 
 float Terrain::TerrainHeight(float world_x, float world_z)

@@ -88,7 +88,7 @@ int main(int argc, char* args[])
     myLight->type = Light::LIGHT_TYPE::DIRECTIONAL;
     myLight->transform.rotation = (glm::vec3(-90.0f, 0.0f, 25.0f));
     //Light Monkey Mesh
-    std::shared_ptr<Shader> myShader = std::shared_ptr<Shader>(new Shader("ui_3dVS.glsl", "ui_3dFS.glsl"));
+    std::shared_ptr<Shader> myShader = std::shared_ptr<Shader>(new Shader("default/ui_3dVS.glsl", "default/ui_3dFS.glsl"));
     std::shared_ptr<Surface> mySurface = std::shared_ptr<Surface>(new Surface(myShader));
     mySurface->ApplyTexture(std::shared_ptr<Texture>(new Texture("default.png")));
     std::shared_ptr<Mesh> myMesh = myLight->AddModule<Mesh>();

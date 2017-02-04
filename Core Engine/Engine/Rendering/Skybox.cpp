@@ -2,7 +2,7 @@ Skybox::Skybox()
 {
     texture = std::shared_ptr<CubeTexture>(new CubeTexture("left.png", "right.png", "top.png", "bottom.png", "front.png", "back.png"));
     texture2 = std::shared_ptr<CubeTexture>(new CubeTexture("ashcanyon_lf.png", "ashcanyon_rt.png", "ashcanyon_up.png", "ashcanyon_dn.png", "ashcanyon_ft.png", "ashcanyon_bk.png"));
-    shader = std::shared_ptr<Shader>(new Shader("skyboxVS.glsl", "skyboxFS.glsl"));
+    shader = std::shared_ptr<Shader>(new Shader("default/skyboxVS.glsl", "default/skyboxFS.glsl"));
     if (Skybox::VAO == 0)
         GenerateBuffers();
 }
