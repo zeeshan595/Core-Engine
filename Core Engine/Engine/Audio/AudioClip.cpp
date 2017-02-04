@@ -45,7 +45,8 @@ AudioClip::AudioClip(const std::string filename)
 
 AudioClip::~AudioClip()
 {
-
+    delete fp;
+    delete data;
 }
 
 short AudioClip::GetBitsPerSample()
