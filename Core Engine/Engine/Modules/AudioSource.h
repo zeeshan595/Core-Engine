@@ -1,5 +1,5 @@
 #ifndef _AUDIO_SOURCE
-#define _ME_AUDIO_SOURCESH
+#define _AUDIO_SOURCE
 
 class AudioSource : public Module
 {
@@ -11,7 +11,8 @@ public:
 
     void Start();
     void Update();
-    void LoadAudioFile(std::string filename);
+    void SetClip(std::shared_ptr<AudioClip> clip);
+    std::shared_ptr<AudioClip> GetClip();
 
     void Play();
     void Stop();
@@ -24,13 +25,12 @@ public:
     void SetReferenceDistance(float distance);
 
 private:
+    std::shared_ptr<AudioClip> audio_clip;
     ALuint source;
     ALuint buffer;
 
     bool sound3D;
     float roll_off;
-
-    void GenerateOpenALAudio(unsigned char* data, DWORD data_size, DWORD sample_rate, short channels, short bits_per_sample);
 };
 
 #include "AudioSource.cpp"

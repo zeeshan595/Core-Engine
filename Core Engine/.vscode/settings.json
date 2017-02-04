@@ -61,7 +61,11 @@
         "array": "cpp",
         "*h*h*h*cpp*cpp*h*HPP*HPP*HPP*HPP*CPP*CPP*H*Hregex": "cpp",
         "*h*h*HPPstack": "cpp",
-        "stack": "cpp"
+        "stack": "cpp",
+        "*inl*inl*HPP*HPP*HPP*HPP*HPP*HPP*HPP*HPP*HPP*HPP*HPP*HPP*HPP*HPP*HPP*HPP*HPP*HPP*HPP*HPP*HPP*HPP*HPPstack": "cpp",
+        "*HPP*HPP*HPP*HPP*HPP*HPP*HPP*HPP*HPP*INL*H*H*H*H*H*H*H*H*H*H*H*Hfuture": "cpp",
+        "*h*h*inl*h*h*inl*h*h*h*h*HPP*HPP*HPP*HPP*HPP*HPP*INL*H*H*H*H*H*H*H*TCCregex": "cpp",
+        "regex": "cpp"
     },
     "editor.tabSize": 4
 }

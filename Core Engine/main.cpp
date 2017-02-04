@@ -4,7 +4,7 @@ class CameraMovment : public Module
 {
 public:
     std::shared_ptr<Entity> myPlayer;
-    float rotation_speed = 5.0f;
+    float rotation_speed = 3.0f;
     float camera_rotation = 0.0f;
 
     void Start(){
@@ -29,7 +29,7 @@ class PlayerMovment : public Module
 {
 public:
     float speed = 10.0f;
-    float rotation_speed = 5.0f;
+    float rotation_speed = 3.0f;
     float gravity = 9.8f;
     int tester = 0;
     std::shared_ptr<Terrain> myTerrain;
@@ -106,8 +106,9 @@ int main(int argc, char* args[])
     UI::CreateUI("texture.png", glm::vec4(0.0f, 0, 500.0f, 500.0f));
 
     std::shared_ptr<AudioSource> myAudio = myLight->AddModule<AudioSource>();
-    myAudio->LoadAudioFile("Sound.wav");
-    myAudio->SetLooping(true);
+    std::shared_ptr<AudioClip> myClip = std::shared_ptr<AudioClip>(new AudioClip("song.wav"));
+    myAudio->SetClip(myClip);
+    //myAudio->SetLooping(true);
 
     //Environment::GetSkybox(); //use this to edit skybox
 
