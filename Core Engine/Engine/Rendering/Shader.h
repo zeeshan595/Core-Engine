@@ -6,10 +6,12 @@ class Shader
 public:
     enum SHADER_TYPE{
         VERTEX_SHADER = GL_VERTEX_SHADER,
+        GEOMETRY_SHADER = GL_GEOMETRY_SHADER,
         FRAGMENT_SHADER = GL_FRAGMENT_SHADER
     };
 
     Shader(std::string vertex_shader_path, std::string fragment_shader_path);
+    Shader(std::string vertex_shader_path, std::string geometry_shader_path, std::string fragment_shader_path);
     ~Shader();
 
     GLuint GetShaderProgram();

@@ -30,6 +30,44 @@ Shader::Shader(std::string vertex_shader_path, std::string fragment_shader_path)
     glDeleteShader(fragment_shader_program);
 }
 
+Shader::Shader(std::string vertex_shader_path, std::string geometry_shader_path, std::string fragment_shader_path)
+{
+    //Get Shaders
+    GLuint vertex_shader_program = 0;
+    vertex_shader_program = LoadShaderFromFile(SHADER_PATH + vertex_shader_path, VERTEX_SHADER);
+    CheckForCompilerErrors(vertex_shader_program);
+
+    GLuint geometry_shader_program = 0;
+    geometry_shader_program = LoadShaderFromFile(SHADER_PATH + geometry_shader_path, GEOMETRY_SHADER);
+    CheckForCompilerErrors(geometry_shader_program);
+
+    GLuint fragment_shader_program = 0;
+    fragment_shader_program = LoadShaderFromFile(SHADER_PATH + fragment_shader_path, FRAGMENT_SHADER);
+    CheckForCompilerErrors(fragment_shader_program);
+
+    //Attach Shader Programs
+    shader_program = glCreateProgram();
+    glAttachShader(shader_program, vertex_shader_program);
+    glAttachShader(shader_program, geometry_shader_program);
+    glAttachShader(shader_program, fragment_shader_program);
+
+    //Shader Attributes
+    glBindAttribLocation(shader_program, 0, "vertex_position_model");
+    glBindAttribLocation(shader_program, 1, "vertex_color");
+    glBindAttribLocation(shader_program, 2, "vertex_uv");
+    glBindAttribLocation(shader_program, 3, "vertex_normal_model");
+
+    //Link Program
+    glLinkProgram(shader_program);
+    CheckForLinkErrors(shader_program);
+    std::cout << "SUCCESS [Shader Loaded]" << std::endl;
+
+    //Delete shaders
+    glDeleteShader(vertex_shader_program);
+    glDeleteShader(geometry_shader_program);
+    glDeleteShader(fragment_shader_program);
+}
+
 Shader::~Shader()
 {
     glDeleteProgram(shader_program);
