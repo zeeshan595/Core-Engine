@@ -37,6 +37,6 @@ private:
 std::vector<std::shared_ptr<Environment>> Environment::environments;
 int Environment::current_environment;
 
-#include "Environment.cpp"
+#include "Environment.c"
 
 #endif

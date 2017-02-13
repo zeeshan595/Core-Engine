@@ -24,6 +24,6 @@ private:
     bool CheckForLinkErrors(GLuint program);
 };
 
-#include "Shader.cpp"
+#include "Shader.c"
 
 #endif

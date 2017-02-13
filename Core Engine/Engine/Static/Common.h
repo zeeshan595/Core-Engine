@@ -69,6 +69,7 @@ const std::string SOUND_PATH    = ASSET_PATH + "sound/";
 #include "../Rendering/Surface.h"
 #include "../Rendering/Skybox.h"
 #include "../Rendering/UI.h"
+#include "../Rendering/Particle.h"
 //Environment
 #include "../Core/Environment.h"
 //Physics
@@ -77,6 +78,7 @@ const std::string SOUND_PATH    = ASSET_PATH + "sound/";
 #include "../Modules/Mesh.h"
 #include "../Modules/Terrain.h"
 #include "../Modules/AudioSource.h"
+#include "../Modules/ParticleSystem.h"
 
 
 #endif

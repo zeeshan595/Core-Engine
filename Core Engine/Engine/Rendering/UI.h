@@ -51,6 +51,6 @@ std::vector<glm::vec2> UI::vertices;
 std::vector<int> UI::indices;
 std::vector<std::shared_ptr<UI>> UI::uis;
 
-#include "UI.cpp"
+#include "UI.c"
 
 #endif

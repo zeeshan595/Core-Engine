@@ -95,20 +95,27 @@ int main(int argc, char* args[])
     myMesh->LoadOBJFile("monkey3.obj");
     myMesh->ApplySurface(mySurface);
 
+    //Generate Teerain
     std::shared_ptr<Entity> myObj = Environment::CreateEntity("My Terrain");
     std::shared_ptr<Terrain> myTerrain = myObj->AddModule<Terrain>();
+    //Change all terrain variables here
     myTerrain->CreateTerrain();
 
+    //Create Player
     std::shared_ptr<Entity> myObj2 = Environment::CreateEntity("Player");
-    myObj2->transform.position = glm::vec3(20.0f, 5.0f, 20.0f);
+    //myObj2->transform.position = glm::vec3(20.0f, 5.0f, 20.0f);
     myObj2->AddModule<PlayerMovment>();
 
+    //Create GUI
     UI::CreateUI("texture.png", glm::vec4(0.0f, 0, 500.0f, 500.0f));
 
+    //Create 2D Audio. For 3D attach AudioClip to a Entity
     std::shared_ptr<AudioSource> myAudio = myLight->AddModule<AudioSource>();
     std::shared_ptr<AudioClip> myClip = std::shared_ptr<AudioClip>(new AudioClip("song.wav"));
     myAudio->SetClip(myClip);
     //myAudio->SetLooping(true);
+
+    //Create Particle System
 
     //Environment::GetSkybox(); //use this to edit skybox
 

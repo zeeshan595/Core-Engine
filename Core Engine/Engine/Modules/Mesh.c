@@ -5,7 +5,7 @@ Mesh::~Mesh()
     glDeleteVertexArrays(1, &VAO);
 }
 
-void Mesh::Render(std::shared_ptr<Camera> camera, std::vector<std::shared_ptr<Light>>* lights)
+void Mesh::Render(std::shared_ptr<Camera> camera)
 {
     if (surface != nullptr)
     {
@@ -41,7 +41,7 @@ void Mesh::Render(std::shared_ptr<Camera> camera, std::vector<std::shared_ptr<Li
         std::vector<float> point_light_brightness;
         std::vector<glm::vec4> point_light_color;
 
-        for (auto i = (*lights).begin(); i < (*lights).end(); i++)
+        for (auto i = (*Environment::GetLights()).begin(); i < (*Environment::GetLights()).end(); i++)
         {
             if ((*i)->type == Light::LIGHT_TYPE::DIRECTIONAL)
             {
@@ -112,6 +112,7 @@ void Mesh::Render(std::shared_ptr<Camera> camera, std::vector<std::shared_ptr<Li
         GLint fog_color_uniform = glGetUniformLocation(surface->GetShader()->GetShaderProgram(), "fog_color");
         glUniform4fv(fog_color_uniform, 1, &Fog::fog_color[0]);
 
+        Screen::draw_calls++;
         glBindVertexArray(VAO);
         glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
     }

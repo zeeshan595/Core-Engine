@@ -48,6 +48,7 @@ void Skybox::Render(std::shared_ptr<Camera> camera)
     GLint fog_color_uniform = glGetUniformLocation(shader->GetShaderProgram(), "fog_color");
     glUniform4fv(fog_color_uniform, 1, &Fog::fog_color[0]);
 
+    Screen::draw_calls++;
     glBindVertexArray(Skybox::VAO);
     glDrawElements(GL_TRIANGLES, Skybox::indices.size(), GL_UNSIGNED_INT, 0);
     

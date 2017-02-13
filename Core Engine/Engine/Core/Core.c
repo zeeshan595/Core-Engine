@@ -253,6 +253,7 @@ void Core::Update()
 
 void Core::Render()
 {
+    Screen::draw_calls = 0;
     glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -270,7 +271,7 @@ void Core::Render()
             {
                 for (std::shared_ptr<Module> module : (*j)->GetModules())
                 {
-                    module->Render((*i), Environment::GetLights());
+                    module->Render((*i));
                 }
             }
         }
@@ -279,7 +280,7 @@ void Core::Render()
         {
             for (std::shared_ptr<Module> module : (*j)->GetModules())
             {
-                module->Render((*i), Environment::GetLights());
+                module->Render((*i));
             }
         }
         //Entities
@@ -287,7 +288,7 @@ void Core::Render()
         {
             for (std::shared_ptr<Module> module : (*j)->GetModules())
             {
-                module->Render((*i), Environment::GetLights());
+                module->Render((*i));
             }
         }
     }

@@ -26,6 +26,7 @@ void UI::Render()
         glUniform1i(texture_uniform, 0);
     }
 
+    Screen::draw_calls++;
     glDrawElements(GL_TRIANGLES, UI::indices.size(), GL_UNSIGNED_INT, 0);
 }
 

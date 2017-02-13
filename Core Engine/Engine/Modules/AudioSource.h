@@ -33,6 +33,6 @@ private:
     float roll_off;
 };
 
-#include "AudioSource.cpp"
+#include "AudioSource.c"
 
 #endif

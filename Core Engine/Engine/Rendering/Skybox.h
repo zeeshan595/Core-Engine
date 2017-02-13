@@ -50,6 +50,6 @@ GLuint Skybox::EBO;
 std::vector<glm::vec3> Skybox::vertices;
 std::vector<GLuint> Skybox::indices;
 
-#include "Skybox.cpp"
+#include "Skybox.c"
 
 #endif

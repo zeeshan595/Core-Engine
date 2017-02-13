@@ -25,6 +25,6 @@ private:
     void Input(SDL_Event* e);
 };
 
-#include "Core.cpp"
+#include "Core.c"
 
 #endif

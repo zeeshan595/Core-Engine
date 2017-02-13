@@ -28,6 +28,6 @@ private:
     unsigned char* data;
 };
 
-#include "AudioClip.cpp"
+#include "AudioClip.c"
 
 #endif

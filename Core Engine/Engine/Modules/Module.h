@@ -11,7 +11,7 @@ public:
 
     virtual void Start(){}
     virtual void Update(){}
-    virtual void Render(std::shared_ptr<Camera> rendering_camera, std::vector<std::shared_ptr<Light>>* lights){}
+    virtual void Render(std::shared_ptr<Camera> rendering_camera){}
 };
 
 #endif

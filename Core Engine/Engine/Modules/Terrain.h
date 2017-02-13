@@ -38,6 +38,6 @@ private:
     }
 };
 
-#include "Terrain.cpp"
+#include "Terrain.c"
 
 #endif
