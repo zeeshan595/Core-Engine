@@ -9,6 +9,8 @@ public:
     std::shared_ptr<Texture> texture;
 
     UI(std::string texture_name, glm::vec4 ui_rect);
+    ~UI();
+    
     static void PreRender();
     void Render();
 
@@ -38,6 +40,7 @@ private:
     static std::vector<glm::vec2> vertices;
     static std::vector<int> indices;
     static std::vector<std::shared_ptr<UI>> uis;
+    static int ui_amount;
 
     static void GenerateBuffers();
     glm::mat4x4 GetTransformationMatrix();
@@ -50,6 +53,7 @@ GLuint UI::EBO;
 std::vector<glm::vec2> UI::vertices;
 std::vector<int> UI::indices;
 std::vector<std::shared_ptr<UI>> UI::uis;
+int UI::ui_amount = 0;
 
 #include "UI.c"
 

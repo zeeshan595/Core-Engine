@@ -1,11 +1,24 @@
 UI::UI(std::string texture_name, glm::vec4 ui_rect)
 {
+    UI::ui_amount++;
     texture = std::shared_ptr<Texture>(new Texture(texture_name));
     rect = ui_rect;
     rotation = 0;
     if (UI::shader == nullptr)
         GenerateBuffers();
 }
+UI::~UI()
+{
+    UI::ui_amount--;
+    if (UI::ui_amount == 0)
+    {
+        //Delete ui data
+        glDeleteBuffers(1, UI::GetEBO());
+        glDeleteBuffers(1, UI::GetVBO());
+        glDeleteVertexArrays(1, UI::GetVAO());
+    }
+}
+
 void UI::PreRender()
 {
     glUseProgram(UI::shader->GetShaderProgram());

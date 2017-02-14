@@ -5,7 +5,21 @@ Skybox::Skybox()
     shader = std::shared_ptr<Shader>(new Shader("default/skyboxVS.glsl", "default/skyboxFS.glsl"));
     if (Skybox::VAO == 0)
         GenerateBuffers();
+    
+    Skybox::skybox_amount++;
 }
+Skybox::~Skybox()
+{
+    Skybox::skybox_amount--;
+    if (Skybox::skybox_amount == 0)
+    {
+        //Delete skybox data
+        glDeleteBuffers(1, Skybox::GetEBO());
+        glDeleteBuffers(1, Skybox::GetVBO());
+        glDeleteVertexArrays(1, Skybox::GetVAO());
+    }
+}
+
 void Skybox::Render(std::shared_ptr<Camera> camera)
 {
     glUseProgram(shader->GetShaderProgram());

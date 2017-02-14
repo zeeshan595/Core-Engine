@@ -1,5 +1,7 @@
 #include "Engine/Core/Core.h"
 
+std::shared_ptr<Particle> p;
+
 class CameraMovment : public Module
 {
 public:
@@ -88,12 +90,14 @@ int main(int argc, char* args[])
     myLight->type = Light::LIGHT_TYPE::DIRECTIONAL;
     myLight->transform.rotation = (glm::vec3(-90.0f, 0.0f, 25.0f));
     //Light Monkey Mesh
+    /*
     std::shared_ptr<Shader> myShader = std::shared_ptr<Shader>(new Shader("default/ui_3dVS.glsl", "default/ui_3dFS.glsl"));
     std::shared_ptr<Surface> mySurface = std::shared_ptr<Surface>(new Surface(myShader));
     mySurface->ApplyTexture(std::shared_ptr<Texture>(new Texture("default.png")));
     std::shared_ptr<Mesh> myMesh = myLight->AddModule<Mesh>();
     myMesh->LoadOBJFile("monkey3.obj");
     myMesh->ApplySurface(mySurface);
+    */
 
     //Generate Teerain
     std::shared_ptr<Entity> myObj = Environment::CreateEntity("My Terrain");
@@ -113,9 +117,11 @@ int main(int argc, char* args[])
     std::shared_ptr<AudioSource> myAudio = myLight->AddModule<AudioSource>();
     std::shared_ptr<AudioClip> myClip = std::shared_ptr<AudioClip>(new AudioClip("song.wav"));
     myAudio->SetClip(myClip);
+    myAudio->play_on_start = false;
     //myAudio->SetLooping(true);
 
     //Create Particle System
+    myLight->AddModule<ParticleSystem>();
 
     //Environment::GetSkybox(); //use this to edit skybox
 

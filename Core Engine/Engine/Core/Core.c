@@ -49,16 +49,6 @@ Core::Core(std::string window_title)
 
 Core::~Core()
 {
-    //Delete ui data
-    glDeleteBuffers(1, UI::GetEBO());
-    glDeleteBuffers(1, UI::GetVBO());
-    glDeleteVertexArrays(1, UI::GetVAO());
-
-    //Delete skybox data
-    glDeleteBuffers(1, Skybox::GetEBO());
-    glDeleteBuffers(1, Skybox::GetVBO());
-    glDeleteVertexArrays(1, Skybox::GetVAO());
-
     //OpenAL
     alcDestroyContext(al_context);
     alcCloseDevice(al_device);

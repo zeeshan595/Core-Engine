@@ -8,6 +8,8 @@ public:
     float blend_amount = 0.0f;
 
     Skybox();
+    ~Skybox();
+
     void Render(std::shared_ptr<Camera> camera);
 
     void SetTexture(std::shared_ptr<CubeTexture> tex){
@@ -35,6 +37,8 @@ private:
     std::shared_ptr<CubeTexture> texture2;
     std::shared_ptr<Shader> shader;
 
+    static int skybox_amount;
+
     static GLuint VAO;
     static GLuint VBO;
     static GLuint EBO;
@@ -49,6 +53,7 @@ GLuint Skybox::VBO;
 GLuint Skybox::EBO;
 std::vector<glm::vec3> Skybox::vertices;
 std::vector<GLuint> Skybox::indices;
+int Skybox::skybox_amount;
 
 #include "Skybox.c"
 
