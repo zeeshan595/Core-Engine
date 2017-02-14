@@ -23,17 +23,23 @@ public:
     float gravity;
     float death_time;
     float spawn_period;
-    std::shared_ptr<Surface> surface;
 
     ParticleSystem();
 
     void Render(std::shared_ptr<Camera> camera);
     void Update();
+    void SetSurface(std::shared_ptr<Surface> s){
+        surface = s;
+    }
+    std::shared_ptr<Surface> GetSurface(){
+        return surface;
+    }
 
 private:
     float current_time;
     std::vector<Particle> particles;
     std::vector<glm::mat4x4> particles_matrices;
+    std::shared_ptr<Surface> surface;
 
     void CreateParticle(int i);
     float RandomFloat(float a, float b);
