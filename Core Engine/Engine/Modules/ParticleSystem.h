@@ -23,6 +23,7 @@ public:
     float gravity;
     float death_time;
     float spawn_period;
+    bool use_blending;
 
     ParticleSystem();
 

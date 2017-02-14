@@ -66,12 +66,15 @@ void Core::InitOpenGL()
 	glShadeModel(GL_SMOOTH);
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 	glClearDepth(1.0f);
+
 	glEnable(GL_DEPTH_TEST);
     glEnable(GL_LIGHTING);
-	glDepthFunc(GL_LEQUAL);
     glEnable(GL_TEXTURE_CUBE_MAP);
 	glEnable(GL_CULL_FACE);
-	glCullFace(GL_BACK);
+	glEnable(GL_BLEND);
+
+    glDepthFunc(GL_LEQUAL);
+    glCullFace(GL_BACK);
 	glFrontFace(GL_CCW);
 	//Turn on the best perspective correction
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);

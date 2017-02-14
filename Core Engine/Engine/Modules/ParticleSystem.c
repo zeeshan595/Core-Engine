@@ -15,6 +15,10 @@ void ParticleSystem::Render(std::shared_ptr<Camera> camera)
         glBindVertexArray(VAO);
         std::vector<std::shared_ptr<Texture>>* textures = surface->GetTextures();
         glBindTexture(GL_TEXTURE_2D, (*textures)[0]->GetTextureMap());
+        if (use_blending)
+        {
+            glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+        }
         
         //Get Particle Matrices
         particles_matrices.resize(particles.size());
@@ -51,6 +55,7 @@ void ParticleSystem::Render(std::shared_ptr<Camera> camera)
 
         Screen::draw_calls++;
         glDrawElementsInstanced(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0, particles.size());
+        glBlendFunc(GL_SRC_ALPHA, GL_ZERO);
     }
     else
     {
@@ -133,6 +138,7 @@ ParticleSystem::ParticleSystem()
     gravity = 9.8f;
     death_time = 2.0f;
     spawn_period = 0.3f;
+    use_blending = true;
     surface = std::shared_ptr<Surface>(new Surface(std::shared_ptr<Shader>(new Shader("default/particleVS.glsl", "default/particleFS.glsl"))));
     surface->ApplyTexture(std::shared_ptr<Texture>(new Texture("texture.png")));
 }
