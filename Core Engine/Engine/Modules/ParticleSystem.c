@@ -61,23 +61,20 @@ void ParticleSystem::Render(std::shared_ptr<Camera> camera)
 void ParticleSystem::Update()
 {
     if (particles.size() != max_particles)
+    {
+        if (max_particles > 10000)
+        {
+            std::cout << "WARNING: 1 Particle System can only have 10,000 particles." << std::endl;
+            return;
+        }
         particles.resize(max_particles);
-
-    if (max_particles)
+    }
     
     for (int i = 0; i < particles.size(); i++)
     {
         if (particles[i].transform.scale.x == 0 && current_time > spawn_period)
         {
-            float randomized_x = RandomFloat(velocity_x.x, velocity_x.y);
-            float randomized_y = RandomFloat(velocity_y.x, velocity_y.y);
-            float randomized_z = RandomFloat(velocity_z.x, velocity_z.y);
-            particles[i].transform.position = glm::vec3(0, 0, 0);
-            particles[i].transform.rotation = glm::vec3(0, 0, 0);
-            particles[i].velocity = glm::vec3(randomized_x, randomized_y, randomized_z);
-            particles[i].transform.scale = glm::vec3(size, size, size);
-            particles[i].current_time = 0;
-            current_time = 0;
+            CreateParticle(i);
         }
 
         particles[i].current_time += Time::delta_time;
@@ -88,6 +85,28 @@ void ParticleSystem::Update()
     }
 
     current_time += Time::delta_time;
+}
+
+void ParticleSystem::CreateParticle(int i)
+{
+    //Position
+    float rand_position_x = RandomFloat(position_x.x, position_x.y);
+    float rand_position_y = RandomFloat(position_y.x, position_y.y);
+    float rand_position_z = RandomFloat(position_z.x, position_z.y);
+
+    float rand_rotation = RandomFloat(rotation.x, rotation.y);
+    float rand_scale = RandomFloat(size.x, size.y);
+
+    float rand_velocity_x = RandomFloat(velocity_x.x, velocity_x.y);
+    float rand_velocity_y = RandomFloat(velocity_y.x, velocity_y.y);
+    float rand_velocity_z = RandomFloat(velocity_z.x, velocity_z.y);
+
+    particles[i].transform.position = glm::vec3(rand_position_x, rand_position_y, rand_position_z);
+    particles[i].transform.rotation = glm::vec3(0, 0, rand_rotation);
+    particles[i].transform.scale = glm::vec3(rand_scale, rand_scale, rand_scale);
+    particles[i].velocity = glm::vec3(rand_velocity_x, rand_velocity_y, rand_velocity_z);
+    particles[i].current_time = 0;
+    current_time = 0;
 }
 
 
@@ -101,13 +120,18 @@ float ParticleSystem::RandomFloat(float a, float b)
 
 ParticleSystem::ParticleSystem()
 {
-    velocity_x = glm::vec2(-3, 3);
-    velocity_y = glm::vec2(5, 10);
-    velocity_z = glm::vec2(-3, 3);
-    max_particles = 5;
+    position_x = glm::vec2(-1.5, 1.5);
+    position_y = glm::vec2(0, 0);
+    position_z = glm::vec2(-1.5, 1.5);
+    rotation = glm::vec2(0, 0);
+    size = glm::vec2(0.3f, 0.5);
+    velocity_x = glm::vec2(-0.5, 0.5);
+    velocity_y = glm::vec2(7, 10);
+    velocity_z = glm::vec2(-0.5, 0.5);
+
+    max_particles = 25;
     gravity = 9.8f;
     death_time = 2.0f;
-    size = 0.3f;
     spawn_period = 0.3f;
     surface = std::shared_ptr<Surface>(new Surface(std::shared_ptr<Shader>(new Shader("default/particleVS.glsl", "default/particleFS.glsl"))));
     surface->ApplyTexture(std::shared_ptr<Texture>(new Texture("texture.png")));

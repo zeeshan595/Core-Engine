@@ -5,13 +5,24 @@ class ParticleSystem : public Module
 {
 public:
     float max_particles;
+    
+    //Position
+    glm::vec2 position_x;
+    glm::vec2 position_y;
+    glm::vec2 position_z;
+    //Rotation
+    glm::vec2 rotation;    
+    //Scale
+    glm::vec2 size;
+
+    //velocity
     glm::vec2 velocity_x;
     glm::vec2 velocity_y;
     glm::vec2 velocity_z;
+
     float gravity;
-    float death_time = 2.0f;
-    float size = 0.3f;
-    float spawn_period = 0.3f;
+    float death_time;
+    float spawn_period;
     std::shared_ptr<Surface> surface;
 
     ParticleSystem();
@@ -24,6 +35,7 @@ private:
     std::vector<Particle> particles;
     std::vector<glm::mat4x4> particles_matrices;
 
+    void CreateParticle(int i);
     float RandomFloat(float a, float b);
 };
 

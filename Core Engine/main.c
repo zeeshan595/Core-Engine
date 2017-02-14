@@ -122,6 +122,7 @@ int main(int argc, char* args[])
 
     //Create Particle System
     myLight->AddModule<ParticleSystem>();
+    myLight->transform.position = glm::vec3(0, 2, 0);
 
     //Environment::GetSkybox(); //use this to edit skybox
 
