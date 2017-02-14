@@ -35,6 +35,7 @@ void Particle::GenerateBuffers()
 Particle::Particle()
 {
     particles_amount++;
+    current_time = 10000;
     GenerateBuffers();
 }
 

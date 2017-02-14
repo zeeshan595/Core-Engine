@@ -46,10 +46,46 @@ void ParticleSystem::Render(std::shared_ptr<Camera> camera)
     }
 }
 
+void ParticleSystem::Update()
+{
+    if (particles.size() != particle_amount)
+        particles.resize(particle_amount);
+    
+    for (int i = 0; i < particle_amount; i++)
+    {
+        particles[i].current_time += Time::delta_time;
+        particles[i].velocity.y -= gravity * Time::delta_time;
+        if (particles[i].current_time > death_time)
+        {
+            particles[i].transform.position = glm::vec3(0, 0, 0);
+            particles[i].transform.rotation = glm::vec3(0, 0, 0);
+            particles[i].transform.scale    = glm::vec3(size, size, size);
+            particles[i].current_time = 0;
+            float randomized_x = RandomFloat(velocity_x.x, velocity_x.y);
+            float randomized_y = RandomFloat(velocity_y.x, velocity_y.y);
+            float randomized_z = RandomFloat(velocity_z.x, velocity_z.y);
+            particles[i].velocity = glm::vec3(randomized_x, randomized_y, randomized_z);
+        }
+        particles[i].transform.position += particles[i].velocity * Time::delta_time;
+    }
+}
+
+
+float ParticleSystem::RandomFloat(float a, float b)
+{
+    float random = ((float) rand()) / (float) RAND_MAX;
+    float diff = b - a;
+    float r = random * diff;
+    return a + r;
+}
+
 ParticleSystem::ParticleSystem()
 {
+    particle_amount = 5;
+    velocity_x = glm::vec2(-3, 3);
+    velocity_y = glm::vec2(5, 10);
+    velocity_z = glm::vec2(-3, 3);
+    gravity = 9.8f;
     surface = std::shared_ptr<Surface>(new Surface(std::shared_ptr<Shader>(new Shader("default/particleVS.glsl", "default/particleFS.glsl"))));
     surface->ApplyTexture(std::shared_ptr<Texture>(new Texture("texture.png")));
-    particles.resize(1);
-    //particles[1].transform.position = glm::vec3(2.0f, 0.0f, 0.0f);
 }
