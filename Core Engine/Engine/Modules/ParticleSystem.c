@@ -18,6 +18,7 @@ void ParticleSystem::Render(std::shared_ptr<Camera> camera)
         if (use_blending)
         {
             glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+            glDisable(GL_DEPTH_TEST);
         }
         
         //Get Particle Matrices
@@ -56,6 +57,7 @@ void ParticleSystem::Render(std::shared_ptr<Camera> camera)
         Screen::draw_calls++;
         glDrawElementsInstanced(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0, particles.size());
         glBlendFunc(GL_SRC_ALPHA, GL_ZERO);
+        glEnable(GL_DEPTH_TEST);
     }
     else
     {
