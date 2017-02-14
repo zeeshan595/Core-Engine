@@ -10,7 +10,8 @@ uniform mat4 world_matrices[1000];
 
 void main()
 {
-    mat4 mvp_matrix =  world_matrices[0];
+    mat4 world_matrix = world_matrices[gl_InstanceID];
+    mat4 mvp_matrix = view_projection_matrix * world_matrix;
     vec4 v = vec4(vertex_position_model, 1.0f);
-    gl_Position = view_projection_matrix *  world_matrices[gl_InstanceID] * v;
+    gl_Position = mvp_matrix * v;
 }

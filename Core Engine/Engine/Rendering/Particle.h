@@ -9,7 +9,6 @@ public:
     glm::vec3 velocity;
     float current_time;
 
-
     Particle();
     ~Particle();
 

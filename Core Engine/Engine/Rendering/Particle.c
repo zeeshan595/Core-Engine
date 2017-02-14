@@ -36,6 +36,12 @@ Particle::Particle()
 {
     particles_amount++;
     current_time = 10000;
+
+    transform.position = glm::vec3(0, 0, 0);
+    transform.rotation = glm::vec3(0, 0, 0);
+    transform.scale    = glm::vec3(0, 0, 0);
+    current_time       = 0;
+
     GenerateBuffers();
 }
 
