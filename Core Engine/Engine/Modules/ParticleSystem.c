@@ -10,11 +10,6 @@ void ParticleSystem::Render(std::shared_ptr<Camera> camera)
     {
         //Setup
         glUseProgram(surface->GetShader()->GetShaderProgram());
-        GLuint VAO = Particle::GetVAO();
-        std::vector<GLuint> indices = (*Particle::GetIndices());
-        glBindVertexArray(VAO);
-        std::vector<std::shared_ptr<Texture>>* textures = surface->GetTextures();
-        glBindTexture(GL_TEXTURE_2D, (*textures)[0]->GetTextureMap());
         if (use_blending)
         {
             glBlendFunc(GL_SRC_ALPHA, GL_ONE);
@@ -51,11 +46,13 @@ void ParticleSystem::Render(std::shared_ptr<Camera> camera)
         //Texture
         std::string texture_name = "texture_map0";
         glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, (*surface->GetTextures())[0]->GetTextureMap());
         GLint texture_uniform = glGetUniformLocation(surface->GetShader()->GetShaderProgram(), texture_name.c_str());
         glUniform1i(texture_uniform, 0);
 
         Screen::draw_calls++;
-        glDrawElementsInstanced(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0, particles.size());
+        glBindVertexArray(Particle::GetVAO());
+        glDrawElementsInstanced(GL_TRIANGLES, (*Particle::GetIndices()).size(), GL_UNSIGNED_INT, 0, particles.size());
         glBlendFunc(GL_SRC_ALPHA, GL_ZERO);
         glEnable(GL_DEPTH_TEST);
     }

@@ -125,7 +125,7 @@ void Core::Start()
         is_running = true;
 
     //Before starting reorder camera using draw order
-    //std::sort((*Environment::GetCameras()).begin(), (*Environment::GetCameras()).end());
+    std::sort((*Environment::GetCameras()).begin(), (*Environment::GetCameras()).end());
 
     Environment::ChangeEnvironment(0);
     StartModules();
