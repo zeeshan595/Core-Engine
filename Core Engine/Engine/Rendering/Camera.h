@@ -15,6 +15,7 @@ public:
     float near_clip_plane;
     float far_clip_plane;
     glm::vec4 viewport;
+    int draw_order;
 
     Camera(std::string name) : Entity(name){
         view_mode = PERSPECTIVE;
@@ -23,6 +24,7 @@ public:
         near_clip_plane = 0.01f;
         far_clip_plane = 1000.0f;
         viewport = glm::vec4(0, 0, 1, 1);
+        draw_order = 0;
     }
 
     glm::mat4x4 GetProjectionMatrix()
@@ -60,6 +62,12 @@ public:
 		}
 		return nullptr;
 	}
+    //For sorting cameras using draw order
+    bool operator<(const Camera other)
+    {
+        return draw_order < other.draw_order;
+    }
+
 private:
     std::vector<std::shared_ptr<Module>> modules;
 };

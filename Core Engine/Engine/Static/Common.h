@@ -44,6 +44,11 @@ const std::string FONT_PATH     = ASSET_PATH + "fonts/";
 const std::string MODEL_PATH    = ASSET_PATH + "models/";
 const std::string SOUND_PATH    = ASSET_PATH + "sound/";
 
+//Optimization variables
+GLuint CURRENT_SHADER;
+GLuint CURRENT_VBO;
+GLuint CURRENT_TEXTURE;
+
 //Static
 #include "Screen.h"
 #include "Time.h"
@@ -79,6 +84,5 @@ const std::string SOUND_PATH    = ASSET_PATH + "sound/";
 #include "../Modules/Terrain.h"
 #include "../Modules/AudioSource.h"
 #include "../Modules/ParticleSystem.h"
-
 
 #endif

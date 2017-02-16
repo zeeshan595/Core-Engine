@@ -79,11 +79,15 @@ int main(int argc, char* args[])
 {
     Core engine("Core Engine");
     //Create a new environment
-    Environment::CreateEnvironment("default");
+    Environment::CreateEnvironment("default");    
 
     //Create Default Camera
     std::shared_ptr<Camera> myCamera = Environment::CreateCamera("My Camera 1");
     myCamera->AddModule<CameraMovment>();
+
+    std::shared_ptr<Camera> myCamera2 = Environment::CreateCamera("My Camera 2");
+    myCamera2->draw_order = 1;
+    myCamera2->viewport = glm::vec4(0, 0, 0.3f, 0.3f);
 
     //Create Default Light
     std::shared_ptr<Light> myLight = Environment::CreateLight("My Light");

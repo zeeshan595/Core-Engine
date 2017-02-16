@@ -72,6 +72,7 @@ void Core::InitOpenGL()
     glEnable(GL_TEXTURE_CUBE_MAP);
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_BLEND);
+    glEnable(GL_SCISSOR_TEST);
 
     glDepthFunc(GL_LEQUAL);
     glCullFace(GL_BACK);
@@ -122,6 +123,9 @@ void Core::Start()
     }
     else
         is_running = true;
+
+    //Before starting reorder camera using draw order
+    //std::sort((*Environment::GetCameras()).begin(), (*Environment::GetCameras()).end());
 
     Environment::ChangeEnvironment(0);
     StartModules();
@@ -248,12 +252,13 @@ void Core::Render()
 {
     Screen::draw_calls = 0;
     glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     for (auto i = (*Environment::GetCameras()).begin(); i != (*Environment::GetCameras()).end(); ++i)
     {
         glViewport((int)((*i)->viewport.x * Screen::width), (int)((*i)->viewport.y * Screen::height), (int)((*i)->viewport.z * Screen::width), (int)((*i)->viewport.w * Screen::height));
-        
+        glScissor((int)((*i)->viewport.x * Screen::width), (int)((*i)->viewport.y * Screen::height), (int)((*i)->viewport.z * Screen::width), (int)((*i)->viewport.w * Screen::height));
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
         //Render Skybox
         Environment::GetSkybox()->Render((*i));
 

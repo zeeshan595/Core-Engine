@@ -43,6 +43,6 @@ private:
     OBJIndex ParseOBJIndex(const std::string& token, bool* hasUVs, bool* hasNormals);
 };
 
-#include "OBJLoader.cpp"
+#include "OBJLoader.c"
 
 #endif
