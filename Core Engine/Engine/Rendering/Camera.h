@@ -63,9 +63,10 @@ public:
 		return nullptr;
 	}
     //For sorting cameras using draw order
-    bool operator<(const Camera other)
+    static bool CameraOrder(const std::shared_ptr<Camera> a, const std::shared_ptr<Camera> b)
     {
-        return draw_order < other.draw_order;
+        std::cout << "test" << std::endl;
+        return a->draw_order < b->draw_order;
     }
 
 private:

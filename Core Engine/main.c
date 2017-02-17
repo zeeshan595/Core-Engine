@@ -82,11 +82,12 @@ int main(int argc, char* args[])
     Environment::CreateEnvironment("default");    
 
     std::shared_ptr<Camera> myCamera2 = Environment::CreateCamera("My Camera 2");
-    myCamera2->draw_order = -1;
+    myCamera2->draw_order = 5;
     myCamera2->viewport = glm::vec4(0, 0, 0.3f, 0.3f);
 
     //Create Default Camera
     std::shared_ptr<Camera> myCamera = Environment::CreateCamera("My Camera 1");
+    myCamera->draw_order = 0;
     myCamera->AddModule<CameraMovment>();
 
     //Create Default Light

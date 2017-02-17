@@ -124,9 +124,6 @@ void Core::Start()
     else
         is_running = true;
 
-    //Before starting reorder camera using draw order
-    std::sort((*Environment::GetCameras()).begin(), (*Environment::GetCameras()).end());
-
     Environment::ChangeEnvironment(0);
     StartModules();
     while(is_running)
@@ -189,6 +186,9 @@ void Core::Input(SDL_Event* e)
 
 void Core::StartModules()
 {
+    //Before starting reorder camera using draw order
+    std::sort((*Environment::GetCameras()).begin(), (*Environment::GetCameras()).end(), Camera::CameraOrder);
+
     //Cameras
     for (auto i = (*Environment::GetCameras()).begin(); i != (*Environment::GetCameras()).end(); ++i)
     {
@@ -252,6 +252,8 @@ void Core::Render()
 {
     Screen::draw_calls = 0;
     glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+    glScissor(0, 0, Screen::width, Screen::height);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     for (auto i = (*Environment::GetCameras()).begin(); i != (*Environment::GetCameras()).end(); ++i)
     {
