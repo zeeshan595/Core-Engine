@@ -65,7 +65,6 @@ public:
     //For sorting cameras using draw order
     static bool CameraOrder(const std::shared_ptr<Camera> a, const std::shared_ptr<Camera> b)
     {
-        std::cout << "test" << std::endl;
         return a->draw_order < b->draw_order;
     }
 

@@ -79,5 +79,6 @@ const std::string SOUND_PATH    = ASSET_PATH + "sound/";
 #include "../Modules/Terrain.h"
 #include "../Modules/AudioSource.h"
 #include "../Modules/ParticleSystem.h"
+#include "../Modules/Gizmo.h"
 
 #endif

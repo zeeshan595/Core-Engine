@@ -264,6 +264,14 @@ void Core::Render()
         //Render Skybox
         Environment::GetSkybox()->Render((*i));
 
+        //Entities
+        for (auto j = (*Environment::GetEntities()).begin(); j != (*Environment::GetEntities()).end(); ++j)
+        {
+            for (std::shared_ptr<Module> module : (*j)->GetModules())
+            {
+                module->Render((*i));
+            }
+        }
         //Cameras
         for (auto j = (*Environment::GetCameras()).begin(); j != (*Environment::GetCameras()).end(); ++j)
         {
@@ -277,14 +285,6 @@ void Core::Render()
         }
         //Lights
         for (auto j = (*Environment::GetLights()).begin(); j != (*Environment::GetLights()).end(); ++j)
-        {
-            for (std::shared_ptr<Module> module : (*j)->GetModules())
-            {
-                module->Render((*i));
-            }
-        }
-        //Entities
-        for (auto j = (*Environment::GetEntities()).begin(); j != (*Environment::GetEntities()).end(); ++j)
         {
             for (std::shared_ptr<Module> module : (*j)->GetModules())
             {

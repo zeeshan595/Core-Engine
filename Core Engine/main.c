@@ -84,25 +84,22 @@ int main(int argc, char* args[])
     std::shared_ptr<Camera> myCamera2 = Environment::CreateCamera("My Camera 2");
     myCamera2->draw_order = 5;
     myCamera2->viewport = glm::vec4(0, 0, 0.3f, 0.3f);
+    std::shared_ptr<Gizmo> gizmo = myCamera2->AddModule<Gizmo>();
+    gizmo->ApplyTexture(std::shared_ptr<Texture>(new Texture("camera.png")));
 
     //Create Default Camera
     std::shared_ptr<Camera> myCamera = Environment::CreateCamera("My Camera 1");
     myCamera->draw_order = 0;
     myCamera->AddModule<CameraMovment>();
+    std::shared_ptr<Gizmo> gizmo2 = myCamera->AddModule<Gizmo>();
+    gizmo2->ApplyTexture(std::shared_ptr<Texture>(new Texture("camera.png")));
 
     //Create Default Light
     std::shared_ptr<Light> myLight = Environment::CreateLight("My Light");
     myLight->type = Light::LIGHT_TYPE::DIRECTIONAL;
     myLight->transform.rotation = (glm::vec3(-90.0f, 0.0f, 25.0f));
-    //Light Monkey Mesh
-    /*
-    std::shared_ptr<Shader> myShader = std::shared_ptr<Shader>(new Shader("default/ui_3dVS.glsl", "default/ui_3dFS.glsl"));
-    std::shared_ptr<Surface> mySurface = std::shared_ptr<Surface>(new Surface(myShader));
-    mySurface->ApplyTexture(std::shared_ptr<Texture>(new Texture("default.png")));
-    std::shared_ptr<Mesh> myMesh = myLight->AddModule<Mesh>();
-    myMesh->LoadOBJFile("monkey3.obj");
-    myMesh->ApplySurface(mySurface);
-    */
+    std::shared_ptr<Gizmo> gizmo3 = myLight->AddModule<Gizmo>();
+    gizmo3->ApplyTexture(std::shared_ptr<Texture>(new Texture("light.png")));
 
     //Generate Teerain
     std::shared_ptr<Entity> myObj = Environment::CreateEntity("My Terrain");
@@ -126,8 +123,11 @@ int main(int argc, char* args[])
     //myAudio->SetLooping(true);
 
     //Create Particle System
-    myLight->AddModule<ParticleSystem>();
-    myLight->transform.position = glm::vec3(0, 2, 0);
+    std::shared_ptr<ParticleSystem> ps = myLight->AddModule<ParticleSystem>();
+    std::shared_ptr<Surface> surface4 = std::shared_ptr<Surface>(new Surface(std::shared_ptr<Shader>(new Shader("default/particleVS.glsl", "default/particleFS.glsl"))));
+    surface4->ApplyTexture(std::shared_ptr<Texture>(new Texture("texture.png")));
+    ps->ApplySurface(surface4);
+    myLight->transform.position = glm::vec3(0, 3, 0);
 
     //Environment::GetSkybox(); //use this to edit skybox
 

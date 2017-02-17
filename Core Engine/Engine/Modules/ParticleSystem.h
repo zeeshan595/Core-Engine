@@ -29,7 +29,7 @@ public:
 
     void Render(std::shared_ptr<Camera> camera);
     void Update();
-    void SetSurface(std::shared_ptr<Surface> s){
+    void ApplySurface(std::shared_ptr<Surface> s){
         surface = s;
     }
     std::shared_ptr<Surface> GetSurface(){

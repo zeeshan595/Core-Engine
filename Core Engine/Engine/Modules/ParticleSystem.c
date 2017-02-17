@@ -13,26 +13,29 @@ void ParticleSystem::Render(std::shared_ptr<Camera> camera)
         if (use_blending)
         {
             glBlendFunc(GL_SRC_ALPHA, GL_ONE);
-            glDisable(GL_DEPTH_TEST);
         }
         
         //Get Particle Matrices
         particles_matrices.resize(particles.size());
+        glm::mat4x4 view_matrix = camera->GetViewMatrix();
         for (int i = 0; i < particles_matrices.size(); i++)
         {
             glm::mat4x4 parent_matrix = glm::translate(glm::mat4(1.0), attached_to->transform.position);
             particles_matrices[i] = parent_matrix * particles[i].transform.GetWorldMatrix();
-        }
-        glm::mat4x4 view_matrix = camera->GetViewMatrix();
-        for (int i = 0; i < 3; i++)
-        {
-            for (int j = 0; j < 3; j++)
-            {
-                if (i == j)
-                    view_matrix[i][j] = 1;
-                else
-                    view_matrix[i][j] = 0;
-            }
+            
+            //Remove rotation by transposing the rotation part of view matrix
+            //and storing it intomodel matrix
+            particles_matrices[i][0][0] = view_matrix[0][0];
+            particles_matrices[i][0][1] = view_matrix[1][0];
+            particles_matrices[i][0][2] = view_matrix[2][0];
+
+            particles_matrices[i][1][0] = view_matrix[0][1];
+            particles_matrices[i][1][1] = view_matrix[1][1];
+            particles_matrices[i][1][2] = view_matrix[2][1];
+
+            particles_matrices[i][2][0] = view_matrix[0][2];
+            particles_matrices[i][2][1] = view_matrix[1][2];
+            particles_matrices[i][2][2] = view_matrix[2][2];
         }
 
         //Camera Projection Matrix
@@ -54,7 +57,6 @@ void ParticleSystem::Render(std::shared_ptr<Camera> camera)
         glBindVertexArray(Particle::GetVAO());
         glDrawElementsInstanced(GL_TRIANGLES, (*Particle::GetIndices()).size(), GL_UNSIGNED_INT, 0, particles.size());
         glBlendFunc(GL_SRC_ALPHA, GL_ZERO);
-        glEnable(GL_DEPTH_TEST);
     }
     else
     {
@@ -137,7 +139,5 @@ ParticleSystem::ParticleSystem()
     gravity = 9.8f;
     death_time = 2.0f;
     spawn_period = 0.3f;
-    use_blending = true;
-    surface = std::shared_ptr<Surface>(new Surface(std::shared_ptr<Shader>(new Shader("default/particleVS.glsl", "default/particleFS.glsl"))));
-    surface->ApplyTexture(std::shared_ptr<Texture>(new Texture("texture.png")));
+    use_blending = false;
 }

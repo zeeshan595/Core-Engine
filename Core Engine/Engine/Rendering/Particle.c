@@ -42,7 +42,8 @@ Particle::Particle()
     transform.scale    = glm::vec3(0, 0, 0);
     current_time       = 0;
 
-    GenerateBuffers();
+    if (particles_amount == 1)
+        GenerateBuffers();
 }
 
 Particle::~Particle()
