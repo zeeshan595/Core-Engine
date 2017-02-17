@@ -8,14 +8,14 @@ public:
     float rotation;
     std::shared_ptr<Texture> texture;
 
-    UI(std::string texture_name, glm::vec4 ui_rect);
+    UI(std::shared_ptr<Texture> tex, glm::vec4 ui_rect);
     ~UI();
     
     static void PreRender();
     void Render();
 
-    static std::shared_ptr<UI> CreateUI(std::string texture_name, glm::vec4 ui_rect){
-        std::shared_ptr<UI> myUI = std::shared_ptr<UI>(new UI(texture_name, ui_rect));
+    static std::shared_ptr<UI> CreateUI(std::shared_ptr<Texture> tex, glm::vec4 ui_rect){
+        std::shared_ptr<UI> myUI = std::shared_ptr<UI>(new UI(tex, ui_rect));
         UI::uis.push_back(myUI);
         return myUI;
     }

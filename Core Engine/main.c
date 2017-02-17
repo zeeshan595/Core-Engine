@@ -113,7 +113,7 @@ int main(int argc, char* args[])
     myObj2->AddModule<PlayerMovment>();
 
     //Create GUI
-    UI::CreateUI("texture.png", glm::vec4(0.0f, 0, 100.0f, 100.0f));
+    UI::CreateUI(std::shared_ptr<Texture>(new Texture("texture.png")), glm::vec4(0.0f, 0, 100.0f, 100.0f));
 
     //Create 2D Audio. For 3D attach AudioClip to a Entity
     std::shared_ptr<AudioSource> myAudio = myLight->AddModule<AudioSource>();

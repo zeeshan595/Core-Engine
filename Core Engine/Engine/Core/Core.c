@@ -294,6 +294,7 @@ void Core::Render()
     }
     //Render UI
     glViewport(0, 0, Screen::width, Screen::height);
+    glScissor(0, 0, Screen::width, Screen::height);
     std::vector<std::shared_ptr<UI>>* uis = UI::GetUIs();
     UI::PreRender();
     for (auto i = (*uis).begin(); i < (*uis).end(); i++)

@@ -1,7 +1,7 @@
-UI::UI(std::string texture_name, glm::vec4 ui_rect)
+UI::UI(std::shared_ptr<Texture> tex, glm::vec4 ui_rect)
 {
     UI::ui_amount++;
-    texture = std::shared_ptr<Texture>(new Texture(texture_name));
+    texture = tex;
     rect = ui_rect;
     rotation = 0;
     if (UI::shader == nullptr)
