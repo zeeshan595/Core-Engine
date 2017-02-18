@@ -33,12 +33,12 @@ public:
     float speed = 10.0f;
     float rotation_speed = 3.0f;
     float gravity = 9.8f;
-    int tester = 0;
     std::shared_ptr<Terrain> myTerrain;
 
     void Start(){
         myTerrain = Environment::FindEntity("My Terrain")->GetModule<Terrain>();
         Input::LockCursor(true);
+        Screen::ChangeResolution(1920, 1080, false);
     }
 
     void Update(){
@@ -69,7 +69,7 @@ public:
         if (attached_to->transform.position.y < min_y_pos){
             attached_to->transform.position.y = min_y_pos;
         }
-
+        
         glm::vec3 ray = Raycast::GetRay(glm::vec2(Screen::width / 2, Screen::height / 2));
     }
 };
