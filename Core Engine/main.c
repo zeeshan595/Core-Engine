@@ -38,7 +38,6 @@ public:
     void Start(){
         myTerrain = Environment::FindEntity("My Terrain")->GetModule<Terrain>();
         Input::LockCursor(true);
-        Screen::ChangeResolution(1920, 1080, false);
     }
 
     void Update(){
@@ -69,7 +68,7 @@ public:
         if (attached_to->transform.position.y < min_y_pos){
             attached_to->transform.position.y = min_y_pos;
         }
-        
+
         glm::vec3 ray = Raycast::GetRay(glm::vec2(Screen::width / 2, Screen::height / 2));
     }
 };
@@ -78,8 +77,12 @@ public:
 int main(int argc, char* args[])
 {
     Core engine("Core Engine");
+    //Environment::GetSkybox(); //use this to edit skybox
     //Create a new environment
-    Environment::CreateEnvironment("default");    
+    Environment::CreateEnvironment("default");
+    Quality::texture_filter = TextureFilterType::ANISOTROPIC;
+    Quality::anistropic_filter_amount = Quality::GetMaxAnistropicAmount();
+    Quality::EnableMultisampling(); //Add Multisample-Antialiasing
 
     std::shared_ptr<Camera> myCamera2 = Environment::CreateCamera("My Camera 2");
     myCamera2->draw_order = 5;
@@ -128,8 +131,6 @@ int main(int argc, char* args[])
     surface4->ApplyTexture(std::shared_ptr<Texture>(new Texture("texture.png")));
     ps->ApplySurface(surface4);
     myLight->transform.position = glm::vec3(0, 3, 0);
-
-    //Environment::GetSkybox(); //use this to edit skybox
 
     engine.Start();
     return 0;

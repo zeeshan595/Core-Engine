@@ -38,19 +38,42 @@ Texture::Texture(const std::string& filename)
 	
 	//Set Texture Parameters
 	glBindTexture(GL_TEXTURE_2D, texture_map);
-	glGenerateMipmap(GL_TEXTURE_2D);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-	//std::cout << glGetString(GL_EXTENSIONS) << std::endl;
-	if (glewIsSupported("GL_EXT_texture_filter_anisotropic"))
+
+	if (Quality::texture_filter == TextureFilterType::NONE)
 	{
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_LOD_BIAS, 0);
-		GLfloat amount;
-		glGetFloatv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &amount);
-		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, amount);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	}
-	else
+	else if (Quality::texture_filter == TextureFilterType::MIP_MAP)
 	{
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_LOD_BIAS, -0.4f);
+		glGenerateMipmap(GL_TEXTURE_2D);
+    	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+
+		if (Quality::mip_map_amount > 1.0f)
+			Quality::mip_map_amount = 1.0f;
+		else if (Quality::mip_map_amount < 0.0f)
+			Quality::mip_map_amount = 0.0f;
+
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_LOD_BIAS, -Quality::mip_map_amount);
+	}
+	else if (Quality::texture_filter == TextureFilterType::ANISOTROPIC)
+	{
+		if (!glewIsSupported("GL_EXT_texture_filter_anisotropic"))
+		{
+			std::cout << "WARNING: Anistropic filtering not supported" << std::endl;
+			return;
+		}
+
+		glGenerateMipmap(GL_TEXTURE_2D);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_LOD_BIAS, 0);
+		GLfloat max_anistropic;
+		glGetFloatv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &max_anistropic);
+
+		if (Quality::anistropic_filter_amount > max_anistropic)
+			Quality::anistropic_filter_amount = max_anistropic;
+		else if (Quality::anistropic_filter_amount < 0)
+			Quality::anistropic_filter_amount = 0;
+
+		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, Quality::anistropic_filter_amount);
 	}
 }
 

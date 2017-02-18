@@ -54,6 +54,7 @@ const std::string SOUND_PATH    = ASSET_PATH + "sound/";
 #include "Cube.h"
 #include "Plane.h"
 #include "Fog.h"
+#include "Quality.h"
 //Base classes
 #include "../Modules/Module.h"
 #include "../Core/Entity.h"
