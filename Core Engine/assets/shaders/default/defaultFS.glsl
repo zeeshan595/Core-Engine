@@ -2,15 +2,18 @@
 
 out vec4 FragColor;
 
-in vec3 vertex_position_world;
+in vec3 the_position_model;
 in vec4 the_color;
 in vec2 the_uv;
-in vec3 vertex_normal_world;
+in vec3 the_normal_model;
 
-uniform sampler2D texture_map0;
+uniform sampler2D texture_map0; //Texture
+uniform sampler2D texture_map1; //Normal Texture
 
 //Light Variables
 #define MAX_LIGHTS 10
+
+uniform mat4 model_to_world_matrix;
 
 //Directional
 uniform vec3 light_directions[MAX_LIGHTS];
@@ -48,7 +51,16 @@ void main()
     vec4 specular = vec4(0.0f, 0.0f, 0.0f, 1.0f);
 
     //Texture
-    vec4 texture = texture(texture_map0, the_uv);
+    vec4 texture_map = texture(texture_map0, the_uv);
+    //Normal Texture
+    vec4 normal_map = texture(texture_map1, the_uv);
+    //Convert color to coordinates
+    normal_map = (normal_map * 2) - vec4(1.0f, 1.0f, 1.0f, 1.0f);
+    //Convert from model to world space
+    vec3 vertex_normal_world = vec3(model_to_world_matrix * vec4(normal_map.rgb + the_normal_model, 1.0f));
+
+    //Get vertex world position
+    vec3 vertex_position_world = vec3(model_to_world_matrix * vec4(the_position_model, 1.0f));
 
     //directional lights
     for (int i = 0; i < directional_light_count; ++i)
@@ -106,5 +118,5 @@ void main()
     distance_from_camera = distance_from_camera * fog_distance;
     float fog = exp(-pow(distance_from_camera * fog_density, fog_gradient));
     fog = clamp(fog, 0.0f, 1.0f);
-    FragColor = mix(fog_color, light * texture, fog);
+    FragColor = mix(fog_color, light * texture_map, fog);
 }

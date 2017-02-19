@@ -14,8 +14,8 @@ int main(int argc, char* args[])
     Quality::EnableMultisampling(); //Add Multisample-Antialiasing
 
     std::shared_ptr<Camera> myCamera2 = Environment::CreateCamera("My Camera 2");
-    myCamera2->transform.position = glm::vec3(50, 20, 50);
-    myCamera2->transform.rotation = glm::vec3(90, 0, 180);
+    myCamera2->transform.position = glm::vec3(50, 5, 50);
+    myCamera2->transform.rotation = glm::vec3(0, 0, 0);
     myCamera2->draw_order = 1;
     myCamera2->viewport = glm::vec4(0, 0, 0.3f, 0.3f);
     std::shared_ptr<Gizmo> gizmo = myCamera2->AddModule<Gizmo>();
@@ -57,6 +57,17 @@ int main(int argc, char* args[])
     surface4->ApplyTexture(std::shared_ptr<Texture>(new Texture("texture.png")));
     ps->ApplySurface(surface4);
     myLight->transform.position = glm::vec3(0, 3, 0);
+
+    //Normal Map Texture
+    std::shared_ptr<Entity> normal_test_entity = Environment::CreateEntity("Normal Map Test Object");
+    std::shared_ptr<Mesh> normal_test_mesh = normal_test_entity->AddModule<Mesh>();
+    normal_test_mesh->LoadDefaultPlane();
+    std::shared_ptr<Surface> surface5 = std::shared_ptr<Surface>(new Surface(std::shared_ptr<Shader>(new Shader("default/defaultVS.glsl", "default/defaultFS.glsl"))));
+    surface5->ApplyTexture(std::shared_ptr<Texture>(new Texture("boulder.png")));
+    surface5->ApplyTexture(std::shared_ptr<Texture>(new Texture("boulder_normal.png")));
+    normal_test_mesh->ApplySurface(surface5);
+    normal_test_entity->transform.rotation = glm::vec3(-90, 0, 0);
+    normal_test_entity->transform.position = glm::vec3(10, 10, 10);
 
     engine.Start();
     return 0;
