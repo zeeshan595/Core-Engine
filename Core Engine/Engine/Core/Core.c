@@ -156,6 +156,7 @@ void Core::Input(SDL_Event* e)
     Input::keys_up.clear();
     Input::mouse_down.clear();
     Input::mouse_up.clear();
+    Input::mouse_wheel = glm::vec2(0, 0);
     
     //Update Mouse Input
     int x, y;
@@ -163,6 +164,8 @@ void Core::Input(SDL_Event* e)
     Input::mouse_position = glm::vec2(static_cast<float>(x), static_cast<float>(y));
     SDL_GetRelativeMouseState(&x, &y);
     Input::mouse_delta = glm::vec2(static_cast<float>(x), static_cast<float>(y));
+    SDL_GetGlobalMouseState(&x, &y);
+    Input::global_mouse_position = glm::vec2(static_cast<float>(x), static_cast<float>(y));
 
     while (SDL_PollEvent(e))
     {
@@ -189,6 +192,9 @@ void Core::Input(SDL_Event* e)
                 case SDL_MOUSEBUTTONUP:
                     Input::mouse_up[e->button.button] = true;
                     Input::mouse[e->button.button] = false;
+                    break;
+                case SDL_MOUSEWHEEL:
+                    Input::mouse_wheel = glm::vec2(e->wheel.x, e->wheel.y);
                     break;
             }
         }

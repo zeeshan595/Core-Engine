@@ -13,6 +13,8 @@ public:
     static std::map<Uint8, bool> mouse;
     static glm::vec2 mouse_delta;
     static glm::vec2 mouse_position;
+    static glm::vec2 global_mouse_position;
+    static glm::vec2 mouse_wheel;
 
     static void LockCursor(bool lock){
         if (lock)
@@ -30,5 +32,7 @@ std::map<Uint8, bool> Input::mouse_up;
 std::map<Uint8, bool> Input::mouse;
 glm::vec2 Input::mouse_delta;
 glm::vec2 Input::mouse_position;
+glm::vec2 Input::mouse_wheel;
+glm::vec2 Input::global_mouse_position;
 
 #endif

@@ -20,6 +20,16 @@ public:
         else
             SDL_SetWindowFullscreen(Screen::window, SDL_FALSE);
     }
+
+    static glm::vec2 GetWindowPosition(){
+        int x, y;
+        SDL_GetWindowPosition(Screen::window, &x, &y);
+        return glm::vec2(static_cast<float>(x), static_cast<float>(y));
+    }
+    
+    static bool IsWindowFocused(){
+        return SDL_GetMouseFocus() == Screen::window;
+    }
 };
 int Screen::width = 1024;
 int Screen::height = 720;
