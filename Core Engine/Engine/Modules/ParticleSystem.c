@@ -1,8 +1,8 @@
 void ParticleSystem::Render(std::shared_ptr<Camera> camera)
 {
-    if (particles.size() > 10000)
+    if (particles.size() > 100)
     {
-        std::cout << "1 System can can have a max of 100,000 particles at one time" << std::endl;
+        std::cout << "1 System can can have a max of 100 particles at one time" << std::endl;
         return;
     }
 

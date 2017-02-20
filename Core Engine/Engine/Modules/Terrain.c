@@ -7,10 +7,10 @@ Terrain::Terrain()
     blend_map       = "blend_map.png";
     height_map      = "height_map.png";
     spec_map        = "spec_map.png";
-    tile_textures.push_back("grassy2.png");
-    tile_textures.push_back("grassFlowers.png");
-    tile_textures.push_back("mud.png");
-    tile_textures.push_back("path.png");
+    tile_texture0 = "grassy2.png";
+    tile_texture1 = "grassFlowers.png";
+    tile_texture2 = "mud.png";
+    tile_texture3 = "path.png";
     terrain_shader = std::shared_ptr<Shader>(new Shader("default/terrainVS.glsl", "default/terrainFS.glsl"));
 }
 
@@ -57,9 +57,10 @@ void Terrain::CreateTerrain()
     std::shared_ptr<Surface> mySurface = std::shared_ptr<Surface>(new Surface(terrain_shader));
     mySurface->ApplyTexture(std::shared_ptr<Texture>(new Texture(blend_map)));
     mySurface->ApplyTexture(std::shared_ptr<Texture>(new Texture(spec_map)));
-    for (int i = 0; i < tile_textures.size(); i++){
-        mySurface->ApplyTexture(std::shared_ptr<Texture>(new Texture(tile_textures[i])));
-    }
+    mySurface->ApplyTexture(std::shared_ptr<Texture>(new Texture(tile_texture0)));
+    mySurface->ApplyTexture(std::shared_ptr<Texture>(new Texture(tile_texture1)));
+    mySurface->ApplyTexture(std::shared_ptr<Texture>(new Texture(tile_texture2)));
+    mySurface->ApplyTexture(std::shared_ptr<Texture>(new Texture(tile_texture3)));
     attached_mesh->ApplySurface(mySurface);
     
     height_map_surface = Texture::LoadImage(height_map);

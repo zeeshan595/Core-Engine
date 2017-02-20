@@ -11,7 +11,12 @@ public:
     std::string blend_map;
     std::string height_map;
     std::string spec_map;
-    std::vector<std::string> tile_textures;
+
+    std::string tile_texture0;
+    std::string tile_texture1;
+    std::string tile_texture2;
+    std::string tile_texture3;
+
     std::shared_ptr<Shader> terrain_shader;
 
     Terrain();
