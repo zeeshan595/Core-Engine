@@ -44,7 +44,7 @@ public:
 
         //Mouse Scroll movment
         if (Input::mouse_wheel.y != 0){
-            attached_to->transform.position.y += Time::delta_time * -Input::mouse_wheel.y * 100.0f;
+            attached_to->transform.position.y += Time::delta_time * -Input::mouse_wheel.y * 250.0f;
         }
         //WASD movment
         if (Input::keys[SDLK_w]){

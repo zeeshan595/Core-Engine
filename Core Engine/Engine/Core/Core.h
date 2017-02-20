@@ -11,11 +11,15 @@ public:
     void Start();
     void Quit();
 
+    void EnableDebugMode();
+    void DisableDebugMode();
+
 private:
     ALCdevice* al_device;
     ALCcontext* al_context;
     SDL_GLContext context;
     bool is_running = true;
+    bool is_debuging = false;
     
     void InitOpenGL();
     void InitOpenAL();

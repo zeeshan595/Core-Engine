@@ -125,6 +125,43 @@ void Core::Quit()
     is_running = false;
 }
 
+void Core::EnableDebugMode()
+{
+    if (is_debuging)
+        return;
+    
+    is_debuging = true;
+    //Cameras
+    for (auto i = (*Environment::GetCameras()).begin(); i != (*Environment::GetCameras()).end(); ++i)
+    {
+        std::shared_ptr<Gizmo> gizmos = (*i)->AddModule<Gizmo>();
+        gizmos->ApplyTexture(std::shared_ptr<Texture>(new Texture("camera.png")));
+    }
+    //Lights
+    for (auto i = (*Environment::GetLights()).begin(); i != (*Environment::GetLights()).end(); ++i)
+    {
+        std::shared_ptr<Gizmo> gizmos = (*i)->AddModule<Gizmo>();
+        gizmos->ApplyTexture(std::shared_ptr<Texture>(new Texture("light.png")));
+    }
+}
+void Core::DisableDebugMode()
+{
+    if (!is_debuging)
+        return;
+    
+    is_debuging = false;
+    //Cameras
+    for (auto i = (*Environment::GetCameras()).begin(); i != (*Environment::GetCameras()).end(); ++i)
+    {
+        (*i)->DestroyModule<Gizmo>();
+    }
+    //Lights
+    for (auto i = (*Environment::GetLights()).begin(); i != (*Environment::GetLights()).end(); ++i)
+    {
+        (*i)->DestroyModule<Gizmo>();
+    }
+}
+
 void Core::Start()
 {
     if (Environment::GetEnvironmentSize() < 1)

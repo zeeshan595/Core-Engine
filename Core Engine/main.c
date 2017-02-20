@@ -18,22 +18,16 @@ int main(int argc, char* args[])
     myCamera2->transform.rotation = glm::vec3(0, 0, 0);
     myCamera2->draw_order = 1;
     myCamera2->viewport = glm::vec4(0, 0, 0.3f, 0.3f);
-    std::shared_ptr<Gizmo> gizmo = myCamera2->AddModule<Gizmo>();
-    gizmo->ApplyTexture(std::shared_ptr<Texture>(new Texture("camera.png")));
 
     //Create Default Camera
     std::shared_ptr<Camera> myCamera = Environment::CreateCamera("My Camera 1");
     myCamera->draw_order = 0;
     myCamera->AddModule<CameraMovment>();
-    std::shared_ptr<Gizmo> gizmo2 = myCamera->AddModule<Gizmo>();
-    gizmo2->ApplyTexture(std::shared_ptr<Texture>(new Texture("camera.png")));
 
     //Create Default Light
     std::shared_ptr<Light> myLight = Environment::CreateLight("My Light");
     myLight->type = Light::LIGHT_TYPE::DIRECTIONAL;
     myLight->transform.rotation = (glm::vec3(-90.0f, 0.0f, 25.0f));
-    std::shared_ptr<Gizmo> gizmo3 = myLight->AddModule<Gizmo>();
-    gizmo3->ApplyTexture(std::shared_ptr<Texture>(new Texture("light.png")));
 
     //Generate Teerain
     std::shared_ptr<Entity> myObj = Environment::CreateEntity("My Terrain");
@@ -69,6 +63,9 @@ int main(int argc, char* args[])
     normal_test_entity->transform.rotation = glm::vec3(-90, 0, 0);
     normal_test_entity->transform.position = glm::vec3(10, 10, 10);
 
+
+    engine.EnableDebugMode();
+    engine.DisableDebugMode();
     engine.Start();
     return 0;
 }
