@@ -8,16 +8,20 @@ Make sure you have the following extensions in VS code installed.
 >Shader languages support for VS Code (optional)
 
 If on 'WINDOWS' platform download and install MinGW.
+https://sourceforge.net/projects/mingw/files/Installer/mingw-get-setup.exe/download
 Then download all necessary packages for MinGW listed below.
 >mingw-developer-toolkit,
 >mingw32-base,
 >msys-base,
 >mingw32-gcc-g++
 
-Add C:/MinGW/bin to your path in system environment variables
+Add 'C:/MinGW/bin' to your 'path' in 'system environment variables'
+You can access 'system environment variables' by going to properties of 'This PC'/'My Computer'
+and clicking 'advanced system settings'
+NOTE: you will have to restart cmd or vs code if it is running.
 
-Finally open the project folder with vs code and press F1
-Then type 'run task' and click 'Run Task'. Select 'Setup' from the menu
-Your project should now be setup properly.
+Copy folders inside '.SDK' folder and paste it into 'C:/MinGW'
+This will allow mingw to compile the code using the nessassary libraries required for the project.
 
-WARNING: NOT WORKING ON LINUX AT THE MOMENT
+Open the folder containing 'main.c' with vs code and go to debug tab on the left.
+Make sure from the drop down your platform is selected and click debug.

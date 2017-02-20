@@ -3,9 +3,8 @@
 
 int main(int argc, char* args[])
 {
-    Screen::width = 1920;
-    Screen::height = 1080;
     Core engine("Core Engine");
+    Screen::ChangeResolution(1920, 1080, false);
     //Environment::GetSkybox(); //use this to edit skybox
     //Create a new environment
     Environment::CreateEnvironment("default");
