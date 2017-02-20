@@ -63,7 +63,6 @@ int main(int argc, char* args[])
     normal_test_entity->transform.rotation = glm::vec3(-90, 0, 0);
     normal_test_entity->transform.position = glm::vec3(10, 10, 10);
 
-
     engine.EnableDebugMode();
     engine.DisableDebugMode();
     engine.Start();

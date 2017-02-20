@@ -1,4 +1,4 @@
-#version 450
+#version 150
 
 in vec3 vertex_position_model;
 in vec4 vertex_color;

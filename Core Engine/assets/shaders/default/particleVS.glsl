@@ -1,4 +1,4 @@
-#version 450
+#version 150
 
 in vec3 vertex_position_model;
 in vec4 vertex_color;
@@ -8,7 +8,7 @@ in vec3 vertex_normal_model;
 out vec2 the_uv;
 
 uniform mat4 view_projection_matrix;
-uniform mat4 world_matrices[1000];
+uniform mat4 world_matrices[100];
 
 void main()
 {
