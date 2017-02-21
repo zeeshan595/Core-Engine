@@ -79,7 +79,6 @@ void Core::InitOpenGL()
 	glClearDepth(1.0f);
 
 	glEnable(GL_DEPTH_TEST);
-    glEnable(GL_LIGHTING);
     glEnable(GL_TEXTURE_CUBE_MAP);
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_BLEND);
@@ -323,6 +322,17 @@ void Core::Render()
         {
             for (std::shared_ptr<Module> module : (*j)->GetModules())
             {
+                if (is_debuging)
+                {
+                    glEnable(GL_STENCIL_TEST);
+                    glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
+                    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+                    module->Render((*i));
+                    glDisable(GL_STENCIL_TEST);
+                    glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
+                    glLineWidth(3.0f);
+                    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+                }
                 module->Render((*i));
             }
         }

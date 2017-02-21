@@ -49,7 +49,7 @@ int main(int argc, char* args[])
     //Create Particle System
     std::shared_ptr<ParticleSystem> ps = myLight->AddModule<ParticleSystem>();
     std::shared_ptr<Surface> surface4 = std::shared_ptr<Surface>(new Surface(std::shared_ptr<Shader>(new Shader("default/particleVS.glsl", "default/particleFS.glsl"))));
-    surface4->ApplyTexture(std::shared_ptr<Texture>(new Texture("texture.png")));
+    surface4->AddTexture(std::shared_ptr<Texture>(new Texture("texture.png")));
     ps->ApplySurface(surface4);
     myLight->transform.position = glm::vec3(0, 3, 0);
 
@@ -58,14 +58,13 @@ int main(int argc, char* args[])
     std::shared_ptr<Mesh> normal_test_mesh = normal_test_entity->AddModule<Mesh>();
     normal_test_mesh->LoadDefaultPlane();
     std::shared_ptr<Surface> surface5 = std::shared_ptr<Surface>(new Surface(std::shared_ptr<Shader>(new Shader("default/defaultVS.glsl", "default/defaultFS.glsl"))));
-    surface5->ApplyTexture(std::shared_ptr<Texture>(new Texture("boulder.png")));
-    surface5->ApplyTexture(std::shared_ptr<Texture>(new Texture("boulder_normal.png")));
+    surface5->AddTexture(std::shared_ptr<Texture>(new Texture("boulder.png")));
+    surface5->AddTexture(std::shared_ptr<Texture>(new Texture("boulder_normal.png")));
     normal_test_mesh->ApplySurface(surface5);
     normal_test_entity->transform.rotation = glm::vec3(-90, 0, 0);
     normal_test_entity->transform.position = glm::vec3(10, 10, 10);
 
     engine.EnableDebugMode();
-    engine.DisableDebugMode();
     engine.Start();
     return 0;
 }
