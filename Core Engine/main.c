@@ -4,7 +4,9 @@
 int main(int argc, char* args[])
 {
     Core engine("Core Engine");
-    Screen::ChangeResolution(1920, 1080, false);
+    Screen::SetResolution(1920, 1080, false);
+    glm::vec2 screen_size = Screen::GetDisplayResolution();
+    Screen::SetScreenPosition( (screen_size.x / 2) - (Screen::width / 2), (screen_size.y / 2) - (Screen::height / 2) );
     //Environment::GetSkybox(); //use this to edit skybox
     //Create a new environment
     Environment::CreateEnvironment("default");
