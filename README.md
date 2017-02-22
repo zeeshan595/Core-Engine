@@ -25,3 +25,9 @@ This will allow mingw to compile the code using the nessassary libraries require
 
 Open the folder containing 'main.c' with vs code and go to debug tab on the left.
 Make sure from the drop down your platform is selected and click debug.
+-----------
+INFORMATION
+-----------
+This game engine was created by Zeeshan Abid.
+It uses the following libraries:
+>Glew, Glu, OpenGL, SDL2, SDL2 Image, SDL2 TTF, Open AL, Bullet Physics Library

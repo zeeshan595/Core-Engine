@@ -41,9 +41,9 @@ void main()
 {
     //Your allowed to edit these
     vec3 ambient_color  = vec3(0.1f, 0.1f, 0.1f);
-    vec3 diffuse_color  = vec3(1.0f, 1.0f, 1.0f);
+    vec3 diffuse_color  = vec3(0.3f, 0.3f, 0.3f);
     vec3 spec_color     = vec3(1.0f, 1.0f, 1.0f);
-    float spec_amount   = 1.0f;
+    float spec_amount   = 0.5f;
     float spec_area     = 150.0f;
     
     //Setup default diffuse and specular values if no light is there
@@ -57,7 +57,7 @@ void main()
     //Convert color to coordinates
     normal_map = (normal_map * 2) - vec4(1.0f, 1.0f, 1.0f, 1.0f);
     //Convert from model to world space
-    vec3 vertex_normal_world = vec3(model_to_world_matrix * vec4(normal_map.rgb + the_normal_model, 1.0f));
+    vec3 vertex_normal_world = vec3(model_to_world_matrix * vec4(normal_map.rgb + the_normal_model, 0.0f));
 
     //Get vertex world position
     vec3 vertex_position_world = vec3(model_to_world_matrix * vec4(the_position_model, 1.0f));

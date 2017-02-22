@@ -1,7 +1,15 @@
 #include "Engine/Core/Core.h"
 #include "Game/CameraMovment.h"
 
-
+class TestModule : public Module
+{
+public:
+    void Update(){
+        if (Input::keys_down[SDLK_SPACE]){
+            attached_to->GetModule<BoxCollider>()->body->setLinearVelocity(btVector3(11.0f, 0, 0));
+        }
+    }
+};
 
 int main(int argc, char* args[])
 {
@@ -30,7 +38,7 @@ int main(int argc, char* args[])
     //Create Default Light
     std::shared_ptr<Light> myLight = Environment::CreateLight("My Light");
     myLight->type = Light::LIGHT_TYPE::DIRECTIONAL;
-    myLight->transform.rotation = (glm::vec3(-90.0f, 0.0f, 25.0f));
+    myLight->transform.rotation = (glm::vec3(-90.0f, 45.0f, 0.0f));
 
     //Generate Teerain
     std::shared_ptr<Entity> myObj = Environment::CreateEntity("My Terrain");
@@ -80,12 +88,13 @@ int main(int argc, char* args[])
     std::shared_ptr<Mesh> bt_box_mesh2 = bt_box2->AddModule<Mesh>();
     std::shared_ptr<Surface> surface6 = std::shared_ptr<Surface>(new Surface(std::shared_ptr<Shader>(new Shader("default/defaultVS.glsl", "default/defaultFS.glsl"))));
     surface6->AddTexture(std::shared_ptr<Texture>(new Texture("mud.png")));
-    surface6->AddTexture(std::shared_ptr<Texture>(new Texture("boulder_normal.png")));
+    //surface6->AddTexture(std::shared_ptr<Texture>(new Texture("boulder_normal.png")));
     bt_box_mesh2->ApplySurface(surface6);
     bt_box_mesh2->LoadDefaultCube();
     bt_box2->transform.position = glm::vec3(50, 13, 50);
     bt_box2->transform.scale = glm::vec3(1, 1, 1);
     bt_box2->AddModule<BoxCollider>();
+    bt_box2->AddModule<TestModule>();
 
 
     engine.EnableDebugMode();
