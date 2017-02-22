@@ -14,6 +14,6 @@ void Physics::DestroyPhysics()
     delete Physics::dispatcher;
     delete Physics::collision_config;
     delete Physics::solver;
-    delete Physics::world;
     delete Physics::broadphase;
+    delete Physics::world;
 }

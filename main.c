@@ -86,6 +86,7 @@ int main(int argc, char* args[])
     bt_box2->AddModule<BoxCollider>();
 
 
+    //To ensure gizmos work properly call this just before you start the main loop
     engine.EnableDebugMode();
     engine.Start();
     return 0;
