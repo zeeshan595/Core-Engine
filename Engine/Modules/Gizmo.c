@@ -21,6 +21,7 @@ Gizmo::~Gizmo()
 
 void Gizmo::Render(std::shared_ptr<Camera> camera)
 {
+    glDisable(GL_DEPTH_TEST);
     //Setup
     glUseProgram(shader->GetShaderProgram());
     
@@ -58,6 +59,7 @@ void Gizmo::Render(std::shared_ptr<Camera> camera)
     Screen::draw_calls++;
     glBindVertexArray(Gizmo::VAO);
     glDrawElements(GL_TRIANGLES, Gizmo::indices.size(), GL_UNSIGNED_INT, 0);
+    glEnable(GL_DEPTH_TEST);
 }
 
 void Gizmo::GenerateBuffers()

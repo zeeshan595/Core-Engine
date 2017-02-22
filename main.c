@@ -1,16 +1,6 @@
 #include "Engine/Core/Core.h"
 #include "Game/CameraMovment.h"
 
-class TestModule : public Module
-{
-public:
-    void Update(){
-        if (Input::keys_down[SDLK_SPACE]){
-            attached_to->GetModule<BoxCollider>()->body->setLinearVelocity(btVector3(11.0f, 0, 0));
-        }
-    }
-};
-
 int main(int argc, char* args[])
 {
     Core engine("Core Engine");
@@ -94,7 +84,6 @@ int main(int argc, char* args[])
     bt_box2->transform.position = glm::vec3(50, 13, 50);
     bt_box2->transform.scale = glm::vec3(1, 1, 1);
     bt_box2->AddModule<BoxCollider>();
-    bt_box2->AddModule<TestModule>();
 
 
     engine.EnableDebugMode();

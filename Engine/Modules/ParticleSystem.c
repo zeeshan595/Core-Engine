@@ -53,6 +53,23 @@ void ParticleSystem::Render(std::shared_ptr<Camera> camera)
         GLint texture_uniform = glGetUniformLocation(surface->GetShader()->GetShaderProgram(), texture_name.c_str());
         glUniform1i(texture_uniform, 0);
 
+        //Camera Position
+        GLint eye_position_uniform = glGetUniformLocation(surface->GetShader()->GetShaderProgram(), "camera_position_world");
+        glUniform3fv(eye_position_uniform, 1, &camera->transform.position[0]);
+
+        //Fog distance
+        GLint fog_distance_uniform = glGetUniformLocation(surface->GetShader()->GetShaderProgram(), "fog_distance");
+        glUniform1fv(fog_distance_uniform, 1, &Fog::distance);
+        //Fog density
+        GLint fog_density_uniform = glGetUniformLocation(surface->GetShader()->GetShaderProgram(), "fog_density");
+        glUniform1fv(fog_density_uniform, 1, &Fog::density);
+        //Fog gradient
+        GLint fog_gradient_uniform = glGetUniformLocation(surface->GetShader()->GetShaderProgram(), "fog_gradient");
+        glUniform1fv(fog_gradient_uniform, 1, &Fog::gradient);
+        //Fog color
+        GLint fog_color_uniform = glGetUniformLocation(surface->GetShader()->GetShaderProgram(), "fog_color");
+        glUniform4fv(fog_color_uniform, 1, &Fog::fog_color[0]);
+
         Screen::draw_calls++;
         glBindVertexArray(Particle::GetVAO());
         glDrawElementsInstanced(GL_TRIANGLES, (*Particle::GetIndices()).size(), GL_UNSIGNED_INT, 0, particles.size());
