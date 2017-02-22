@@ -68,7 +68,7 @@ int main(int argc, char* args[])
     //Physics Test
     std::shared_ptr<Entity> bt_box = Environment::CreateEntity("Physics Cube");
     std::shared_ptr<Mesh> bt_box_mesh = bt_box->AddModule<Mesh>();
-    bt_box_mesh->ApplySurface(surface5);
+    bt_box_mesh->ApplySurface(Surface::LoadDefaultSurface());
     bt_box_mesh->LoadDefaultCube();
     bt_box->transform.position = glm::vec3(50, 10, 50);
     bt_box->transform.scale = glm::vec3(20, 1, 20);

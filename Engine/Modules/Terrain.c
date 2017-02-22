@@ -85,6 +85,8 @@ void Terrain::CreateTerrain()
         }
     }
 
+    SDL_FreeSurface(height_map_surface);
+
     for (int x = 0; x < terrain_size_x; x++){
         for (int y = 0; y < terrain_size_z; y++){
             indices.push_back(GetVertexPosition(x, y));

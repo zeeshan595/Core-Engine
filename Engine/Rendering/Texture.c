@@ -129,3 +129,24 @@ GLuint Texture::ConvertSDLSurfaceToTexture(SDL_Surface* surface)
 
 	return textureID;
 }
+
+SDL_Surface* Texture::LoadImage(const std::string& filename)
+{
+	//Use SDL surface to load texture from a file.
+	SDL_Surface* image_surface = IMG_Load((TEXTURE_PATH + filename).c_str());
+	if (!image_surface)
+	{
+		std::cout << "ERROR [IMG_Load]: " << filename << " - " << IMG_GetError();
+		return nullptr;
+	}
+	return image_surface;
+}
+
+GLuint Texture::GetTextureMap()
+{
+	return texture_map;
+}
+std::shared_ptr<Texture> Texture::LoadDefaultTexture()
+{
+	return std::shared_ptr<Texture>(new Texture("default/texture.png"));
+}
