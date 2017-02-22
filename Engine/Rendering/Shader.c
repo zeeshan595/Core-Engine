@@ -73,8 +73,14 @@ Shader::~Shader()
     glDeleteProgram(shader_program);
 }
 
-GLuint Shader::GetShaderProgram(){
+GLuint Shader::GetShaderProgram()
+{
     return shader_program;
+}
+
+std::shared_ptr<Shader> Shader::LoadDefaultShader()
+{
+    return std::shared_ptr<Shader>(new Shader("default/defaultVS.glsl", "default/defaultFS.glsl"));
 }
 
 GLuint Shader::LoadShaderFromMemory(const char * pMem, SHADER_TYPE shader_type)

@@ -15,6 +15,8 @@ public:
     ~Shader();
 
     GLuint GetShaderProgram();
+    static std::shared_ptr<Shader> LoadDefaultShader();
+
 private:
     GLuint shader_program;
 

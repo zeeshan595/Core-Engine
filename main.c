@@ -67,7 +67,7 @@ int main(int argc, char* args[])
     std::shared_ptr<Entity> normal_test_entity = Environment::CreateEntity("Normal Map Test Object");
     std::shared_ptr<Mesh> normal_test_mesh = normal_test_entity->AddModule<Mesh>();
     normal_test_mesh->LoadDefaultPlane();
-    std::shared_ptr<Surface> surface5 = std::shared_ptr<Surface>(new Surface(std::shared_ptr<Shader>(new Shader("default/defaultVS.glsl", "default/defaultFS.glsl"))));
+    std::shared_ptr<Surface> surface5 = std::shared_ptr<Surface>(new Surface(Shader::LoadDefaultShader()));
     surface5->AddTexture(std::shared_ptr<Texture>(new Texture("boulder.png")));
     surface5->AddTexture(std::shared_ptr<Texture>(new Texture("boulder_normal.png")));
     normal_test_mesh->ApplySurface(surface5);
@@ -86,9 +86,9 @@ int main(int argc, char* args[])
 
     std::shared_ptr<Entity> bt_box2 = Environment::CreateEntity("Physics Cube");
     std::shared_ptr<Mesh> bt_box_mesh2 = bt_box2->AddModule<Mesh>();
-    std::shared_ptr<Surface> surface6 = std::shared_ptr<Surface>(new Surface(std::shared_ptr<Shader>(new Shader("default/defaultVS.glsl", "default/defaultFS.glsl"))));
+    std::shared_ptr<Surface> surface6 = std::shared_ptr<Surface>(new Surface(Shader::LoadDefaultShader()));
     surface6->AddTexture(std::shared_ptr<Texture>(new Texture("mud.png")));
-    //surface6->AddTexture(std::shared_ptr<Texture>(new Texture("boulder_normal.png")));
+    surface6->AddTexture(std::shared_ptr<Texture>(new Texture("boulder_normal.png")));
     bt_box_mesh2->ApplySurface(surface6);
     bt_box_mesh2->LoadDefaultCube();
     bt_box2->transform.position = glm::vec3(50, 13, 50);
