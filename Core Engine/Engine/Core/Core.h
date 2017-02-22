@@ -13,16 +13,14 @@ public:
 
     void EnableDebugMode();
     void DisableDebugMode();
+    bool IsDebugingEnabled();
 
 private:
-    ALCdevice* al_device;
-    ALCcontext* al_context;
     SDL_GLContext context;
     bool is_running = true;
     bool is_debuging = false;
     
     void InitOpenGL();
-    void InitOpenAL();
     void StartModules();
     void Update();
     void Render();

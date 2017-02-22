@@ -55,14 +55,18 @@ Core::Core(std::string window_title)
     context = SDL_GL_CreateContext(Screen::window);
 
     InitOpenGL();
-    InitOpenAL();
+    Audio::InitAudio();
+    Physics::InitPhysics();
+    std::cout << "SUCCESS [Bullet Physics]" << std::endl;
 }
 
 Core::~Core()
 {
     //OpenAL
-    alcDestroyContext(al_context);
-    alcCloseDevice(al_device);
+    Audio::DestroyAudio();
+
+    //Bullet Physics
+    Physics::DestroyPhysics();
 
     //Close OpenGL
     SDL_GL_DeleteContext(context);
@@ -98,25 +102,6 @@ void Core::InitOpenGL()
         return;
     }
     std::cout << "SUCCESS [glewInit]" << std::endl;
-}
-
-void Core::InitOpenAL()
-{
-    al_device = alcOpenDevice(NULL);
-    if(!al_device)
-    {
-        std::cout << "no sound device" << std::endl;
-        return;
-    }
-    al_context = alcCreateContext(al_device, NULL);
-    alcMakeContextCurrent(al_context);
-    if (!al_context)
-    {
-        std::cout << "no sound context" << std::endl;
-        return;
-    }
-    alDistanceModel(AL_EXPONENT_DISTANCE_CLAMPED);
-    std::cout << "SUCCESS [OpenAL]" << std::endl;
 }
 
 void Core::Quit()
@@ -159,6 +144,10 @@ void Core::DisableDebugMode()
     {
         (*i)->DestroyModule<Gizmo>();
     }
+}
+bool Core::IsDebugingEnabled()
+{
+    return is_debuging;
 }
 
 void Core::Start()
@@ -322,17 +311,6 @@ void Core::Render()
         {
             for (std::shared_ptr<Module> module : (*j)->GetModules())
             {
-                if (is_debuging)
-                {
-                    glEnable(GL_STENCIL_TEST);
-                    glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
-                    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-                    module->Render((*i));
-                    glDisable(GL_STENCIL_TEST);
-                    glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
-                    glLineWidth(3.0f);
-                    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-                }
                 module->Render((*i));
             }
         }

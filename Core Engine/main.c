@@ -1,6 +1,8 @@
 #include "Engine/Core/Core.h"
 #include "Game/CameraMovment.h"
 
+
+
 int main(int argc, char* args[])
 {
     Core engine("Core Engine");
@@ -43,7 +45,7 @@ int main(int argc, char* args[])
     std::shared_ptr<AudioSource> myAudio = myLight->AddModule<AudioSource>();
     std::shared_ptr<AudioClip> myClip = std::shared_ptr<AudioClip>(new AudioClip("song.wav"));
     myAudio->SetClip(myClip);
-    myAudio->play_on_start = false;
+    myAudio->play_on_start = true;
     //myAudio->SetLooping(true);
 
     //Create Particle System
@@ -63,6 +65,25 @@ int main(int argc, char* args[])
     normal_test_mesh->ApplySurface(surface5);
     normal_test_entity->transform.rotation = glm::vec3(-90, 0, 0);
     normal_test_entity->transform.position = glm::vec3(10, 10, 10);
+
+    //Physics Test
+    std::shared_ptr<Entity> bt_box = Environment::CreateEntity("Physics Cube");
+    std::shared_ptr<Mesh> bt_box_mesh = bt_box->AddModule<Mesh>();
+    bt_box_mesh->ApplySurface(surface5);
+    bt_box_mesh->LoadDefaultCube();
+    bt_box->transform.position = glm::vec3(50, 10, 50);
+    bt_box->transform.scale = glm::vec3(20, 1, 20);
+
+    std::shared_ptr<Entity> bt_box2 = Environment::CreateEntity("Physics Cube");
+    std::shared_ptr<Mesh> bt_box_mesh2 = bt_box2->AddModule<Mesh>();
+    std::shared_ptr<Surface> surface6 = std::shared_ptr<Surface>(new Surface(std::shared_ptr<Shader>(new Shader("default/defaultVS.glsl", "default/defaultFS.glsl"))));
+    surface6->AddTexture(std::shared_ptr<Texture>(new Texture("mud.png")));
+    surface6->AddTexture(std::shared_ptr<Texture>(new Texture("boulder_normal.png")));
+    bt_box_mesh2->ApplySurface(surface6);
+    bt_box_mesh2->LoadDefaultCube();
+    bt_box2->transform.position = glm::vec3(50, 13, 50);
+    bt_box2->transform.scale = glm::vec3(1, 1, 1);
+
 
     engine.EnableDebugMode();
     engine.Start();

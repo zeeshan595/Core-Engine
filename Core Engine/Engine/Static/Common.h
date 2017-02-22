@@ -36,6 +36,10 @@
 #include <GLM/gtx/string_cast.hpp>
 #include <GLM/gtc/constants.hpp>
 
+//Bullet Physics Library
+#include <btBulletDynamicsCommon.h>
+#include <btBulletCollisionCommon.h>
+
 //PATHS
 const std::string ASSET_PATH    = "assets/";
 const std::string SHADER_PATH   = ASSET_PATH + "shaders/";
@@ -74,6 +78,7 @@ const std::string SOUND_PATH    = ASSET_PATH + "sound/";
 //Environment
 #include "../Core/Environment.h"
 //Physics
+#include "../Physics/Physics.h"
 #include "../Physics/Raycast.h"
 //Modules
 #include "../Modules/Mesh.h"
@@ -81,5 +86,6 @@ const std::string SOUND_PATH    = ASSET_PATH + "sound/";
 #include "../Modules/AudioSource.h"
 #include "../Modules/ParticleSystem.h"
 #include "../Modules/Gizmo.h"
+#include "../Modules/BoxCollider.h"
 
 #endif
