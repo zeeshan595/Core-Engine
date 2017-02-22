@@ -49,7 +49,7 @@ int main(int argc, char* args[])
     //Create Particle System
     std::shared_ptr<ParticleSystem> ps = myLight->AddModule<ParticleSystem>();
     std::shared_ptr<Surface> surface4 = std::shared_ptr<Surface>(new Surface(std::shared_ptr<Shader>(new Shader("default/particleVS.glsl", "default/particleFS.glsl"))));
-    surface4->AddTexture(std::shared_ptr<Texture>(new Texture("texture.png")));
+    surface4->SetColorMap(std::shared_ptr<Texture>(new Texture("texture.png")));
     ps->ApplySurface(surface4);
     myLight->transform.position = glm::vec3(0, 3, 0);
 
@@ -58,8 +58,8 @@ int main(int argc, char* args[])
     std::shared_ptr<Mesh> normal_test_mesh = normal_test_entity->AddModule<Mesh>();
     normal_test_mesh->LoadDefaultPlane();
     std::shared_ptr<Surface> surface5 = std::shared_ptr<Surface>(new Surface(Shader::LoadDefaultShader()));
-    surface5->AddTexture(std::shared_ptr<Texture>(new Texture("boulder.png")));
-    surface5->AddTexture(std::shared_ptr<Texture>(new Texture("boulder_normal.png")));
+    surface5->SetColorMap(std::shared_ptr<Texture>(new Texture("boulder.png")));
+    surface5->SetNormalMap(std::shared_ptr<Texture>(new Texture("boulder_normal.png")));
     normal_test_mesh->ApplySurface(surface5);
     normal_test_entity->transform.rotation = glm::vec3(-90, 0, 0);
     normal_test_entity->transform.position = glm::vec3(10, 10, 10);
@@ -77,8 +77,8 @@ int main(int argc, char* args[])
     std::shared_ptr<Entity> bt_box2 = Environment::CreateEntity("Physics Cube");
     std::shared_ptr<Mesh> bt_box_mesh2 = bt_box2->AddModule<Mesh>();
     std::shared_ptr<Surface> surface6 = std::shared_ptr<Surface>(new Surface(Shader::LoadDefaultShader()));
-    surface6->AddTexture(std::shared_ptr<Texture>(new Texture("mud.png")));
-    surface6->AddTexture(std::shared_ptr<Texture>(new Texture("boulder_normal.png")));
+    surface6->SetColorMap(std::shared_ptr<Texture>(new Texture("mud.png")));
+    surface6->SetNormalMap(std::shared_ptr<Texture>(new Texture("boulder_normal.png")));
     bt_box_mesh2->ApplySurface(surface6);
     bt_box_mesh2->LoadDefaultCube();
     bt_box2->transform.position = glm::vec3(50, 13, 50);

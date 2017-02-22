@@ -1,0 +1,43 @@
+Surface::Surface()
+{
+    textures.resize(2);
+    textures[0] = std::shared_ptr<Texture>(new Texture("default/texture.png"));
+    textures[1] = std::shared_ptr<Texture>(new Texture("default/normal.png"));
+}
+
+Surface::Surface(std::shared_ptr<Shader> shader)
+{
+    this->shader = shader;
+    textures.resize(2);
+    textures[0] = std::shared_ptr<Texture>(new Texture("default/texture.png"));
+    textures[1] = std::shared_ptr<Texture>(new Texture("default/normal.png"));
+}
+
+void Surface::SetColorMap(std::shared_ptr<Texture> texture)
+{
+    textures[0] = texture;
+}
+
+void Surface::SetNormalMap(std::shared_ptr<Texture> texture)
+{
+    textures[1] = texture;
+}
+
+void Surface::AddAdditionalTexture(std::shared_ptr<Texture> texture)
+{
+    if (textures.size() == 20){
+        std::cout << "Maximum of 20 textures limited to 1 shader" << std::endl;
+        return;
+    }
+    textures.push_back(texture);
+}
+
+std::shared_ptr<Shader> Surface::GetShader()
+{
+    return shader;
+}
+
+std::vector<std::shared_ptr<Texture>>* Surface::GetTextures()
+{
+    return &textures;
+}

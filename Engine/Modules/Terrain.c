@@ -55,12 +55,12 @@ void Terrain::CreateTerrain()
         attached_mesh = attached_to->AddModule<Mesh>();
     }
     std::shared_ptr<Surface> mySurface = std::shared_ptr<Surface>(new Surface(terrain_shader));
-    mySurface->AddTexture(std::shared_ptr<Texture>(new Texture(blend_map)));
-    mySurface->AddTexture(std::shared_ptr<Texture>(new Texture(spec_map)));
-    mySurface->AddTexture(std::shared_ptr<Texture>(new Texture(tile_texture0)));
-    mySurface->AddTexture(std::shared_ptr<Texture>(new Texture(tile_texture1)));
-    mySurface->AddTexture(std::shared_ptr<Texture>(new Texture(tile_texture2)));
-    mySurface->AddTexture(std::shared_ptr<Texture>(new Texture(tile_texture3)));
+    mySurface->SetColorMap(std::shared_ptr<Texture>(new Texture(blend_map)));
+    mySurface->SetNormalMap(std::shared_ptr<Texture>(new Texture(spec_map)));
+    mySurface->AddAdditionalTexture(std::shared_ptr<Texture>(new Texture(tile_texture0)));
+    mySurface->AddAdditionalTexture(std::shared_ptr<Texture>(new Texture(tile_texture1)));
+    mySurface->AddAdditionalTexture(std::shared_ptr<Texture>(new Texture(tile_texture2)));
+    mySurface->AddAdditionalTexture(std::shared_ptr<Texture>(new Texture(tile_texture3)));
     attached_mesh->ApplySurface(mySurface);
     
     height_map_surface = Texture::LoadImage(height_map);
