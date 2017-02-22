@@ -22,8 +22,8 @@ public:
         else if (Input::keys[SDLK_d])
             attached_to->transform.position -= attached_to->transform.Right() * 20.0f * Time::delta_time;
 
-        attached_to->transform.rotation.y -= Input::mouse_delta.x * Time::delta_time;
-        attached_to->transform.rotation.x += Input::mouse_delta.y * Time::delta_time;
+        attached_to->transform.rotation.y -= Input::mouse_delta.x * Time::delta_time * 20;
+        attached_to->transform.rotation.x += Input::mouse_delta.y * Time::delta_time * 20;
 
         if (Input::mouse_down[SDL_BUTTON_LEFT]){
             Input::LockCursor(true);

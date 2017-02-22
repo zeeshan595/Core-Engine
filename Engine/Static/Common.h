@@ -38,7 +38,6 @@
 
 //Bullet Physics Library
 #include <btBulletDynamicsCommon.h>
-#include <btBulletCollisionCommon.h>
 
 //PATHS
 const std::string ASSET_PATH    = "assets/";

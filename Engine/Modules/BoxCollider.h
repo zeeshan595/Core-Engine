@@ -31,8 +31,12 @@ public:
     }
 
     void Update(){
-        btVector3 centre_pos = body->getCenterOfMassPosition();
+        btTransform bullet_transform; 
+        motion->getWorldTransform(bullet_transform);
+        btVector3 centre_pos = bullet_transform.getOrigin();
+        btVector3 rotation = bullet_transform.getRotation().getAxis();
         attached_to->transform.position = glm::vec3(centre_pos.getX(), centre_pos.getY(), centre_pos.getZ());
+        attached_to->transform.rotation = glm::vec3(rotation.getX(), rotation.getY(), rotation.getZ());
     }
 };
 
