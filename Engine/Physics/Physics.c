@@ -7,6 +7,7 @@ void Physics::InitPhysics()
 
     Physics::world = new btDiscreteDynamicsWorld(Physics::dispatcher, Physics::broadphase, Physics::solver, Physics::collision_config);
     Physics::world->setGravity(btVector3(0.0f, -9.82f, 0.0f));
+    std::cout << "SUCCESS [Bullet Physics]" << std::endl;
 }
 
 void Physics::DestroyPhysics()

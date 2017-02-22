@@ -57,7 +57,6 @@ Core::Core(std::string window_title)
     InitOpenGL();
     Audio::InitAudio();
     Physics::InitPhysics();
-    std::cout << "SUCCESS [Bullet Physics]" << std::endl;
 }
 
 Core::~Core()
