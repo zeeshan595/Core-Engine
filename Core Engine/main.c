@@ -73,6 +73,8 @@ int main(int argc, char* args[])
     bt_box_mesh->LoadDefaultCube();
     bt_box->transform.position = glm::vec3(50, 10, 50);
     bt_box->transform.scale = glm::vec3(20, 1, 20);
+    std::shared_ptr<BoxCollider> box_coll = bt_box->AddModule<BoxCollider>();
+    box_coll->mass = 0.0f;//so the ground doesn't move
 
     std::shared_ptr<Entity> bt_box2 = Environment::CreateEntity("Physics Cube");
     std::shared_ptr<Mesh> bt_box_mesh2 = bt_box2->AddModule<Mesh>();
@@ -83,6 +85,7 @@ int main(int argc, char* args[])
     bt_box_mesh2->LoadDefaultCube();
     bt_box2->transform.position = glm::vec3(50, 13, 50);
     bt_box2->transform.scale = glm::vec3(1, 1, 1);
+    bt_box2->AddModule<BoxCollider>();
 
 
     engine.EnableDebugMode();

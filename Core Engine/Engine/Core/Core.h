@@ -22,6 +22,7 @@ private:
     
     void InitOpenGL();
     void StartModules();
+    void StopModules();
     void Update();
     void Render();
     void Input(SDL_Event* e);

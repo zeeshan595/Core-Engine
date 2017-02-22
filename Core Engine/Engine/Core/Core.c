@@ -167,12 +167,16 @@ void Core::Start()
         SDL_Event event;
         Input(&event);
 
+        //Update Physics
+        Physics::world->stepSimulation(Time::delta_time);
+
         Update();
 
         Render();
 
         SDL_GL_SwapWindow(Screen::window);
     }
+    StopModules();
 }
 
 void Core::Input(SDL_Event* e)
@@ -253,6 +257,37 @@ void Core::StartModules()
         for (std::shared_ptr<Module> module : (*i)->GetModules())
         {
             module->Start();
+        }
+    }
+}
+
+void Core::StopModules()
+{
+    //Before starting reorder camera using draw order
+    std::sort((*Environment::GetCameras()).begin(), (*Environment::GetCameras()).end(), Camera::CameraOrder);
+
+    //Cameras
+    for (auto i = (*Environment::GetCameras()).begin(); i != (*Environment::GetCameras()).end(); ++i)
+    {
+        for (std::shared_ptr<Module> module : (*i)->GetModules())
+        {
+            module->Stop();
+        }
+    }
+    //Lights
+    for (auto i = (*Environment::GetLights()).begin(); i != (*Environment::GetLights()).end(); ++i)
+    {
+        for (std::shared_ptr<Module> module : (*i)->GetModules())
+        {
+            module->Stop();
+        }
+    }
+    //Entities
+    for (auto i = (*Environment::GetEntities()).begin(); i != (*Environment::GetEntities()).end(); ++i)
+    {
+        for (std::shared_ptr<Module> module : (*i)->GetModules())
+        {
+            module->Stop();
         }
     }
 }
