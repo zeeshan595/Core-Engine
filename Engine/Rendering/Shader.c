@@ -19,6 +19,7 @@ Shader::Shader(std::string vertex_shader_path, std::string fragment_shader_path)
     glBindAttribLocation(shader_program, 1, "vertex_color");
     glBindAttribLocation(shader_program, 2, "vertex_uv");
     glBindAttribLocation(shader_program, 3, "vertex_normal_model");
+    glBindAttribLocation(shader_program, 4, "tangent");
 
     //Link Program
     glLinkProgram(shader_program);

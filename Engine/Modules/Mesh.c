@@ -31,6 +31,16 @@ void Mesh::Render(std::shared_ptr<Camera> camera)
             GLint texture_uniform = glGetUniformLocation(surface->GetShader()->GetShaderProgram(), texture_name.c_str());
             glUniform1i(texture_uniform, i);
         }
+        for (int i = (*textures).size(); i < 20; i++)
+        {
+            std::stringstream ss;
+            ss << i;
+            std::string texture_name = "texture_map" + ss.str();
+            glActiveTexture(GL_TEXTURE0 + i);
+            glBindTexture(GL_TEXTURE_2D, -1);
+            GLint texture_uniform = glGetUniformLocation(surface->GetShader()->GetShaderProgram(), texture_name.c_str());
+            glUniform1i(texture_uniform, i);
+        }
         //Gather Lighting Data
         std::vector<glm::vec3> light_directions;
         std::vector<float> directional_light_brightness;
@@ -180,6 +190,7 @@ void Mesh::GenerateBuffers()
         VAO = 0;
     }
 
+    vertices = ComputeVertexTangents(vertices);
     //Create VAO
     glGenVertexArrays(1, &VAO);
     glBindVertexArray(VAO);
@@ -204,6 +215,9 @@ void Mesh::GenerateBuffers()
 
     glEnableVertexAttribArray(3);
     glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *)offsetof(Vertex, normal));
+
+    glEnableVertexAttribArray(4);
+    glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *)offsetof(Vertex, tangent));
 }
 
 void Mesh::ApplySurface(std::shared_ptr<Surface> surface)

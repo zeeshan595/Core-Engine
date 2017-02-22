@@ -85,7 +85,6 @@ int main(int argc, char* args[])
     bt_box2->transform.scale = glm::vec3(1, 1, 1);
     bt_box2->AddModule<BoxCollider>();
 
-
     //To ensure gizmos work properly call this just before you start the main loop
     engine.EnableDebugMode();
     engine.Start();
