@@ -57,9 +57,10 @@ int main(int argc, char* args[])
     std::shared_ptr<Entity> normal_test_entity = Environment::CreateEntity("Normal Map Test Object");
     std::shared_ptr<Mesh> normal_test_mesh = normal_test_entity->AddModule<Mesh>();
     normal_test_mesh->LoadDefaultPlane();
-    std::shared_ptr<Surface> surface5 = std::shared_ptr<Surface>(new Surface(Shader::LoadDefaultShader()));
+    std::shared_ptr<Surface> surface5 = Surface::LoadDefaultSurface();
     surface5->SetColorMap(std::shared_ptr<Texture>(new Texture("boulder.png")));
     surface5->SetNormalMap(std::shared_ptr<Texture>(new Texture("boulder_normal.png")));
+    surface5->SetSpecularMap(std::shared_ptr<Texture>(new Texture("boulder_specular.png")));
     normal_test_mesh->ApplySurface(surface5);
     normal_test_entity->transform.rotation = glm::vec3(-90, 0, 0);
     normal_test_entity->transform.position = glm::vec3(10, 10, 10);

@@ -9,6 +9,7 @@ in mat3 tangent_to_world_matrix;
 
 uniform sampler2D texture_map0; //Texture
 uniform sampler2D texture_map1; //Normal Texture
+uniform sampler2D texture_map2; //Specular Texture
 
 //Light Variables
 #define MAX_LIGHTS 10
@@ -37,11 +38,14 @@ uniform vec4 fog_color;
 
 void main()
 {
+    if (texture(texture_map2, the_uv).y < 0.3f)
+        discard;
+
     //Your allowed to edit these
     vec3 ambient_color  = vec3(0.1f, 0.1f, 0.1f);
     vec3 diffuse_color  = vec3(0.3f, 0.3f, 0.3f);
     vec3 spec_color     = vec3(1.0f, 1.0f, 1.0f);
-    float spec_amount   = 0.5f;
+    float spec_amount   = 1.0f;
     float spec_area     = 150.0f;
     
     //Setup default diffuse and specular values if no light is there
@@ -77,7 +81,7 @@ void main()
         specular_brightness = pow(specular_brightness, spec_area);
         //Apply results
         vec4 apply_spec_color = vec4(spec_color, 1.0f) + directional_light_color[i];
-        specular += apply_spec_color * specular_brightness * directional_light_brightness[i];
+        specular += apply_spec_color * specular_brightness * directional_light_brightness[i] * texture(texture_map2, the_uv).x;
     }
     //Point Lights
     for (int i = 0; i < point_light_count; i++)
@@ -104,7 +108,7 @@ void main()
         specular_brightness = pow(specular_brightness, spec_area);
         //Apply results
         vec4 apply_spec_color = vec4(spec_color, 1.0f) + point_light_color[i];
-        specular += apply_spec_color * specular_brightness * point_light_brightness[i] * point_light_formula;
+        specular += apply_spec_color * specular_brightness * point_light_brightness[i] * point_light_formula * texture(texture_map2, the_uv).x;
     }
     //Combine all light calculations
     vec4 light = vec4(ambient_color, 1.0f) + diffuse + specular;
