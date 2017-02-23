@@ -60,9 +60,8 @@ int main(int argc, char* args[])
     std::shared_ptr<Surface> surface5 = Surface::LoadDefaultSurface();
     surface5->SetColorMap(std::shared_ptr<Texture>(new Texture("boulder.png")));
     surface5->SetNormalMap(std::shared_ptr<Texture>(new Texture("boulder_normal.png")));
-    surface5->SetSpecularMap(std::shared_ptr<Texture>(new Texture("boulder_specular.png")));
     normal_test_mesh->ApplySurface(surface5);
-    normal_test_entity->transform.rotation = glm::vec3(-90, 0, 0);
+    normal_test_entity->transform.rotation = glm::vec3(-130, 0, 0);
     normal_test_entity->transform.position = glm::vec3(10, 10, 10);
 
     //Physics Test

@@ -12,7 +12,6 @@ public:
     std::vector<std::shared_ptr<Texture>>* GetTextures();
     void SetColorMap(std::shared_ptr<Texture> texture);
     void SetNormalMap(std::shared_ptr<Texture> texture);
-    void SetSpecularMap(std::shared_ptr<Texture> texture);
     void AddAdditionalTexture(std::shared_ptr<Texture> texture);
     static std::shared_ptr<Surface> LoadDefaultSurface();
 

@@ -57,7 +57,7 @@ void Terrain::CreateTerrain()
     std::shared_ptr<Surface> mySurface = std::shared_ptr<Surface>(new Surface(terrain_shader));
     mySurface->SetColorMap(std::shared_ptr<Texture>(new Texture(blend_map)));
     mySurface->SetNormalMap(std::shared_ptr<Texture>(new Texture(tile_texture0)));
-    mySurface->SetSpecularMap(std::shared_ptr<Texture>(new Texture(tile_texture1)));
+    mySurface->AddAdditionalTexture(std::shared_ptr<Texture>(new Texture(tile_texture1)));
     mySurface->AddAdditionalTexture(std::shared_ptr<Texture>(new Texture(tile_texture2)));
     mySurface->AddAdditionalTexture(std::shared_ptr<Texture>(new Texture(tile_texture3)));
     attached_mesh->ApplySurface(mySurface);

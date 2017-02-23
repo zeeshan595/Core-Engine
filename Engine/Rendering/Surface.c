@@ -6,10 +6,9 @@ std::shared_ptr<Surface> Surface::LoadDefaultSurface()
 Surface::Surface(std::shared_ptr<Shader> shader)
 {
     this->shader = shader;
-    textures.resize(3);
+    textures.resize(2);
     textures[0] = std::shared_ptr<Texture>(new Texture("default/texture.png"));
     textures[1] = std::shared_ptr<Texture>(new Texture("default/normal.png"));
-    textures[2] = std::shared_ptr<Texture>(new Texture("default/specular.png"));
 }
 
 void Surface::SetColorMap(std::shared_ptr<Texture> texture)
@@ -20,11 +19,6 @@ void Surface::SetColorMap(std::shared_ptr<Texture> texture)
 void Surface::SetNormalMap(std::shared_ptr<Texture> texture)
 {
     textures[1] = texture;
-}
-
-void Surface::SetSpecularMap(std::shared_ptr<Texture> texture)
-{
-    textures[2] = texture;
 }
 
 void Surface::AddAdditionalTexture(std::shared_ptr<Texture> texture)
