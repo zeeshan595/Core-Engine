@@ -38,9 +38,9 @@ int main(int argc, char* args[])
     //Create Default Light
     std::shared_ptr<Light> myLight = Environment::CreateLight("My Light");
     myLight->type = Light::LIGHT_TYPE::DIRECTIONAL;
-    myLight->transform.Rotate(glm::vec3(-90.0f, 0.0f, 0.0));
+    myLight->transform.Rotate(glm::vec3(-45.0f, 0.0f, 0.0));
 
-    //Generate Teerain
+    //Generate Terrain
     std::shared_ptr<Entity> myObj = Environment::CreateEntity("My Terrain");
     std::shared_ptr<Terrain> myTerrain = myObj->AddModule<Terrain>();
     //Change all terrain variables here
@@ -49,7 +49,7 @@ int main(int argc, char* args[])
     //Create GUI
     UI::CreateUI(std::shared_ptr<Texture>(new Texture("texture.png")), glm::vec4(0.0f, 0, 100.0f, 100.0f));
 
-    //Create 2D Audio. For 3D attach AudioClip to a Entity
+    //Create Audio
     std::shared_ptr<AudioSource> myAudio = myLight->AddModule<AudioSource>();
     std::shared_ptr<AudioClip> myClip = std::shared_ptr<AudioClip>(new AudioClip("song.wav"));
     myAudio->SetClip(myClip);

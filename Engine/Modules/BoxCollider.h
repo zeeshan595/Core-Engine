@@ -13,9 +13,9 @@ public:
         btTransform bullet_transform;
         bullet_transform.setIdentity();
         bullet_transform.setOrigin(btVector3(attached_to->transform.position.x, attached_to->transform.position.y, attached_to->transform.position.z));
-        std::cout << attached_to->transform.rotation.x << "," << attached_to->transform.rotation.x << "," << attached_to->transform.rotation.z << "," << attached_to->transform.rotation.w << std::endl;
         btQuaternion rot = btQuaternion(attached_to->transform.rotation.x, attached_to->transform.rotation.y, attached_to->transform.rotation.z, attached_to->transform.rotation.w);
         bullet_transform.setRotation(rot);
+
         cube = new btBoxShape(btVector3(attached_to->transform.scale.x, attached_to->transform.scale.y, attached_to->transform.scale.z));
         btVector3 inertia = btVector3(0, 0, 0);
         if (mass != 0)
@@ -34,8 +34,8 @@ public:
     }
 
     void Update(){
-        btTransform bullet_transform; 
-        motion->getWorldTransform(bullet_transform);        
+        btTransform bullet_transform;
+        motion->getWorldTransform(bullet_transform);
         glm::mat4x4 world_matrix;
         bullet_transform.getOpenGLMatrix(glm::value_ptr(world_matrix));
         
