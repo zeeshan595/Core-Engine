@@ -1,6 +1,16 @@
 #include "Engine/Core/Core.h"
 #include "Game/CameraMovment.h"
 
+class TestModule : public Module
+{
+public:
+    void Update(){
+        if(Input::keys[SDLK_SPACE]){
+            attached_to->GetModule<BoxCollider>()->body->setLinearVelocity(btVector3(1.0, 0, 0));
+        }
+    }
+};
+
 int main(int argc, char* args[])
 {
     Core engine("Core Engine");
@@ -43,7 +53,7 @@ int main(int argc, char* args[])
     std::shared_ptr<AudioSource> myAudio = myLight->AddModule<AudioSource>();
     std::shared_ptr<AudioClip> myClip = std::shared_ptr<AudioClip>(new AudioClip("song.wav"));
     myAudio->SetClip(myClip);
-    myAudio->play_on_start = true;
+    myAudio->play_on_start = false;
     //myAudio->SetLooping(true);
 
     //Create Particle System
@@ -69,7 +79,8 @@ int main(int argc, char* args[])
     std::shared_ptr<Mesh> bt_box_mesh = bt_box->AddModule<Mesh>();
     bt_box_mesh->ApplySurface(Surface::LoadDefaultSurface());
     bt_box_mesh->LoadDefaultCube();
-    bt_box->transform.position = glm::vec3(50, 10, 50);
+    bt_box->transform.position = glm::vec3(50, 13, 50);
+    bt_box->transform.rotation = glm::vec3(60, 0, 0);
     bt_box->transform.scale = glm::vec3(20, 1, 20);
     std::shared_ptr<BoxCollider> box_coll = bt_box->AddModule<BoxCollider>();
     box_coll->mass = 0.0f;//so the ground doesn't move
@@ -81,9 +92,10 @@ int main(int argc, char* args[])
     surface6->SetNormalMap(std::shared_ptr<Texture>(new Texture("boulder_normal.png")));
     bt_box_mesh2->ApplySurface(surface6);
     bt_box_mesh2->LoadDefaultCube();
-    bt_box2->transform.position = glm::vec3(50, 13, 50);
+    bt_box2->transform.position = glm::vec3(50, 20, 50);
     bt_box2->transform.scale = glm::vec3(1, 1, 1);
     bt_box2->AddModule<BoxCollider>();
+    bt_box2->AddModule<TestModule>();
 
     //To ensure gizmos work properly call this just before you start the main loop
     engine.EnableDebugMode();
