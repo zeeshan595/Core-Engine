@@ -26,7 +26,7 @@ int main(int argc, char* args[])
 
     std::shared_ptr<Camera> myCamera2 = Environment::CreateCamera("My Camera 2");
     myCamera2->transform.position = glm::vec3(50, 5, 50);
-    myCamera2->transform.rotation = glm::vec3(0, 0, 0);
+    myCamera2->transform.Rotate(glm::vec3(90.0f, 0.0f, 0.0f));
     myCamera2->draw_order = 1;
     myCamera2->viewport = glm::vec4(0, 0, 0.3f, 0.3f);
 
@@ -38,7 +38,7 @@ int main(int argc, char* args[])
     //Create Default Light
     std::shared_ptr<Light> myLight = Environment::CreateLight("My Light");
     myLight->type = Light::LIGHT_TYPE::DIRECTIONAL;
-    myLight->transform.rotation = (glm::vec3(-90.0f, 45.0f, 0.0f));
+    myLight->transform.Rotate(glm::vec3(-90.0f, 0.0f, 0.0));
 
     //Generate Teerain
     std::shared_ptr<Entity> myObj = Environment::CreateEntity("My Terrain");
@@ -71,7 +71,7 @@ int main(int argc, char* args[])
     surface5->SetColorMap(std::shared_ptr<Texture>(new Texture("boulder.png")));
     surface5->SetNormalMap(std::shared_ptr<Texture>(new Texture("boulder_normal.png")));
     normal_test_mesh->ApplySurface(surface5);
-    normal_test_entity->transform.rotation = glm::vec3(-130, 0, 0);
+    //normal_test_entity->transform.rotation = glm::vec3(-130, 0, 0);
     normal_test_entity->transform.position = glm::vec3(10, 10, 10);
 
     //Physics Test
@@ -80,8 +80,8 @@ int main(int argc, char* args[])
     bt_box_mesh->ApplySurface(Surface::LoadDefaultSurface());
     bt_box_mesh->LoadDefaultCube();
     bt_box->transform.position = glm::vec3(50, 13, 50);
-    bt_box->transform.rotation = glm::vec3(60, 0, 0);
-    bt_box->transform.scale = glm::vec3(20, 1, 20);
+    //bt_box->transform.rotation = glm::vec3(60, 0, 0);
+    bt_box->transform.scale = glm::vec3(1, 1, 1);
     std::shared_ptr<BoxCollider> box_coll = bt_box->AddModule<BoxCollider>();
     box_coll->mass = 0.0f;//so the ground doesn't move
 

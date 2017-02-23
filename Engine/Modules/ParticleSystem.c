@@ -125,7 +125,7 @@ void ParticleSystem::CreateParticle(int i)
     float rand_velocity_z = RandomFloat(velocity_z.x, velocity_z.y);
 
     particles[i].transform.position = glm::vec3(rand_position_x, rand_position_y, rand_position_z);
-    particles[i].transform.rotation = glm::vec3(0, 0, rand_rotation);
+    particles[i].transform.Rotate(glm::vec3(0, 0, rand_rotation));
     particles[i].transform.scale = glm::vec3(rand_scale, rand_scale, rand_scale);
     particles[i].velocity = glm::vec3(rand_velocity_x, rand_velocity_y, rand_velocity_z);
     particles[i].current_time = 0;

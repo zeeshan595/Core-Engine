@@ -13,7 +13,8 @@ public:
         btTransform bullet_transform;
         bullet_transform.setIdentity();
         bullet_transform.setOrigin(btVector3(attached_to->transform.position.x, attached_to->transform.position.y, attached_to->transform.position.z));
-        btQuaternion rot = btQuaternion::getIdentity();
+        std::cout << attached_to->transform.rotation.x << "," << attached_to->transform.rotation.x << "," << attached_to->transform.rotation.z << "," << attached_to->transform.rotation.w << std::endl;
+        btQuaternion rot = btQuaternion(attached_to->transform.rotation.x, attached_to->transform.rotation.y, attached_to->transform.rotation.z, attached_to->transform.rotation.w);
         bullet_transform.setRotation(rot);
         cube = new btBoxShape(btVector3(attached_to->transform.scale.x, attached_to->transform.scale.y, attached_to->transform.scale.z));
         btVector3 inertia = btVector3(0, 0, 0);
@@ -34,15 +35,12 @@ public:
 
     void Update(){
         btTransform bullet_transform; 
-        motion->getWorldTransform(bullet_transform);
-        btVector3 centre_pos = bullet_transform.getOrigin();
-        btVector3 rotation = bullet_transform.getRotation().getAxis();
-        float w = bullet_transform.getRotation().getW();
-        attached_to->transform.position = glm::vec3(centre_pos.getX(), centre_pos.getY(), centre_pos.getZ());
-        float rotation_x = Transform::ToDegrees(glm::asin(rotation.getX()) * glm::acos(w));
-        float rotation_y = Transform::ToDegrees(glm::asin(rotation.getY()) * glm::acos(w));
-        float rotation_z = Transform::ToDegrees(glm::asin(rotation.getZ()) * glm::acos(w));
-        attached_to->transform.rotation = glm::vec3(rotation_x, rotation_y, rotation_z);
+        motion->getWorldTransform(bullet_transform);        
+        glm::mat4x4 world_matrix;
+        bullet_transform.getOpenGLMatrix(glm::value_ptr(world_matrix));
+        
+        attached_to->transform.position = glm::vec3(world_matrix[3][0], world_matrix[3][1], world_matrix[3][2]);
+        attached_to->transform.rotation = glm::toQuat(world_matrix);
     }
 };
 

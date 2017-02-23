@@ -38,7 +38,7 @@ Particle::Particle()
     current_time = 10000;
 
     transform.position = glm::vec3(0, 0, 0);
-    transform.rotation = glm::vec3(0, 0, 0);
+    transform.rotation = glm::quat(1.0, 0, 0, 0);
     transform.scale    = glm::vec3(0, 0, 0);
     current_time       = 0;
 

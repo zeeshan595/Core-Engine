@@ -32,6 +32,7 @@
 //MATHS
 #include <GLM/glm.hpp>
 #include <GLM/gtc/matrix_transform.hpp>
+#include <glm/gtx/quaternion.hpp>
 #include <GLM/gtc/type_ptr.hpp>
 #include <GLM/gtx/string_cast.hpp>
 #include <GLM/gtc/constants.hpp>
