@@ -1,8 +1,6 @@
 #ifndef _CORE
 #define _CORE
 
-#include "../Static/Common.h"
-
 class Core
 {
 public:

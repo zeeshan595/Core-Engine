@@ -65,7 +65,8 @@
         "*inl*inl*HPP*HPP*HPP*HPP*HPP*HPP*HPP*HPP*HPP*HPP*HPP*HPP*HPP*HPP*HPP*HPP*HPP*HPP*HPP*HPP*HPP*HPP*HPPstack": "cpp",
         "*HPP*HPP*HPP*HPP*HPP*HPP*HPP*HPP*HPP*INL*H*H*H*H*H*H*H*H*H*H*H*Hfuture": "cpp",
         "*h*h*inl*h*h*inl*h*h*h*h*HPP*HPP*HPP*HPP*HPP*HPP*INL*H*H*H*H*H*H*H*TCCregex": "cpp",
-        "regex": "cpp"
+        "regex": "cpp",
+        "*.H": "cpp"
     },
     "editor.tabSize": 4
 }
