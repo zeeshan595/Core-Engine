@@ -5,8 +5,21 @@ class TestModule : public Module
 {
 public:
     void Update(){
-        if(Input::keys[SDLK_SPACE]){
-            attached_to->GetModule<BoxCollider>()->body->setLinearVelocity(btVector3(1.0, 0, 0));
+        if(Input::keys_down[SDLK_UP]){
+            attached_to->GetModule<BoxCollider>()->body->activate(true);
+            attached_to->GetModule<BoxCollider>()->body->applyCentralImpulse(btVector3(0.0, 0, 10.0f));
+        }
+        if(Input::keys_down[SDLK_DOWN]){
+            attached_to->GetModule<BoxCollider>()->body->activate(true);
+            attached_to->GetModule<BoxCollider>()->body->applyCentralImpulse(btVector3(0.0, 0, -10.0f));
+        }
+        if(Input::keys_down[SDLK_LEFT]){
+            attached_to->GetModule<BoxCollider>()->body->activate(true);
+            attached_to->GetModule<BoxCollider>()->body->applyCentralImpulse(btVector3(10.0, 0, 10.0f));
+        }
+        if(Input::keys_down[SDLK_RIGHT]){
+            attached_to->GetModule<BoxCollider>()->body->activate(true);
+            attached_to->GetModule<BoxCollider>()->body->applyCentralImpulse(btVector3(-10.0, 0, 10.0f));
         }
     }
 };
@@ -42,6 +55,7 @@ int main(int argc, char* args[])
 
     //Generate Terrain
     std::shared_ptr<Entity> myObj = Environment::CreateEntity("My Terrain");
+    myObj->AddModule<TerrainCollider>();
     std::shared_ptr<Terrain> myTerrain = myObj->AddModule<Terrain>();
     //Change all terrain variables here
     myTerrain->CreateTerrain();
@@ -92,7 +106,7 @@ int main(int argc, char* args[])
     surface6->SetNormalMap(std::shared_ptr<Texture>(new Texture("boulder_normal.png")));
     bt_box_mesh2->ApplySurface(surface6);
     bt_box_mesh2->LoadDefaultCube();
-    bt_box2->transform.position = glm::vec3(50, 20, 50);
+    bt_box2->transform.position = glm::vec3(10, 20, 10);
     bt_box2->transform.scale = glm::vec3(1, 1, 1);
     bt_box2->AddModule<BoxCollider>();
     bt_box2->AddModule<TestModule>();

@@ -10,7 +10,6 @@ public:
     float density;
     std::string blend_map;
     std::string height_map;
-    std::string spec_map;
 
     std::string tile_texture0;
     std::string tile_texture1;

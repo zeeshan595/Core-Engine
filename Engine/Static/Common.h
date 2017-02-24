@@ -38,7 +38,9 @@
 #include <GLM/gtc/constants.hpp>
 
 //Bullet Physics Library
+#include <btBulletCollisionCommon.h>
 #include <btBulletDynamicsCommon.h>
+#include <BulletCollision/CollisionShapes/btHeightfieldTerrainShape.h>
 
 //PATHS
 const std::string ASSET_PATH    = "assets/";
@@ -87,5 +89,6 @@ const std::string SOUND_PATH    = ASSET_PATH + "sound/";
 #include "../Modules/ParticleSystem.h"
 #include "../Modules/Gizmo.h"
 #include "../Modules/BoxCollider.h"
+#include "../Modules/TerrainCollider.h"
 
 #endif

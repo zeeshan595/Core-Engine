@@ -6,7 +6,6 @@ Terrain::Terrain()
     density         = 1.0f;
     blend_map       = "blend_map.png";
     height_map      = "height_map.png";
-    spec_map        = "spec_map.png";
     tile_texture0 = "grassy2.png";
     tile_texture1 = "grassFlowers.png";
     tile_texture2 = "mud.png";
