@@ -106,7 +106,7 @@ int main(int argc, char* args[])
     surface6->SetNormalMap(std::shared_ptr<Texture>(new Texture("boulder_normal.png")));
     bt_box_mesh2->ApplySurface(surface6);
     bt_box_mesh2->LoadDefaultCube();
-    bt_box2->transform.position = glm::vec3(10, 20, 10);
+    bt_box2->transform.position = glm::vec3(30, 20, 30);
     bt_box2->transform.scale = glm::vec3(1, 1, 1);
     bt_box2->AddModule<BoxCollider>();
     bt_box2->AddModule<TestModule>();
