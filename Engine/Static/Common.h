@@ -62,7 +62,7 @@ const std::string SOUND_PATH    = ASSET_PATH + "sound/";
 #include "Fog.h"
 #include "Quality.h"
 //Base classes
-#include "../Modules/Module.h"
+#include "../Core/Module.h"
 #include "../Core/Entity.h"
 //Audio
 #include "../Audio/Audio.h"
@@ -82,13 +82,15 @@ const std::string SOUND_PATH    = ASSET_PATH + "sound/";
 //Physics
 #include "../Physics/Physics.h"
 #include "../Physics/Raycast.h"
+#include "../Physics/Collider.h"
+#include "../Physics/BoxCollider.h"
+#include "../Physics/TerrainCollider.h"
 //Modules
 #include "../Modules/Mesh.h"
 #include "../Modules/Terrain.h"
 #include "../Modules/AudioSource.h"
 #include "../Modules/ParticleSystem.h"
 #include "../Modules/Gizmo.h"
-#include "../Modules/BoxCollider.h"
-#include "../Modules/TerrainCollider.h"
+#include "../Modules/Rigidbody.h"
 
 #endif

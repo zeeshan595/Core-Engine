@@ -1,29 +1,6 @@
 #include "Engine/Core/Core.h"
 #include "Game/CameraMovment.h"
 
-class TestModule : public Module
-{
-public:
-    void Update(){
-        if(Input::keys_down[SDLK_UP]){
-            attached_to->GetModule<BoxCollider>()->body->activate(true);
-            attached_to->GetModule<BoxCollider>()->body->applyCentralImpulse(btVector3(0.0, 0, 10.0f));
-        }
-        if(Input::keys_down[SDLK_DOWN]){
-            attached_to->GetModule<BoxCollider>()->body->activate(true);
-            attached_to->GetModule<BoxCollider>()->body->applyCentralImpulse(btVector3(0.0, 0, -10.0f));
-        }
-        if(Input::keys_down[SDLK_LEFT]){
-            attached_to->GetModule<BoxCollider>()->body->activate(true);
-            attached_to->GetModule<BoxCollider>()->body->applyCentralImpulse(btVector3(10.0, 0, 10.0f));
-        }
-        if(Input::keys_down[SDLK_RIGHT]){
-            attached_to->GetModule<BoxCollider>()->body->activate(true);
-            attached_to->GetModule<BoxCollider>()->body->applyCentralImpulse(btVector3(-10.0, 0, 10.0f));
-        }
-    }
-};
-
 int main(int argc, char* args[])
 {
     Core engine("Core Engine");
@@ -55,10 +32,12 @@ int main(int argc, char* args[])
 
     //Generate Terrain
     std::shared_ptr<Entity> myObj = Environment::CreateEntity("My Terrain");
-    myObj->AddModule<TerrainCollider>();
     std::shared_ptr<Terrain> myTerrain = myObj->AddModule<Terrain>();
     //Change all terrain variables here
     myTerrain->CreateTerrain();
+    std::shared_ptr<Rigidbody> terrain_coll = myObj->AddModule<Rigidbody>();
+    terrain_coll->SetCollisionShape(new TerrainCollider(myTerrain->GetTerrainCollisionInfo()));
+    terrain_coll->SetMass(0.0f);//Make terrain static
 
     //Create GUI
     UI::CreateUI(std::shared_ptr<Texture>(new Texture("texture.png")), glm::vec4(0.0f, 0, 100.0f, 100.0f));
@@ -96,8 +75,8 @@ int main(int argc, char* args[])
     bt_box->transform.position = glm::vec3(50, 13, 50);
     //bt_box->transform.rotation = glm::vec3(60, 0, 0);
     bt_box->transform.scale = glm::vec3(1, 1, 1);
-    std::shared_ptr<BoxCollider> box_coll = bt_box->AddModule<BoxCollider>();
-    box_coll->mass = 0.0f;//so the ground doesn't move
+    //std::shared_ptr<BoxCollider> box_coll = bt_box->AddModule<BoxCollider>();
+    //box_coll->mass = 0.0f;//so the ground doesn't move
 
     std::shared_ptr<Entity> bt_box2 = Environment::CreateEntity("Physics Cube");
     std::shared_ptr<Mesh> bt_box_mesh2 = bt_box2->AddModule<Mesh>();
@@ -108,8 +87,7 @@ int main(int argc, char* args[])
     bt_box_mesh2->LoadDefaultCube();
     bt_box2->transform.position = glm::vec3(30, 20, 30);
     bt_box2->transform.scale = glm::vec3(1, 1, 1);
-    bt_box2->AddModule<BoxCollider>();
-    bt_box2->AddModule<TestModule>();
+    bt_box2->AddModule<Rigidbody>()->SetCollisionShape(new BoxCollider(glm::vec3(1.0, 1.0, 1.0)));
 
     //To ensure gizmos work properly call this just before you start the main loop
     engine.EnableDebugMode();

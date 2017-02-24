@@ -167,7 +167,7 @@ void Core::Start()
         Input(&event);
 
         //Update Physics
-        Physics::world->stepSimulation(Time::delta_time);
+        Physics::GetWorld()->stepSimulation(Time::delta_time);
 
         Update();
 

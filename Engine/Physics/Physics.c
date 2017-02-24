@@ -18,3 +18,8 @@ void Physics::DestroyPhysics()
     delete Physics::broadphase;
     delete Physics::world;
 }
+
+btDiscreteDynamicsWorld* Physics::GetWorld()
+{
+    return world;
+}

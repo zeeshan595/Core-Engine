@@ -47,6 +47,30 @@ float Terrain::TerrainHeight(float world_x, float world_z)
     return answer;
 }
 
+TerrainCollider::TerrainData Terrain::GetTerrainCollisionInfo()
+{
+    if (heights.size() == 0)
+    {
+        std::cout << "ERROR: please create terrain before getting collision information" << std::endl;
+        return {  };
+    }
+    float x_size = terrain_size_x * density;
+    float z_size = terrain_size_z * density;
+    float* heights_data = GetHeightsData();
+    return { x_size, z_size, heights_data, max_height };
+}
+
+float* Terrain::GetHeightsData()
+{
+    float* hightfield_data = new float[terrain_size_x * terrain_size_z];
+    for (int i = 0; i < terrain_size_z; i++){
+        for (int j = 0; j < terrain_size_x; j++){
+            hightfield_data[(i * terrain_size_x) + j] = heights[j][i];
+        }
+    }
+    return hightfield_data;
+}
+
 void Terrain::CreateTerrain()
 {
     std::shared_ptr<Mesh> attached_mesh = attached_to->GetModule<Mesh>();
@@ -154,4 +178,18 @@ Uint32 Terrain::GetPixel(int x, int y)
     default:
         return 0;       /* shouldn't happen, but avoids warnings */
     }
+}
+
+int Terrain::GetVertexPosition(int x, int y)
+{
+    return x + ((terrain_size_x + 1) * y);
+}
+
+float Terrain::barryCentric(glm::vec3 p1, glm::vec3 p2, glm::vec3 p3, glm::vec2 pos)
+{
+    float det = (p2.z - p3.z) * (p1.x - p3.x) + (p3.x - p2.x) * (p1.z - p3.z);
+    float l1 = ((p2.z - p3.z) * (pos.x - p3.x) + (p3.x - p2.x) * (pos.y - p3.z)) / det;
+    float l2 = ((p3.z - p1.z) * (pos.x - p3.x) + (p1.x - p3.x) * (pos.y - p3.z)) / det;
+    float l3 = 1.0f - l1 - l2;
+    return l1 * p1.y + l2 * p2.y + l3 * p3.y;
 }

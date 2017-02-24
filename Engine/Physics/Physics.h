@@ -6,7 +6,9 @@ class Physics
 public:
     static void InitPhysics();
     static void DestroyPhysics();
+    static btDiscreteDynamicsWorld* GetWorld();
 
+private:
     static btDiscreteDynamicsWorld* world;
     static btDispatcher* dispatcher;
     static btCollisionConfiguration* collision_config;
