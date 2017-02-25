@@ -89,3 +89,42 @@ glm::mat4x4 UI::GetTransformationMatrix()
     model_matrix = glm::scale(model_matrix, glm::vec3(mapped_rect.z, mapped_rect.w, 0.0f));
     return model_matrix;
 }
+
+std::shared_ptr<UI> UI::CreateUI(std::shared_ptr<Texture> tex, glm::vec4 ui_rect)
+{
+    std::shared_ptr<UI> myUI = std::shared_ptr<UI>(new UI(tex, ui_rect));
+    UI::uis.push_back(myUI);
+    return myUI;
+}
+GLuint* UI::GetVAO()
+{
+    return &UI::VAO;
+}
+GLuint* UI::GetVBO()
+{
+    return &UI::VAO;
+}
+GLuint* UI::GetEBO()
+{
+    return &UI::VAO;
+}
+std::vector<std::shared_ptr<UI>>* UI::GetUIs()
+{
+    return &uis;
+}
+
+void UI::ClearUI()
+{
+    UI::uis.clear();
+}
+void UI::DestroyUI(std::shared_ptr<UI> ui)
+{
+    for (auto i = UI::uis.begin(); i < UI::uis.end(); i++)
+    {
+        if ((*i) == ui)
+        {
+            UI::uis.erase(i);
+            break;
+        }
+    }
+}

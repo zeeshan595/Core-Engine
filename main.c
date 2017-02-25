@@ -67,7 +67,6 @@ int main(int argc, char* args[])
     //Create GUI
     UI::CreateUI(std::shared_ptr<Texture>(new Texture("texture.png")), glm::vec4(0.0f, 0, 100.0f, 100.0f));
     UI::CreateUI(std::shared_ptr<Texture>(new Texture("crate.png")), glm::vec4(100.0f, 100.0f, 100.0f, 100.0f));
-
     //Create Audio
     std::shared_ptr<AudioSource> myAudio = myLight->AddModule<AudioSource>();
     std::shared_ptr<AudioClip> myClip = std::shared_ptr<AudioClip>(new AudioClip("song.wav"));

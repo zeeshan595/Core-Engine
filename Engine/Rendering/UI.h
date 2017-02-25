@@ -14,23 +14,14 @@ public:
     static void PreRender();
     void Render();
 
-    static std::shared_ptr<UI> CreateUI(std::shared_ptr<Texture> tex, glm::vec4 ui_rect){
-        std::shared_ptr<UI> myUI = std::shared_ptr<UI>(new UI(tex, ui_rect));
-        UI::uis.push_back(myUI);
-        return myUI;
-    }
-    static GLuint* GetVAO(){
-        return &UI::VAO;
-    }
-    static GLuint* GetVBO(){
-        return &UI::VAO;
-    }
-    static GLuint* GetEBO(){
-        return &UI::VAO;
-    }
-    static std::vector<std::shared_ptr<UI>>* GetUIs(){
-        return &uis;
-    }
+    static std::shared_ptr<UI> CreateUI(std::shared_ptr<Texture> tex, glm::vec4 ui_rect);
+    static GLuint* GetVAO();
+    static GLuint* GetVBO();
+    static GLuint* GetEBO();
+    static std::vector<std::shared_ptr<UI>>* GetUIs();
+
+    static void ClearUI();
+    static void DestroyUI(std::shared_ptr<UI> ui);
 
 private:
     static std::shared_ptr<Shader> shader;
