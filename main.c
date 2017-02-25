@@ -1,6 +1,22 @@
 #include "Engine/Common.h"
 #include "Game/CameraMovment.h"
 
+class TestModule : public Module
+{
+public:
+    void Update()
+    {
+        if (Input::keys_down[SDLK_RIGHT])
+        {
+            Environment::ChangeEnvironment(0);
+        }
+        if (Input::keys_down[SDLK_LEFT])
+        {
+            Environment::ChangeEnvironment(1);
+        }
+    }
+};
+
 int main(int argc, char* args[])
 {
     Core engine("Core Engine");
@@ -16,17 +32,23 @@ int main(int argc, char* args[])
 
     //Create a new environment
     Environment::CreateEnvironment("default");
-
+    Environment::CreateEnvironment("scene");
+    std::cout << Environment::GetEnvironmentSize() << std::endl;
+    
     std::shared_ptr<Camera> myCamera2 = Environment::CreateCamera("My Camera 2");
     myCamera2->transform.Translate(glm::vec3(50, 5, 50));
     myCamera2->transform.Rotate(glm::vec3(90.0f, 0.0f, 0.0f));
     myCamera2->draw_order = 1;
     myCamera2->viewport = glm::vec4(0, 0, 0.3f, 0.3f);
+    myCamera2->AddModule<TestModule>();
+
+    Environment::ChangeEnvironment("scene");
 
     //Create Default Camera
     std::shared_ptr<Camera> myCamera = Environment::CreateCamera("My Camera 1");
     myCamera->draw_order = 0;
     myCamera->AddModule<CameraMovment>();
+    //myCamera->AddModule<TestModule>();
 
     //Create Default Light
     std::shared_ptr<Light> myLight = Environment::CreateLight("My Light");

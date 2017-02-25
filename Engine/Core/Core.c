@@ -160,14 +160,15 @@ void Core::Start()
         is_running = true;
 
     Environment::ChangeEnvironment(0);
-    StartModules();
     while(is_running)
     {
+        active_scene = Environment::GetCurrentEnvironment();
         SDL_Event event;
         Input(&event);
 
         //Update Physics
-        Physics::GetWorld()->stepSimulation(Time::delta_time);
+        if (Physics::GetWorld())
+            Physics::GetWorld()->stepSimulation(Time::delta_time);
 
         Update();
 
@@ -175,7 +176,7 @@ void Core::Start()
 
         SDL_GL_SwapWindow(Screen::window);
     }
-    StopModules();
+    Environment::StopModules();
 }
 
 void Core::Input(SDL_Event* e)
@@ -229,68 +230,6 @@ void Core::Input(SDL_Event* e)
     }
 }
 
-void Core::StartModules()
-{
-    //Before starting reorder camera using draw order
-    std::sort((*Environment::GetCameras()).begin(), (*Environment::GetCameras()).end(), Camera::CameraOrder);
-
-    //Cameras
-    for (auto i = (*Environment::GetCameras()).begin(); i != (*Environment::GetCameras()).end(); ++i)
-    {
-        for (std::shared_ptr<Module> module : (*i)->GetModules())
-        {
-            module->Start();
-        }
-    }
-    //Lights
-    for (auto i = (*Environment::GetLights()).begin(); i != (*Environment::GetLights()).end(); ++i)
-    {
-        for (std::shared_ptr<Module> module : (*i)->GetModules())
-        {
-            module->Start();
-        }
-    }
-    //Entities
-    for (auto i = (*Environment::GetEntities()).begin(); i != (*Environment::GetEntities()).end(); ++i)
-    {
-        for (std::shared_ptr<Module> module : (*i)->GetModules())
-        {
-            module->Start();
-        }
-    }
-}
-
-void Core::StopModules()
-{
-    //Before starting reorder camera using draw order
-    std::sort((*Environment::GetCameras()).begin(), (*Environment::GetCameras()).end(), Camera::CameraOrder);
-
-    //Cameras
-    for (auto i = (*Environment::GetCameras()).begin(); i != (*Environment::GetCameras()).end(); ++i)
-    {
-        for (std::shared_ptr<Module> module : (*i)->GetModules())
-        {
-            module->Stop();
-        }
-    }
-    //Lights
-    for (auto i = (*Environment::GetLights()).begin(); i != (*Environment::GetLights()).end(); ++i)
-    {
-        for (std::shared_ptr<Module> module : (*i)->GetModules())
-        {
-            module->Stop();
-        }
-    }
-    //Entities
-    for (auto i = (*Environment::GetEntities()).begin(); i != (*Environment::GetEntities()).end(); ++i)
-    {
-        for (std::shared_ptr<Module> module : (*i)->GetModules())
-        {
-            module->Stop();
-        }
-    }
-}
-
 void Core::Update()
 {
     //compute time
@@ -304,24 +243,42 @@ void Core::Update()
         for (std::shared_ptr<Module> module : (*i)->GetModules())
         {
             module->Update();
+            if (active_scene != Environment::GetCurrentEnvironment())
+                break;
         }
+        if (active_scene != Environment::GetCurrentEnvironment())
+            break;
     }
+    if (active_scene != Environment::GetCurrentEnvironment())
+        return;
     //Lights
     for (auto i = (*Environment::GetLights()).begin(); i != (*Environment::GetLights()).end(); ++i)
     {
         for (std::shared_ptr<Module> module : (*i)->GetModules())
         {
             module->Update();
+            if (active_scene != Environment::GetCurrentEnvironment())
+                break;
         }
+        if (active_scene != Environment::GetCurrentEnvironment())
+            break;
     }
+    if (active_scene != Environment::GetCurrentEnvironment())
+        return;
     //Entities
     for (auto i = (*Environment::GetEntities()).begin(); i != (*Environment::GetEntities()).end(); ++i)
     {
         for (std::shared_ptr<Module> module : (*i)->GetModules())
         {
             module->Update();
+        if (active_scene != Environment::GetCurrentEnvironment())
+            break;
         }
+        if (active_scene != Environment::GetCurrentEnvironment())
+            break;
     }
+    if (active_scene != Environment::GetCurrentEnvironment())
+        return;
 }
 
 void Core::Render()
@@ -372,9 +329,12 @@ void Core::Render()
     glViewport(0, 0, Screen::width, Screen::height);
     glScissor(0, 0, Screen::width, Screen::height);
     std::vector<std::shared_ptr<UI>>* uis = UI::GetUIs();
-    UI::PreRender();
-    for (auto i = (*uis).begin(); i < (*uis).end(); i++)
+    if ((*uis).size() != 0)
     {
-        (*i)->Render();
+        UI::PreRender();
+        for (auto i = (*uis).begin(); i < (*uis).end(); i++)
+        {
+            (*i)->Render();
+        }
     }
 }

@@ -9,18 +9,22 @@ public:
     void Start();
     void Update();
 
-    void SetCollisionShape(std::shared_ptr<Collider> collider);
+    void ApplyForce(glm::vec3 force);
+    void ApplyForce(glm::vec3 force, glm::vec3 relative_position);
+    void ApplyTorque(glm::vec3 torque);
+    void ClearForces();
+    void SetDamping(float line, float angular);
 
     void SetMass(float m);
     float GetMass();
+
+    void SetCollisionShape(std::shared_ptr<Collider> collider);
 
 private:
     btRigidBody* body;
     btMotionState* motion;
     std::shared_ptr<Collider> collider_info;
     float mass;
-
-    void SetupDefaultMotion();
 };
 
 #include "Rigidbody.c"

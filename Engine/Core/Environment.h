@@ -14,7 +14,7 @@ public:
     static void ChangeEnvironment(std::string environment_name);
     static int  CreateEnvironment(std::string environment_name);
     static int  GetEnvironmentSize();
-
+    static int  GetCurrentEnvironment();
 
     static std::shared_ptr<Entity> CreateEntity(std::string name);
     static std::shared_ptr<Camera> CreateCamera(std::string name);
@@ -23,7 +23,11 @@ public:
     static std::vector<std::shared_ptr<Camera>>* GetCameras();
     static std::vector<std::shared_ptr<Light>>* GetLights();
 
+    static void StartModules();
+    static void StopModules();
+
 private:
+    static bool modules_started;
     std::string name;
     std::shared_ptr<Skybox> skybox;
 
@@ -34,6 +38,7 @@ private:
     static std::vector<std::shared_ptr<Environment>> environments;
     static int current_environment;
 };
+bool Environment::modules_started = false;
 std::vector<std::shared_ptr<Environment>> Environment::environments;
 int Environment::current_environment;
 
