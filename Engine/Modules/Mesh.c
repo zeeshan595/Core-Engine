@@ -62,9 +62,9 @@ void Mesh::Render(std::shared_ptr<Camera> camera)
             else if ((*i)->type == Light::LIGHT_TYPE::POINT)
             {
                 //if point light is too far away do NOT render it
-                if (glm::distance(attached_to->transform.position, (*i)->transform.position) < ((*i)->light_range * 2) + 5.0f)
+                if (glm::distance(attached_to->transform.GetPosition(), (*i)->transform.GetPosition()) < ((*i)->light_range * 2) + 5.0f)
                 {
-                    light_positions.push_back((*i)->transform.position);
+                    light_positions.push_back((*i)->transform.GetPosition());
                     light_range.push_back((*i)->light_range);
                     point_light_brightness.push_back((*i)->brightness);
                     point_light_color.push_back((*i)->color);
@@ -107,7 +107,7 @@ void Mesh::Render(std::shared_ptr<Camera> camera)
 
         //Camera Position
         GLint eye_position_uniform = glGetUniformLocation(surface->GetShader()->GetShaderProgram(), "camera_position_world");
-        glUniform3fv(eye_position_uniform, 1, &camera->transform.position[0]);
+        glUniform3fv(eye_position_uniform, 1, &camera->transform.GetPosition()[0]);
 
         //Fog distance
         GLint fog_distance_uniform = glGetUniformLocation(surface->GetShader()->GetShaderProgram(), "fog_distance");
@@ -218,6 +218,28 @@ void Mesh::GenerateBuffers()
 
     glEnableVertexAttribArray(4);
     glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *)offsetof(Vertex, tangent));
+}
+
+std::vector<Vertex> Mesh::ComputeVertexTangents(std::vector<Vertex> vert)
+{
+    std::vector<Vertex> vertices = vert;
+    for (int i = 0; i < vertices.size() / 3; i++)
+    {
+        glm::vec3 delta_position1 = vertices[(i*3) + 1].position - vertices[(i*3) + 0].position;
+        glm::vec3 delta_position2 = vertices[(i*3) + 2].position - vertices[(i*3) + 0].position;
+        glm::vec2 delta_uv1 = vertices[(i*3) + 1].texture - vertices[(i*3) + 0].texture;
+        glm::vec2 delta_uv2 = vertices[(i*3) + 2].texture - vertices[(i*3) + 0].texture;
+
+        float r = 1.0f / (delta_uv1.x * delta_uv2.y - delta_uv1.y * delta_uv2.x);
+        delta_position1 *= delta_uv2.y;
+        delta_position2 *= delta_uv1.y;
+        glm::vec3 tangent = delta_position1 - delta_position2;
+        vertices[(i*3) + 0].tangent = tangent;
+        vertices[(i*3) + 1].tangent = tangent;
+        vertices[(i*3) + 2].tangent = tangent;
+    }
+
+    return vertices;
 }
 
 void Mesh::SetSurface(std::shared_ptr<Surface> surface)

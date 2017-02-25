@@ -7,23 +7,25 @@ public:
 
     float rotation_x = 0;
     float rotation_y = 0;
+    glm::vec3 position;
 
     void Start(){
-        attached_to->transform.position = glm::vec3(50, 20, 50);
+        position = glm::vec3(50, 20, 50);
         //attached_to->transform.rotation = glm::vec3(45,  0,  0);
         Input::LockCursor(true);
     }
 
     void Update(){
+        
         if (Input::keys[SDLK_w])
-            attached_to->transform.position += attached_to->transform.Forward() * 20.0f * Time::delta_time;
+            position += attached_to->transform.Forward() * 20.0f * Time::delta_time;
         else if (Input::keys[SDLK_s])
-            attached_to->transform.position -= attached_to->transform.Forward() * 20.0f * Time::delta_time;
+            position -= attached_to->transform.Forward() * 20.0f * Time::delta_time;
 
         if (Input::keys[SDLK_a])
-            attached_to->transform.position += attached_to->transform.Right() * 20.0f * Time::delta_time;
+            position += attached_to->transform.Right() * 20.0f * Time::delta_time;
         else if (Input::keys[SDLK_d])
-            attached_to->transform.position -= attached_to->transform.Right() * 20.0f * Time::delta_time;
+            position -= attached_to->transform.Right() * 20.0f * Time::delta_time;
 
         rotation_x += Input::mouse_delta.y * Time::delta_time * 1;
         rotation_y -= Input::mouse_delta.x * Time::delta_time * 1;
@@ -36,6 +38,8 @@ public:
         if (Input::keys_down[SDLK_ESCAPE]){
             Input::LockCursor(false);
         }
+
+        attached_to->transform.Translate(position);
     }
 };
 

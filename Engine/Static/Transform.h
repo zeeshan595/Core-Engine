@@ -4,58 +4,35 @@
 class Transform
 {
 public:
+    Transform();
+
+    void Translate(glm::vec3 t);
+    void Rotate(glm::vec3 r);
+    void SetRotation(glm::quat q);
+    void Scale(glm::vec3 s);
+
+    glm::vec3 GetPosition();
+    glm::quat GetRotation();
+    glm::vec3 GetSize();
+
+    glm::mat4x4 GetWorldMatrix();
+    glm::vec3 EulerAngles();
+    glm::vec3 Forward();
+    glm::vec3 Up();
+    glm::vec3 Right();
+
+	static float ToRadians(float d);
+	static float ToDegrees(float r);
+
+private:
     glm::vec3 position;
     glm::quat rotation;
-    glm::vec3 scale;
+    glm::vec3 size;
+    glm::mat4x4 model_matrix;
 
-    Transform(){
-        position = glm::vec3(0.0f, 0.0f, 0.0f);
-        rotation = glm::quat(1.0f, 0.0f, 0.0f, 0.0f);
-        scale = glm::vec3(1.0f, 1.0f, 1.0f);
-    }
-
-    void Translate(glm::vec3 t){
-        position += t;
-    }
-    void Rotate(glm::vec3 amount){
-        glm::vec3 euler  = amount;
-        glm::quat qPitch = glm::angleAxis(euler.x, glm::vec3(1, 0, 0));
-        glm::quat qYaw   = glm::angleAxis(euler.y, glm::vec3(0, 1, 0));
-        glm::quat qRoll  = glm::angleAxis(euler.z, glm::vec3(0, 0, 1));
-
-        ///x,y,z are in radians
-        rotation = qYaw *qPitch * qRoll;
-    }
-
-    glm::mat4x4 GetWorldMatrix(){
-        glm::mat4x4 pos = glm::translate(glm::mat4x4(1.0f), position);
-
-        glm::mat4x4 rot = glm::toMat4(rotation);
-
-        glm::mat4x4 sca = glm::scale(glm::mat4x4(1.0f), scale);
-
-        return pos * rot * sca;
-    }
-    glm::vec3 EulerAngles(){
-        return glm::eulerAngles(rotation);
-    }
-    glm::vec3 Forward(){
-        return glm::vec3(GetWorldMatrix()[2][0], GetWorldMatrix()[2][1], GetWorldMatrix()[2][2]);
-    }
-    glm::vec3 Up(){
-        return glm::vec3(GetWorldMatrix()[1][0], GetWorldMatrix()[1][1], GetWorldMatrix()[1][2]);
-    }
-    glm::vec3 Right(){
-        return glm::vec3(GetWorldMatrix()[0][0], GetWorldMatrix()[0][1], GetWorldMatrix()[0][2]);
-    }
-
-	static float ToRadians(float d){
-		return (d / 180.0f) * glm::pi<float>();
-	}
-
-	static float ToDegrees(float r){
-		return (r / glm::pi<float>()) * 180.0f;
-	}
+    void BuildModelMatrix();
 };
+
+#include "Transform.c"
 
 #endif

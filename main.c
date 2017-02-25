@@ -16,7 +16,7 @@ int main(int argc, char* args[])
     Quality::EnableMultisampling(); //Add Multisample-Antialiasing
 
     std::shared_ptr<Camera> myCamera2 = Environment::CreateCamera("My Camera 2");
-    myCamera2->transform.position = glm::vec3(50, 5, 50);
+    myCamera2->transform.Translate(glm::vec3(50, 5, 50));
     myCamera2->transform.Rotate(glm::vec3(90.0f, 0.0f, 0.0f));
     myCamera2->draw_order = 1;
     myCamera2->viewport = glm::vec4(0, 0, 0.3f, 0.3f);
@@ -55,7 +55,7 @@ int main(int argc, char* args[])
     std::shared_ptr<Surface> surface4 = std::shared_ptr<Surface>(new Surface(std::shared_ptr<Shader>(new Shader("default/particleVS.glsl", "default/particleFS.glsl"))));
     surface4->SetColorMap(std::shared_ptr<Texture>(new Texture("texture.png")));
     ps->SetSurface(surface4);
-    myLight->transform.position = glm::vec3(0, 3, 0);
+    myLight->transform.Translate(glm::vec3(0, 3, 0));
 
     //Normal Map Texture
     std::shared_ptr<Entity> normal_test_entity = Environment::CreateEntity("Normal Map Test Object");
@@ -66,16 +66,16 @@ int main(int argc, char* args[])
     surface5->SetNormalMap(std::shared_ptr<Texture>(new Texture("boulder_normal.png")));
     normal_test_mesh->SetSurface(surface5);
     //normal_test_entity->transform.rotation = glm::vec3(-130, 0, 0);
-    normal_test_entity->transform.position = glm::vec3(10, 10, 10);
+    normal_test_entity->transform.Translate(glm::vec3(10, 10, 10));
 
     //Physics Test
     std::shared_ptr<Entity> bt_box = Environment::CreateEntity("Physics Cube");
     std::shared_ptr<Mesh> bt_box_mesh = bt_box->AddModule<Mesh>();
     bt_box_mesh->SetSurface(Surface::LoadDefaultSurface());
     bt_box_mesh->LoadDefaultCube();
-    bt_box->transform.position = glm::vec3(50, 13, 50);
+    bt_box->transform.Translate(glm::vec3(50, 13, 50));
     //bt_box->transform.rotation = glm::vec3(60, 0, 0);
-    bt_box->transform.scale = glm::vec3(1, 1, 1);
+    bt_box->transform.Scale(glm::vec3(1, 1, 1));
     //std::shared_ptr<BoxCollider> box_coll = bt_box->AddModule<BoxCollider>();
     //box_coll->mass = 0.0f;//so the ground doesn't move
 
@@ -86,8 +86,8 @@ int main(int argc, char* args[])
     surface6->SetNormalMap(std::shared_ptr<Texture>(new Texture("boulder_normal.png")));
     bt_box_mesh2->SetSurface(surface6);
     bt_box_mesh2->LoadDefaultCube();
-    bt_box2->transform.position = glm::vec3(30, 20, 30);
-    bt_box2->transform.scale = glm::vec3(1, 1, 1);
+    bt_box2->transform.Translate(glm::vec3(30, 20, 30));
+    bt_box2->transform.Scale(glm::vec3(1, 1, 1));
     bt_box2->AddModule<Rigidbody>()->SetCollisionShape(std::shared_ptr<BoxCollider>(new BoxCollider(1.0f, 1.0f, 1.0f)));
 
     //To ensure gizmos work properly call this just before you start the main loop

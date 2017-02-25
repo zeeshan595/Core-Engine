@@ -17,11 +17,8 @@ void AudioSource::Update()
     }
     else if (attached_to != nullptr)
     {
-        ALfloat source_position[] = {
-             attached_to->transform.position.x,
-             attached_to->transform.position.y,
-             attached_to->transform.position.z 
-        };
+        glm::vec3 pos = attached_to->transform.GetPosition();
+        ALfloat source_position[] = { pos.x, pos.y, pos.z };
         ALfloat source_velocity[] = { 0.0, 0.0, 0.0 };
         alSourcefv(source, AL_POSITION, source_position);
         alSourcefv(source, AL_VELOCITY, source_velocity);

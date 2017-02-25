@@ -27,7 +27,7 @@ void Gizmo::Render(std::shared_ptr<Camera> camera)
     
     //Set rotation of view matrix to default so it faces the camera
     glm::mat4x4 view_matrix = camera->GetViewMatrix();
-    glm::mat4x4 world_matrix = glm::translate(glm::mat4x4(1.0f), attached_to->transform.position);
+    glm::mat4x4 world_matrix = glm::translate(glm::mat4x4(1.0f), attached_to->transform.GetPosition());
     world_matrix = glm::scale(world_matrix, glm::vec3(0.5f, 0.5f, 0.5f));
 
     //Remove rotation by transposing the rotation part of view matrix

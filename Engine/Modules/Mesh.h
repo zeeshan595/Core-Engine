@@ -25,6 +25,7 @@ private:
     GLuint VAO;
 
     void GenerateBuffers();
+    std::vector<Vertex> ComputeVertexTangents(std::vector<Vertex> vert);
 };
 
 #include "Mesh.c"

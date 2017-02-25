@@ -94,6 +94,7 @@ const std::string SOUND_PATH    = ASSET_PATH + "sound/";
 #include "Modules/Gizmo.h"
 #include "Modules/Rigidbody.h"
 
+//Game Engine
 #include "Core/Core.h"
 
 #endif

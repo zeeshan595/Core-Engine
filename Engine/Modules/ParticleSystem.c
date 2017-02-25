@@ -20,7 +20,7 @@ void ParticleSystem::Render(std::shared_ptr<Camera> camera)
         glm::mat4x4 view_matrix = camera->GetViewMatrix();
         for (int i = 0; i < particles_matrices.size(); i++)
         {
-            glm::mat4x4 parent_matrix = glm::translate(glm::mat4(1.0), attached_to->transform.position);
+            glm::mat4x4 parent_matrix = glm::translate(glm::mat4(1.0), attached_to->transform.GetPosition());
             particles_matrices[i] = parent_matrix * particles[i].transform.GetWorldMatrix();
             
             //Remove rotation by transposing the rotation part of view matrix
@@ -55,7 +55,7 @@ void ParticleSystem::Render(std::shared_ptr<Camera> camera)
 
         //Camera Position
         GLint eye_position_uniform = glGetUniformLocation(surface->GetShader()->GetShaderProgram(), "camera_position_world");
-        glUniform3fv(eye_position_uniform, 1, &camera->transform.position[0]);
+        glUniform3fv(eye_position_uniform, 1, &camera->transform.GetPosition()[0]);
 
         //Fog distance
         GLint fog_distance_uniform = glGetUniformLocation(surface->GetShader()->GetShaderProgram(), "fog_distance");
@@ -95,16 +95,16 @@ void ParticleSystem::Update()
     
     for (int i = 0; i < particles.size(); i++)
     {
-        if (particles[i].transform.scale.x == 0 && current_time > spawn_period)
+        if (particles[i].transform.GetSize().x == 0 && current_time > spawn_period)
         {
             CreateParticle(i);
         }
 
         particles[i].current_time += Time::delta_time;
         particles[i].velocity.y -= gravity * Time::delta_time;
-        particles[i].transform.position += particles[i].velocity * Time::delta_time;
+        particles[i].transform.Translate(particles[i].transform.GetPosition() + particles[i].velocity * Time::delta_time);
         if (particles[i].current_time > death_time)
-            particles[i].transform.scale = glm::vec3(0, 0, 0);
+            particles[i].transform.Scale(glm::vec3(0, 0, 0));
     }
 
     current_time += Time::delta_time;
@@ -124,9 +124,9 @@ void ParticleSystem::CreateParticle(int i)
     float rand_velocity_y = RandomFloat(velocity_y.x, velocity_y.y);
     float rand_velocity_z = RandomFloat(velocity_z.x, velocity_z.y);
 
-    particles[i].transform.position = glm::vec3(rand_position_x, rand_position_y, rand_position_z);
+    particles[i].transform.Translate(glm::vec3(rand_position_x, rand_position_y, rand_position_z));
     particles[i].transform.Rotate(glm::vec3(0, 0, rand_rotation));
-    particles[i].transform.scale = glm::vec3(rand_scale, rand_scale, rand_scale);
+    particles[i].transform.Scale(glm::vec3(rand_scale, rand_scale, rand_scale));
     particles[i].velocity = glm::vec3(rand_velocity_x, rand_velocity_y, rand_velocity_z);
     particles[i].current_time = 0;
     current_time = 0;

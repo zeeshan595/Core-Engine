@@ -15,8 +15,9 @@ Terrain::Terrain()
 
 float Terrain::TerrainHeight(float world_x, float world_z)
 {
-    float terrain_x = world_x - attached_to->transform.position.x;
-    float terrain_z = world_z - attached_to->transform.position.z;
+    glm::vec3 my_position = attached_to->transform.GetPosition();
+    float terrain_x = world_x - my_position.x;
+    float terrain_z = world_z - my_position.z;
     int grid_x = (int)(terrain_x / density);
     int grid_z = (int)(terrain_z / density);
 

@@ -37,7 +37,7 @@ public:
 
     glm::mat4x4 GetViewMatrix()
     {
-        return lookAt(transform.position, transform.position + transform.Forward(), transform.Up());
+        return lookAt(transform.GetPosition(), transform.GetPosition() + transform.Forward(), transform.Up());
     }
 
     //Modules

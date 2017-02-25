@@ -38,8 +38,8 @@ void Rigidbody::Update()
             glm::mat4x4 world_matrix;
             bullet_transform.getOpenGLMatrix(glm::value_ptr(world_matrix));
             
-            attached_to->transform.position = glm::vec3(world_matrix[3][0], world_matrix[3][1], world_matrix[3][2]);
-            attached_to->transform.rotation = glm::toQuat(world_matrix);
+            attached_to->transform.Translate(glm::vec3(world_matrix[3][0], world_matrix[3][1], world_matrix[3][2]));
+            attached_to->transform.SetRotation(glm::toQuat(world_matrix));
         }
     }
 }
@@ -52,10 +52,13 @@ void Rigidbody::SetCollisionShape(std::shared_ptr<Collider> collider)
 void Rigidbody::SetupDefaultMotion()
 {
     glm::vec3 offset = collider_info->GetColliderOffset();
+    glm::vec3 position = attached_to->transform.GetPosition() + offset;
+    glm::quat rotation = attached_to->transform.GetRotation();
+
     btTransform bullet_transform;
     bullet_transform.setIdentity();
-    bullet_transform.setOrigin(btVector3(attached_to->transform.position.x + offset.x, attached_to->transform.position.y + offset.y, attached_to->transform.position.z + offset.z));
-    btQuaternion rot = btQuaternion(attached_to->transform.rotation.x, attached_to->transform.rotation.y, attached_to->transform.rotation.z, attached_to->transform.rotation.w);
+    bullet_transform.setOrigin(btVector3(position.x, position.y, position.z));
+    btQuaternion rot = btQuaternion(rotation.x, rotation.y, rotation.z, rotation.w);
     bullet_transform.setRotation(rot);
     motion = new btDefaultMotionState(bullet_transform);
 }
