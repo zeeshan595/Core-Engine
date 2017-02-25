@@ -13,7 +13,7 @@ public:
     void LoadDefaultPlane();
     void CreateMesh(std::vector<Vertex> verts, std::vector<GLuint> ind);
 
-    void ApplySurface(std::shared_ptr<Surface> surface);
+    void SetSurface(std::shared_ptr<Surface> surface);
     std::shared_ptr<Surface> GetSurface();
 
 private:

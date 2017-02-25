@@ -83,7 +83,7 @@ void Terrain::CreateTerrain()
     mySurface->AddAdditionalTexture(std::shared_ptr<Texture>(new Texture(tile_texture1)));
     mySurface->AddAdditionalTexture(std::shared_ptr<Texture>(new Texture(tile_texture2)));
     mySurface->AddAdditionalTexture(std::shared_ptr<Texture>(new Texture(tile_texture3)));
-    attached_mesh->ApplySurface(mySurface);
+    attached_mesh->SetSurface(mySurface);
     
     height_map_surface = Texture::LoadImage(height_map);
 

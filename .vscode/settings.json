@@ -68,5 +68,9 @@
         "regex": "cpp",
         "*.H": "cpp"
     },
-    "editor.tabSize": 4
+    "editor.tabSize": 4,
+    "search.exclude": {
+        ".SDK/": true,
+        ".vscode/": true
+    }
 }

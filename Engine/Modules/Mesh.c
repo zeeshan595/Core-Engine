@@ -220,7 +220,7 @@ void Mesh::GenerateBuffers()
     glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *)offsetof(Vertex, tangent));
 }
 
-void Mesh::ApplySurface(std::shared_ptr<Surface> surface)
+void Mesh::SetSurface(std::shared_ptr<Surface> surface)
 {
     this->surface = surface;
 }

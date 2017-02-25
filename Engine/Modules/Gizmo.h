@@ -8,8 +8,7 @@ public:
     ~Gizmo();
 
     void Render(std::shared_ptr<Camera> camera);
-
-    void ApplyTexture(std::shared_ptr<Texture> tex){
+    void SetTexture(std::shared_ptr<Texture> tex){
         texture = tex;
     }
     

@@ -118,13 +118,13 @@ void Core::EnableDebugMode()
     for (auto i = (*Environment::GetCameras()).begin(); i != (*Environment::GetCameras()).end(); ++i)
     {
         std::shared_ptr<Gizmo> gizmos = (*i)->AddModule<Gizmo>();
-        gizmos->ApplyTexture(std::shared_ptr<Texture>(new Texture("camera.png")));
+        gizmos->SetTexture(std::shared_ptr<Texture>(new Texture("camera.png")));
     }
     //Lights
     for (auto i = (*Environment::GetLights()).begin(); i != (*Environment::GetLights()).end(); ++i)
     {
         std::shared_ptr<Gizmo> gizmos = (*i)->AddModule<Gizmo>();
-        gizmos->ApplyTexture(std::shared_ptr<Texture>(new Texture("light.png")));
+        gizmos->SetTexture(std::shared_ptr<Texture>(new Texture("light.png")));
     }
 }
 void Core::DisableDebugMode()

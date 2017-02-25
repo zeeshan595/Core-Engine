@@ -54,7 +54,7 @@ int main(int argc, char* args[])
     std::shared_ptr<ParticleSystem> ps = myLight->AddModule<ParticleSystem>();
     std::shared_ptr<Surface> surface4 = std::shared_ptr<Surface>(new Surface(std::shared_ptr<Shader>(new Shader("default/particleVS.glsl", "default/particleFS.glsl"))));
     surface4->SetColorMap(std::shared_ptr<Texture>(new Texture("texture.png")));
-    ps->ApplySurface(surface4);
+    ps->SetSurface(surface4);
     myLight->transform.position = glm::vec3(0, 3, 0);
 
     //Normal Map Texture
@@ -64,14 +64,14 @@ int main(int argc, char* args[])
     std::shared_ptr<Surface> surface5 = Surface::LoadDefaultSurface();
     surface5->SetColorMap(std::shared_ptr<Texture>(new Texture("boulder.png")));
     surface5->SetNormalMap(std::shared_ptr<Texture>(new Texture("boulder_normal.png")));
-    normal_test_mesh->ApplySurface(surface5);
+    normal_test_mesh->SetSurface(surface5);
     //normal_test_entity->transform.rotation = glm::vec3(-130, 0, 0);
     normal_test_entity->transform.position = glm::vec3(10, 10, 10);
 
     //Physics Test
     std::shared_ptr<Entity> bt_box = Environment::CreateEntity("Physics Cube");
     std::shared_ptr<Mesh> bt_box_mesh = bt_box->AddModule<Mesh>();
-    bt_box_mesh->ApplySurface(Surface::LoadDefaultSurface());
+    bt_box_mesh->SetSurface(Surface::LoadDefaultSurface());
     bt_box_mesh->LoadDefaultCube();
     bt_box->transform.position = glm::vec3(50, 13, 50);
     //bt_box->transform.rotation = glm::vec3(60, 0, 0);
@@ -84,7 +84,7 @@ int main(int argc, char* args[])
     std::shared_ptr<Surface> surface6 = std::shared_ptr<Surface>(new Surface(Shader::LoadDefaultShader()));
     surface6->SetColorMap(std::shared_ptr<Texture>(new Texture("mud.png")));
     surface6->SetNormalMap(std::shared_ptr<Texture>(new Texture("boulder_normal.png")));
-    bt_box_mesh2->ApplySurface(surface6);
+    bt_box_mesh2->SetSurface(surface6);
     bt_box_mesh2->LoadDefaultCube();
     bt_box2->transform.position = glm::vec3(30, 20, 30);
     bt_box2->transform.scale = glm::vec3(1, 1, 1);

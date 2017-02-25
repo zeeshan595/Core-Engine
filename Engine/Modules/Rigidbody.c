@@ -64,3 +64,8 @@ void Rigidbody::SetMass(float m)
 {
     mass = m;
 }
+
+float Rigidbody::GetMass()
+{
+    return mass;
+}

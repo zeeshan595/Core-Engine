@@ -8,8 +8,11 @@ public:
     void Stop();
     void Start();
     void Update();
-    void SetMass(float m);
+
     void SetCollisionShape(std::shared_ptr<Collider> collider);
+
+    void SetMass(float m);
+    float GetMass();
 
 private:
     btRigidBody* body;
