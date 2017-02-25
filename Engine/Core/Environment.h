@@ -6,7 +6,7 @@ class Environment
 public:
     Environment(std::string environment_name);
     
-    static std::shared_ptr<Skybox> GetSkybox();
+    static std::shared_ptr<Skybox> GetSkybox(int scene_id);
     static std::shared_ptr<Entity> FindEntity(std::string name);
 
 
@@ -16,9 +16,9 @@ public:
     static int  GetEnvironmentSize();
     static int  GetCurrentEnvironment();
 
-    static std::shared_ptr<Entity> CreateEntity(std::string name);
-    static std::shared_ptr<Camera> CreateCamera(std::string name);
-    static std::shared_ptr<Light> CreateLight(std::string name);
+    static std::shared_ptr<Entity> CreateEntity(std::string name, int scene_id);
+    static std::shared_ptr<Camera> CreateCamera(std::string name, int scene_id);
+    static std::shared_ptr<Light> CreateLight(std::string name, int scene_id);
     static std::vector<std::shared_ptr<Entity>>* GetEntities();
     static std::vector<std::shared_ptr<Camera>>* GetCameras();
     static std::vector<std::shared_ptr<Light>>* GetLights();

@@ -295,7 +295,7 @@ void Core::Render()
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         //Render Skybox
-        Environment::GetSkybox()->Render((*i));
+        Environment::GetSkybox(Environment::GetCurrentEnvironment())->Render((*i));
 
         //Entities
         for (auto j = (*Environment::GetEntities()).begin(); j != (*Environment::GetEntities()).end(); ++j)

@@ -4,9 +4,9 @@ Environment::Environment(std::string environment_name)
     skybox = std::shared_ptr<Skybox>(new Skybox());
 }
 
-std::shared_ptr<Skybox> Environment::GetSkybox()
+std::shared_ptr<Skybox> Environment::GetSkybox(int scene_id)
 {
-    return Environment::environments[Environment::current_environment]->skybox;
+    return Environment::environments[scene_id]->skybox;
 }
 
 std::shared_ptr<Entity> Environment::FindEntity(std::string name){
@@ -57,22 +57,22 @@ int Environment::GetCurrentEnvironment()
     return Environment::current_environment;
 }
 
-std::shared_ptr<Entity> Environment::CreateEntity(std::string name)
+std::shared_ptr<Entity> Environment::CreateEntity(std::string name, int scene_id)
 {
     std::shared_ptr<Entity> e = std::shared_ptr<Entity>(new Entity(name));
-    Environment::environments[Environment::current_environment]->entities.push_back(e);
+    Environment::environments[scene_id]->entities.push_back(e);
     return e;
 }
-std::shared_ptr<Camera> Environment::CreateCamera(std::string name)
+std::shared_ptr<Camera> Environment::CreateCamera(std::string name, int scene_id)
 {
     std::shared_ptr<Camera> e = std::shared_ptr<Camera>(new Camera(name));
-    Environment::environments[Environment::current_environment]->cameras.push_back(e);
+    Environment::environments[scene_id]->cameras.push_back(e);
     return e;
 }
-std::shared_ptr<Light> Environment::CreateLight(std::string name)
+std::shared_ptr<Light> Environment::CreateLight(std::string name, int scene_id)
 {
     std::shared_ptr<Light> e = std::shared_ptr<Light>(new Light(name));
-    Environment::environments[Environment::current_environment]->lights.push_back(e);
+    Environment::environments[scene_id]->lights.push_back(e);
     return e;
 }
 
