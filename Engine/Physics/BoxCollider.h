@@ -4,9 +4,9 @@
 class BoxCollider : public Collider
 {
 public:
-    BoxCollider(glm::vec3 size)
+    BoxCollider(float x_size, float y_size, float z_size)
     {
-        collider_shape = new btBoxShape(btVector3(size.x, size.y, size.z));
+        collider_shape = new btBoxShape(btVector3(x_size, y_size, z_size));
     }
 };
 

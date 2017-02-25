@@ -6,7 +6,7 @@ Rigidbody::Rigidbody()
     collider_info = nullptr;
 }
 
-Rigidbody::~Rigidbody()
+void Rigidbody::Stop()
 {
     Physics::GetWorld()->removeCollisionObject(body);
     delete body;
@@ -44,8 +44,8 @@ void Rigidbody::Update()
     }
 }
 
-void Rigidbody::SetCollisionShape(Collider* collider)
-{    
+void Rigidbody::SetCollisionShape(std::shared_ptr<Collider> collider)
+{ 
     collider_info = collider;
 }
 

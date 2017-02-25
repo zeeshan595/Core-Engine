@@ -8,6 +8,7 @@ int main(int argc, char* args[])
     glm::vec2 screen_size = Screen::GetDisplayResolution();
     Screen::SetScreenPosition( (screen_size.x / 2) - (Screen::width / 2), (screen_size.y / 2) - (Screen::height / 2) );
     //Environment::GetSkybox(); //use this to edit skybox
+    
     //Create a new environment
     Environment::CreateEnvironment("default");
     Quality::texture_filter = TextureFilterType::ANISOTROPIC;
@@ -36,7 +37,7 @@ int main(int argc, char* args[])
     //Change all terrain variables here
     myTerrain->CreateTerrain();
     std::shared_ptr<Rigidbody> terrain_coll = myObj->AddModule<Rigidbody>();
-    terrain_coll->SetCollisionShape(new TerrainCollider(myTerrain->GetTerrainCollisionInfo()));
+    terrain_coll->SetCollisionShape(std::shared_ptr<TerrainCollider>(new TerrainCollider(myTerrain->GetTerrainCollisionInfo())));
     terrain_coll->SetMass(0.0f);//Make terrain static
 
     //Create GUI
@@ -87,7 +88,7 @@ int main(int argc, char* args[])
     bt_box_mesh2->LoadDefaultCube();
     bt_box2->transform.position = glm::vec3(30, 20, 30);
     bt_box2->transform.scale = glm::vec3(1, 1, 1);
-    bt_box2->AddModule<Rigidbody>()->SetCollisionShape(new BoxCollider(glm::vec3(1.0, 1.0, 1.0)));
+    bt_box2->AddModule<Rigidbody>()->SetCollisionShape(std::shared_ptr<BoxCollider>(new BoxCollider(1.0f, 1.0f, 1.0f)));
 
     //To ensure gizmos work properly call this just before you start the main loop
     engine.EnableDebugMode();

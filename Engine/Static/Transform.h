@@ -17,6 +17,15 @@ public:
     void Translate(glm::vec3 t){
         position += t;
     }
+    void Rotate(glm::vec3 amount){
+        glm::vec3 euler  = amount;
+        glm::quat qPitch = glm::angleAxis(euler.x, glm::vec3(1, 0, 0));
+        glm::quat qYaw   = glm::angleAxis(euler.y, glm::vec3(0, 1, 0));
+        glm::quat qRoll  = glm::angleAxis(euler.z, glm::vec3(0, 0, 1));
+
+        ///x,y,z are in radians
+        rotation = qYaw *qPitch * qRoll;
+    }
 
     glm::mat4x4 GetWorldMatrix(){
         glm::mat4x4 pos = glm::translate(glm::mat4x4(1.0f), position);
@@ -27,7 +36,9 @@ public:
 
         return pos * rot * sca;
     }
-
+    glm::vec3 EulerAngles(){
+        return glm::eulerAngles(rotation);
+    }
     glm::vec3 Forward(){
         return glm::vec3(GetWorldMatrix()[2][0], GetWorldMatrix()[2][1], GetWorldMatrix()[2][2]);
     }
@@ -36,19 +47,6 @@ public:
     }
     glm::vec3 Right(){
         return glm::vec3(GetWorldMatrix()[0][0], GetWorldMatrix()[0][1], GetWorldMatrix()[0][2]);
-    }
-
-    void Rotate(glm::vec3 amount){
-        glm::vec3 euler  = amount;
-        glm::quat qPitch = glm::angleAxis(euler.x, glm::vec3(1, 0, 0));
-        glm::quat qYaw   = glm::angleAxis(euler.y, glm::vec3(0, 1, 0));
-        glm::quat qRoll  = glm::angleAxis(euler.z, glm::vec3(0, 0, 1));
-
-        ///x,y,z are in radians
-        rotation = qYaw *qPitch * qRoll;
-    }
-    glm::vec3 EulerAngles(){
-        return glm::eulerAngles(rotation);
     }
 
 	static float ToRadians(float d){
