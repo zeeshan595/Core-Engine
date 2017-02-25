@@ -7,13 +7,15 @@ int main(int argc, char* args[])
     Screen::SetResolution(1920, 1080, false);
     glm::vec2 screen_size = Screen::GetDisplayResolution();
     Screen::SetScreenPosition( (screen_size.x / 2) - (Screen::width / 2), (screen_size.y / 2) - (Screen::height / 2) );
-    //Environment::GetSkybox(); //use this to edit skybox
-    
-    //Create a new environment
-    Environment::CreateEnvironment("default");
+
     Quality::texture_filter = TextureFilterType::ANISOTROPIC;
     Quality::anistropic_filter_amount = Quality::GetMaxAnistropicAmount();
     Quality::EnableMultisampling(); //Add Multisample-Antialiasing
+
+    //Environment::GetSkybox(); //use this to edit skybox
+
+    //Create a new environment
+    Environment::CreateEnvironment("default");
 
     std::shared_ptr<Camera> myCamera2 = Environment::CreateCamera("My Camera 2");
     myCamera2->transform.Translate(glm::vec3(50, 5, 50));
@@ -42,6 +44,7 @@ int main(int argc, char* args[])
 
     //Create GUI
     UI::CreateUI(std::shared_ptr<Texture>(new Texture("texture.png")), glm::vec4(0.0f, 0, 100.0f, 100.0f));
+    UI::CreateUI(std::shared_ptr<Texture>(new Texture("crate.png")), glm::vec4(100.0f, 100.0f, 100.0f, 100.0f));
 
     //Create Audio
     std::shared_ptr<AudioSource> myAudio = myLight->AddModule<AudioSource>();
