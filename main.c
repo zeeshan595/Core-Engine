@@ -1,26 +1,10 @@
 #include "Engine/Common.h"
 #include "Game/CameraMovment.h"
 
-class TestModule : public Module
-{
-public:
-    void Update()
-    {
-        if (Input::keys_down[SDLK_RIGHT])
-        {
-            Environment::ChangeEnvironment(0);
-        }
-        if (Input::keys_down[SDLK_LEFT])
-        {
-            Environment::ChangeEnvironment(1);
-        }
-    }
-};
-
 int main(int argc, char* args[])
 {
     Core engine("Core Engine");
-    Screen::SetResolution(1920, 1080, false);
+    Screen::SetResolution(1024, 720, false);
     glm::vec2 screen_size = Screen::GetDisplayResolution();
     Screen::SetScreenPosition( (screen_size.x / 2) - (Screen::width / 2), (screen_size.y / 2) - (Screen::height / 2) );
 
@@ -32,31 +16,25 @@ int main(int argc, char* args[])
 
     //Create a new environment
     Environment::CreateEnvironment("default");
-    Environment::CreateEnvironment("scene");
-    std::cout << Environment::GetEnvironmentSize() << std::endl;
     
     std::shared_ptr<Camera> myCamera2 = Environment::CreateCamera("My Camera 2", 0);
     myCamera2->transform.Translate(glm::vec3(50, 5, 50));
     myCamera2->transform.Rotate(glm::vec3(90.0f, 0.0f, 0.0f));
     myCamera2->draw_order = 1;
     myCamera2->viewport = glm::vec4(0, 0, 0.3f, 0.3f);
-    myCamera2->AddModule<TestModule>();
-
-    Environment::ChangeEnvironment("scene");
 
     //Create Default Camera
-    std::shared_ptr<Camera> myCamera = Environment::CreateCamera("My Camera 1", 1);
+    std::shared_ptr<Camera> myCamera = Environment::CreateCamera("My Camera 1", 0);
     myCamera->draw_order = 0;
     myCamera->AddModule<CameraMovment>();
-    myCamera->AddModule<TestModule>();
 
     //Create Default Light
-    std::shared_ptr<Light> myLight = Environment::CreateLight("My Light", 1);
+    std::shared_ptr<Light> myLight = Environment::CreateLight("My Light", 0);
     myLight->type = Light::LIGHT_TYPE::DIRECTIONAL;
     myLight->transform.Rotate(glm::vec3(-45.0f, 0.0f, 0.0));
 
     //Generate Terrain
-    std::shared_ptr<Entity> myObj = Environment::CreateEntity("My Terrain", 1);
+    std::shared_ptr<Entity> myObj = Environment::CreateEntity("My Terrain", 0);
     std::shared_ptr<Terrain> myTerrain = myObj->AddModule<Terrain>();
     //Change all terrain variables here
     myTerrain->CreateTerrain();
@@ -82,7 +60,7 @@ int main(int argc, char* args[])
     myLight->transform.Translate(glm::vec3(0, 3, 0));
 
     //Normal Map Texture
-    std::shared_ptr<Entity> normal_test_entity = Environment::CreateEntity("Normal Map Test Object", 1);
+    std::shared_ptr<Entity> normal_test_entity = Environment::CreateEntity("Normal Map Test Object", 0);
     std::shared_ptr<Mesh> normal_test_mesh = normal_test_entity->AddModule<Mesh>();
     normal_test_mesh->LoadDefaultPlane();
     std::shared_ptr<Surface> surface5 = Surface::LoadDefaultSurface();
@@ -93,7 +71,7 @@ int main(int argc, char* args[])
     normal_test_entity->transform.Translate(glm::vec3(10, 10, 10));
 
     //Physics Test
-    std::shared_ptr<Entity> bt_box = Environment::CreateEntity("Physics Cube", 1);
+    std::shared_ptr<Entity> bt_box = Environment::CreateEntity("Physics Cube", 0);
     std::shared_ptr<Mesh> bt_box_mesh = bt_box->AddModule<Mesh>();
     bt_box_mesh->SetSurface(Surface::LoadDefaultSurface());
     bt_box_mesh->LoadDefaultCube();
@@ -103,7 +81,7 @@ int main(int argc, char* args[])
     //std::shared_ptr<BoxCollider> box_coll = bt_box->AddModule<BoxCollider>();
     //box_coll->mass = 0.0f;//so the ground doesn't move
 
-    std::shared_ptr<Entity> bt_box2 = Environment::CreateEntity("Physics Cube", 1);
+    std::shared_ptr<Entity> bt_box2 = Environment::CreateEntity("Physics Cube", 0);
     std::shared_ptr<Mesh> bt_box_mesh2 = bt_box2->AddModule<Mesh>();
     std::shared_ptr<Surface> surface6 = std::shared_ptr<Surface>(new Surface(Shader::LoadDefaultShader()));
     surface6->SetColorMap(std::shared_ptr<Texture>(new Texture("mud.png")));

@@ -1,7 +1,7 @@
 Core::Core(std::string window_title)
 {
     //SDL
-    if (SDL_Init(SDL_INIT_EVERYTHING) != 0)
+    if (SDL_Init(SDL_INIT_NOPARACHUTE) != 0)
     {
         std::cout << "ERROR [SDL_Init]: " << SDL_GetError() << std::endl;
         return;
@@ -92,6 +92,8 @@ void Core::InitOpenGL()
 	glFrontFace(GL_CCW);
 	//Turn on the best perspective correction
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
+    glEnableClientState(GL_VERTEX_ARRAY);
+    glEnableClientState(GL_INDEX_ARRAY);
 
     //GLEW
     GLenum err = glewInit();

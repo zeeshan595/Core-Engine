@@ -14,7 +14,7 @@
                 "args": [
                     "mkdir Build ",
                     "& robocopy .SDK/bin Build",
-                    "& g++ -std=c++11 -o Build/build main.c -lOpenAL32 -lglew32 -lglu32 -lopengl32 -lmingw32 -lSDL2main -lSDL2 -lSDL2_Image -lSDL2_ttf -lBulletDynamics -lBulletCollision -lLinearMath"
+                    "& g++ -g -std=c++11 -o Build/build main.c -lOpenAL32 -lglew32 -lglu32 -lopengl32 -lmingw32 -lSDL2main -lSDL2 -lSDL2_Image -lSDL2_ttf -lBulletDynamics -lBulletCollision -lLinearMath"
                 ]
             },
             {
@@ -37,7 +37,7 @@
                 "suppressTaskName": true,
                 "args": [
                     "[ -d Build ] || mkdir Build",
-                    "&& g++ -std=c++11 -o Build/build main.c -lGLU -lGLEW -lGL -lGLUT -lBulletDynamics -lBulletCollision -lLinearMath `sdl2-config --cflags --libs`"
+                    "&& g++ -g -std=c++11 -o Build/build main.c -lGLU -lGLEW -lGL -lGLUT -lBulletDynamics -lBulletCollision -lLinearMath `sdl2-config --cflags --libs`"
                 ]
             },
             {

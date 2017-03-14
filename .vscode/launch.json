@@ -2,32 +2,33 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Windows",
-            "type": "cppvsdbg",
-            "request": "launch",
-            "cwd": "${workspaceRoot}",
-            "program": "${workspaceRoot}/Build/build.exe",
-            "windows": {
-                "args": [],
-                "stopAtEntry": false,
-                "environment": [],
-                "externalConsole": true,
-                "preLaunchTask": "Build"
-            }
-        },
-        {
-            "name": "Linux",
+            "name": "Debug",
             "type": "cppdbg",
             "request": "launch",
             "cwd": "${workspaceRoot}",
             "program": "${workspaceRoot}/Build/build",
+            "preLaunchTask": "Build",
             "linux": {
                 "args": [],
                 "stopAtEntry": false,
                 "environment": [],
                 "externalConsole": true,
-                "preLaunchTask": "Build",
                 "MIMode": "gdb",
+                "setupCommands": [
+                    {
+                        "description": "Enable pretty-printing for gdb",
+                        "text": "-enable-pretty-printing",
+                        "ignoreFailures": true
+                    }
+                ]
+            },
+            "windows": {
+                "args": [],
+                "stopAtEntry": false,
+                "environment": [],
+                "externalConsole": true,
+                "MIMode": "gdb",
+                "miDebuggerPath": "c:\\mingw\\bin\\gdb.exe",
                 "setupCommands": [
                     {
                         "description": "Enable pretty-printing for gdb",
