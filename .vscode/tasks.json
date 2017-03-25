@@ -9,43 +9,12 @@
         "tasks": [
             {
                 "taskName": "Build",
-                "isBuildCommand": false,
+                "isBuildCommand": true,
                 "suppressTaskName": true,
                 "args": [
                     "mkdir Build ",
                     "& robocopy .SDK/bin Build",
-                    "& g++ -g -std=c++11 -o Build/build main.c -lOpenAL32 -lglew32 -lglu32 -lopengl32 -lmingw32 -lSDL2main -lSDL2 -lSDL2_Image -lSDL2_ttf -lBulletDynamics -lBulletCollision -lLinearMath"
-                ]
-            },
-            {
-                "taskName": "Clean",
-                "isBuildCommand": false,
-                "suppressTaskName": true,
-                "args": [
-                    "rmdir Build /s /q "
-                ]
-            }
-        ]
-    },
-    "linux": {
-        "command": "sh",
-        "args": ["-c"],
-        "tasks": [
-            {
-                "taskName": "Build",
-                "isBuildCommand": false,
-                "suppressTaskName": true,
-                "args": [
-                    "[ -d Build ] || mkdir Build",
-                    "&& g++ -g -std=c++11 -o Build/build main.c -lGLU -lGLEW -lGL -lGLUT -lBulletDynamics -lBulletCollision -lLinearMath `sdl2-config --cflags --libs`"
-                ]
-            },
-            {
-                "taskName": "Clean",
-                "isBuildCommand": false,
-                "suppressTaskName": true,
-                "args": [
-                    "rm -r Build && mkdir Build && [ -d Build ] || mkdir Build"
+                    "& g++ -g -std=c++11 -o Build/build main.cpp -lOpenAL32 -lglew32 -lglu32 -lopengl32 -lmingw32 -lSDL2main -lSDL2 -lSDL2_Image -lSDL2_ttf -lBulletDynamics -lBulletCollision -lLinearMath"
                 ]
             }
         ]

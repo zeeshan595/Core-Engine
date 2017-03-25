@@ -4,44 +4,45 @@
 class Environment
 {
 public:
-    Environment(std::string environment_name);
+    Environment(const char* name);
+    ~Environment();
+
+    static Entity*      CreateEntity            (const char* name);
+    static Camera*      CreateCamera            (const char* name);
+    static Light*       CreateLight             (const char* name);
+
+    static Environment* CreateEnvironment       (const char* name);
+
+    static void         DestroyEntity           (Entity* entity);
+    static void         DestroyCamera           (Camera* camera);
+    static void         DestroyEnvironment      (Environment* environment);
+
+    static uint32_t     GetEnvironmentSize      ();
+    static uint32_t     GetCurrentEnvironment   ();
+    static void         SetEnvironment          (Environment* environment);
+
+    static std::vector<Entity*>*    GetEntities();
+    static std::vector<Camera*>*    GetCameras();
+    static std::vector<Light*>*     GetLights();
     
-    static std::shared_ptr<Skybox> GetSkybox(int scene_id);
-    static std::shared_ptr<Entity> FindEntity(std::string name);
-
-
-    static void ChangeEnvironment(int id);
-    static void ChangeEnvironment(std::string environment_name);
-    static int  CreateEnvironment(std::string environment_name);
-    static int  GetEnvironmentSize();
-    static int  GetCurrentEnvironment();
-
-    static std::shared_ptr<Entity> CreateEntity(std::string name, int scene_id);
-    static std::shared_ptr<Camera> CreateCamera(std::string name, int scene_id);
-    static std::shared_ptr<Light> CreateLight(std::string name, int scene_id);
-    static std::vector<std::shared_ptr<Entity>>* GetEntities();
-    static std::vector<std::shared_ptr<Camera>>* GetCameras();
-    static std::vector<std::shared_ptr<Light>>* GetLights();
-
-    static void StartModules();
-    static void StopModules();
-
+    static void                     SetSkybox(Skybox* skybox);
+    static Skybox*                  GetSkybox();
+    
 private:
-    static bool modules_started;
-    std::string name;
-    std::shared_ptr<Skybox> skybox;
 
-    std::vector<std::shared_ptr<Entity>> entities;
-    std::vector<std::shared_ptr<Camera>> cameras;
-    std::vector<std::shared_ptr<Light>> lights;
+    static void    StartModules();
+    static void    StopModules();
 
-    static std::vector<std::shared_ptr<Environment>> environments;
-    static int current_environment;
+    const char*                             name;
+    Skybox*                                 skybox;
+    std::vector<Entity*>                    entities;
+    std::vector<Camera*>                    cameras;
+    std::vector<Light*>                     lights;
+
+    static std::vector<Environment*>        environments;
+    static uint32_t                         current_environment;
+
 };
-bool Environment::modules_started = false;
-std::vector<std::shared_ptr<Environment>> Environment::environments;
-int Environment::current_environment;
 
-#include "Environment.c"
-
+#include "Environment.cpp"
 #endif

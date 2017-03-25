@@ -4,27 +4,20 @@
 class Core
 {
 public:
-    Core(std::string window_title);
+    Core(const char* window_title);
     ~Core();
     void Start();
     void Quit();
 
-    void EnableDebugMode();
-    void DisableDebugMode();
-    bool IsDebugingEnabled();
-
 private:
-    SDL_GLContext context;
     bool is_running = true;
-    bool is_debuging = false;
-    int active_scene;
-    
+
     void InitOpenGL();
     void Update();
     void Render();
-    void Input(SDL_Event* e);
+    void Stop();
 };
 
-#include "Core.c"
-
+#include "Core.cpp"
+Core engine("Core Engine");
 #endif

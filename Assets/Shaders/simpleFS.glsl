@@ -71,7 +71,7 @@ void main()
         diffuse += apply_diffuse_color * diffuse_brightness * directional_light_brightness[i];
     
         //Calculate light's reflected vector & camera viewing vector
-        vec3 reflect_vector = reflect(-normalize(light_directions[i]), normalize(normal));
+        vec3 reflect_vector = reflect(normalize(normal), normalize(light_directions[i]));
         vec3 eye_vector = normalize(camera_position - vertex_position_world);
         //Calculate specular lighting
         float specular_brightness = dot(reflect_vector, eye_vector) * spec_amount;
@@ -95,7 +95,7 @@ void main()
         diffuse_brightness = clamp(diffuse_brightness, 0.0f, 1.0f);
         //Apply results
         vec4 apply_diffuse_color = vec4(diffuse_color, 1.0f) + point_light_color[i];
-        diffuse += apply_diffuse_color * diffuse_brightness * point_light_brightness[i] * 10.0f * point_light_formula;
+        diffuse += apply_diffuse_color * diffuse_brightness * point_light_brightness[i] * point_light_formula;
     
         //Calculate light's reflected vector & camera viewing vector
         vec3 reflect_vector = reflect(-normalize(point_light_direction), normalize(normal));
@@ -107,7 +107,7 @@ void main()
         specular_brightness = pow(specular_brightness, spec_area);
         //Apply results
         vec4 apply_spec_color = vec4(spec_color, 1.0f) + point_light_color[i];
-        specular += apply_spec_color * specular_brightness * point_light_brightness[i] * 10.0f * point_light_formula * texture(texture_map1, the_vertex_uv).w;
+        specular += apply_spec_color * specular_brightness * point_light_brightness[i] * point_light_formula * texture(texture_map1, the_vertex_uv).w;
     }
     //Combine all light calculations
     vec4 light = vec4(ambient_color, 1.0f) + diffuse + specular;

@@ -43,58 +43,44 @@
 #include <BulletCollision/CollisionShapes/btHeightfieldTerrainShape.h>
 
 //PATHS
-const std::string ASSET_PATH    = "assets/";
-const std::string SHADER_PATH   = ASSET_PATH + "shaders/";
-const std::string TEXTURE_PATH  = ASSET_PATH + "textures/";
-const std::string FONT_PATH     = ASSET_PATH + "fonts/";
-const std::string MODEL_PATH    = ASSET_PATH + "models/";
-const std::string SOUND_PATH    = ASSET_PATH + "sound/";
+const std::string ASSET_PATH    = "Assets/";
+const std::string SHADER_PATH   = ASSET_PATH + "Shaders/";
+const std::string TEXTURE_PATH  = ASSET_PATH + "Textures/";
+const std::string FONT_PATH     = ASSET_PATH + "Fonts/";
+const std::string MODEL_PATH    = ASSET_PATH + "Models/";
+const std::string SOUND_PATH    = ASSET_PATH + "Sound/";
 
 //Static
-#include "Static/Screen.h"
 #include "Static/Time.h"
-#include "Static/Input.h"
-#include "Static/Transform.h"
 #include "Static/Vertex.h"
+#include "Static/Input.h"
+#include "Static/Screen.h"
 #include "Static/OBJLoader.h"
-#include "Static/Cube.h"
-#include "Static/Plane.h"
 #include "Static/Fog.h"
-#include "Static/Quality.h"
-//Base classes
-#include "Core/Module.h"
-#include "Core/Entity.h"
-//Audio
-#include "Audio/Audio.h"
-#include "Audio/AudioClip.h"
-//Rendering
-#include "Rendering/Camera.h"
-#include "Rendering/Light.h"
-#include "Rendering/Texture.h"
-#include "Rendering/CubeTexture.h"
-#include "Rendering/Shader.h"
-#include "Rendering/Surface.h"
-#include "Rendering/Skybox.h"
-#include "Rendering/UI.h"
-#include "Rendering/Particle.h"
-//Environment
-#include "Core/Environment.h"
-//Physics
-#include "Physics/Physics.h"
-#include "Physics/Raycast.h"
-#include "Physics/Collider.h"
-#include "Physics/BoxCollider.h"
-#include "Physics/TerrainCollider.h"
-#include "Physics/BallCollider.h"
-//Modules
-#include "Modules/Mesh.h"
-#include "Modules/Terrain.h"
-#include "Modules/AudioSource.h"
-#include "Modules/ParticleSystem.h"
-#include "Modules/Gizmo.h"
-#include "Modules/Rigidbody.h"
+#include "Static/Cube.h"
+
+//Structure
+#include "Structure/Transform.h"
+#include "Structure/Module.h"
+#include "Structure/Entity.h"
+
+//Graphics
+#include "Graphics/Texture.h"
+#include "Graphics/CubeTexture.h"
+#include "Graphics/Shader.h"
+#include "Graphics/Material.h"
+#include "Graphics/Camera.h"
+#include "Graphics/Light.h"
+#include "Graphics/Skybox.h"
 
 //Game Engine
+#include "Core/Environment.h"
+#include "Core/Graphics.h"
 #include "Core/Core.h"
+
+//Modules
+#include "Modules/MeshData.h"
+#include "Modules/MeshRenderer.h"
+#include "Modules/Terrain.h"
 
 #endif
