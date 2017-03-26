@@ -1,9 +1,6 @@
 Material::Material()
 {
-    shader = new Shader("default/defaultVS.glsl", "default/defaultFS.glsl");
-    textures.resize(2);
-    textures[0] = new Texture("default/texture.png");
-    textures[1] = new Texture("default/normal.png");
+    
 }
 
 Material::~Material()

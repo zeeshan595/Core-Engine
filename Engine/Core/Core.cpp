@@ -65,6 +65,7 @@ void Core::Quit()
 
 void Core::Start()
 {
+    DefaultResources::CreateDefaultResources();
     Environment::SetEnvironment(0);
     while (is_running)
     {
@@ -87,7 +88,7 @@ void Core::Start()
 
 void Core::Stop()
 {
-
+    DefaultResources::DestroyDefaultResources();
 }
 
 void Core::Update()

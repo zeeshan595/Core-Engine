@@ -49,7 +49,7 @@ void main()
     vec3 ambient_color              = vec3(0.1f, 0.1f, 0.1f);
     vec3 diffuse_color              = vec3(0.3f, 0.3f, 0.3f);
     vec3 spec_color                 = vec3(1.0f, 1.0f, 1.0f);
-    float spec_amount               = 1.0f;
+    float spec_amount               = 0.1f;
     float spec_area                 = 150.0f;
     float terrain_tile_amount       = 100.0f;
 

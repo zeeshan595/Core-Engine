@@ -4,27 +4,27 @@
 class DefaultResources
 {
 public:
-    void CreateDefaultResources();
-    void DestroyDefaultResources();
+    static void CreateDefaultResources();
+    static void DestroyDefaultResources();
 
-    const GLuint        GetCubeVAO();
-    const GLuint        GetCubeVBO();
-    const GLuint        GetCubeEBO();
+    static const GLuint         GetCubeVAO();
+    static const GLuint         GetCubeVBO();
+    static const GLuint         GetCubeEBO();
 
-    const GLuint        GetPlaneVAO();
-    const GLuint        GetPlaneVBO();
-    const GLuint        GetPlaneEBO();
+    static const GLuint         GetPlaneVAO();
+    static const GLuint         GetPlaneVBO();
+    static const GLuint         GetPlaneEBO();
 
 private:
 
-    GLuint      plane_VAO        = 0;
-    GLuint      plane_VBO        = 0;
-    GLuint      plane_EBO        = 0;
+    static GLuint       plane_VAO;
+    static GLuint       plane_VBO;
+    static GLuint       plane_EBO;
 
-    GLuint      cube_VAO        = 0;
-    GLuint      cube_VBO        = 0;
-    GLuint      cube_EBO        = 0;
-
+    static GLuint       cube_VAO;
+    static GLuint       cube_VBO;
+    static GLuint       cube_EBO;
 };
 
+#include "DefaultResources.cpp"
 #endif

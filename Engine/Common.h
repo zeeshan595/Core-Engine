@@ -58,6 +58,7 @@ const std::string SOUND_PATH    = ASSET_PATH + "Sound/";
 #include "Static/OBJLoader.h"
 #include "Static/Fog.h"
 #include "Static/Cube.h"
+#include "Static/Plane.h"
 
 //Structure
 #include "Structure/Transform.h"
@@ -74,6 +75,7 @@ const std::string SOUND_PATH    = ASSET_PATH + "Sound/";
 #include "Graphics/Skybox.h"
 
 //Game Engine
+#include "Core/DefaultResources.h"
 #include "Core/Environment.h"
 #include "Core/Graphics.h"
 #include "Core/Core.h"
