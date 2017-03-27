@@ -1,5 +1,3 @@
-#include <algorithm>
-
 static bool CompareOBJIndexPtr(const OBJIndex* a, const OBJIndex* b);
 static inline unsigned int FindNextChar(unsigned int start, const char* str, unsigned int length, char token);
 static inline unsigned int ParseOBJIndexValue(const std::string& token, unsigned int start, unsigned int end);

@@ -4,7 +4,7 @@
 class Skybox
 {
 public:
-    Skybox();
+    Skybox(CubeTexture* cube_texture, Shader* shader);
     ~Skybox();
 
     void Start();

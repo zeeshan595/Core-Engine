@@ -30,23 +30,33 @@ public:
 
 int main(int argc, char* args[])
 {
+    //Setup Window
     Screen::SetWindowTitle("The Car Game");
     Screen::SetResolution(1920, 1080, false);
     Screen::SetScreenPosition(SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
-    Environment* scene = Environment::CreateEnvironment("default");
-    Environment::SetSkybox(new Skybox());
 
+    //Create Scene
+    Environment* scene = Environment::CreateEnvironment("default");
+
+    //Skybox
+    CubeTexture* skybox_texture = new CubeTexture("default/skybox_day.png", "default/skybox_day.png", "default/skybox_day.png", "default/skybox_day.png", "default/skybox_day.png", "default/skybox_day.png");
+    Shader* skybox_shader = new Shader("default/skyboxVS.glsl", "default/skyboxFS.glsl");
+    Environment::SetSkybox(new Skybox(skybox_texture, skybox_shader));
+
+    //Light
     Light* lit = Environment::CreateLight("Light");
     lit->SetLightType(Light::LIGHT_TYPE::DIRECTIONAL);
     lit->transform.Rotate(glm::vec3(-120, 0, 0));
 
+    //Camera
     Camera* cam = Environment::CreateCamera("Camera");
     cam->CreateModule<CameraMovment>();
     cam->transform.SetPosition(glm::vec3(0.0f, 0.0f, -10.0f));
 
+    //Objects
     Entity* monkey_obj = Environment::CreateEntity("monkey_obj");
     MeshData* mesh = monkey_obj->CreateModule<MeshData>();
-    mesh->SetMeshData(Plane::vertices, Plane::indices);
+    mesh->SetMeshData(Cube::vertices, Cube::indices);
     MeshRenderer* monkey_renderer = monkey_obj->CreateModule<MeshRenderer>();
     monkey_obj->transform.SetPosition(glm::vec3(0, 10, 0));
 
@@ -55,26 +65,55 @@ int main(int argc, char* args[])
     my_terrain->CreateModule<MeshData>();
     MeshRenderer* terrain_renderer = my_terrain->CreateModule<MeshRenderer>();
 
+    //Setup Shaders
+    Shader* boulder_shader              = new Shader("Default/defaultVS.glsl", "Default/defaultFS.glsl");
+    Shader* terrain_shader              = new Shader("Default/terrainVS.glsl", "Default/terrainFS.glsl");
+
+    //Setup Textures
+    Texture* boulder_texture            = new Texture("boulder.png");
+    Texture* boulder_texture_normal     = new Texture("boulder_normal.png");
+    Texture* terrain_texture_blend_map  = new Texture("blend_map.png");
+    Texture* terrain_texture_grass      = new Texture("grassy2.png");
+    Texture* terrain_texture_flowers    = new Texture("grassFlowers.png");
+    Texture* terrain_texture_mud        = new Texture("mud.png");
+    Texture* terrain_texture_path       = new Texture("path.png");
+
+    //Setup Materials
     Material* material_one = new Material();
-    material_one->SetShader(new Shader("Default/defaultVS.glsl", "Default/defaultFS.glsl"));
+    material_one->SetShader(boulder_shader);
     material_one->SetTextures({
-        new Texture("boulder.png"),
-        new Texture("boulder_normal.png")
+        boulder_texture,
+        boulder_texture_normal
     });
     monkey_renderer->SetMaterial(material_one);
 
     Material* material_two = new Material();
-    material_two->SetShader(new Shader("Default/terrainVS.glsl", "Default/terrainFS.glsl"));
+    material_two->SetShader(terrain_shader);
     material_two->SetTextures({
-        new Texture("blend_map.png"),
-        new Texture("grassy2.png"),
-        new Texture("grassFlowers.png"),
-        new Texture("mud.png"),
-        new Texture("path.png")
+        terrain_texture_blend_map,
+        terrain_texture_grass,
+        terrain_texture_flowers,
+        terrain_texture_mud,
+        terrain_texture_path
     });
     terrain_renderer->SetMaterial(material_two);
 
     engine.Start();
+    //CleanUp
+    delete skybox_texture;
+    delete skybox_shader;
+    delete boulder_shader;
+    delete boulder_texture;
+    delete boulder_texture_normal;
+    delete terrain_shader;
+    delete terrain_texture_blend_map;
+    delete terrain_texture_grass;
+    delete terrain_texture_flowers;
+    delete terrain_texture_mud;
+    delete terrain_texture_path;
+    delete material_one;
+    delete material_two;
     Environment::DestroyEnvironment(scene);
+
     return 0;
 }

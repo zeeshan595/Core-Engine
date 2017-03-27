@@ -49,7 +49,7 @@ void MeshData::LoadOBJ(const char* filename)
                 model.texCoords[i],
                 model.normals[i],
                 glm::vec3(0.0f, 0.0f, 0.0f)
-                };
+            };
         }
 
         for (int i = 0; i < INDICES_LEN; i++)

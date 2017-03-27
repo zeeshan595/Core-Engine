@@ -1,7 +1,7 @@
-Skybox::Skybox()
+Skybox::Skybox(CubeTexture* cube_texture, Shader* shader)
 {
-    texture = new CubeTexture("default/skybox_day.png", "default/skybox_day.png", "default/skybox_day.png", "default/skybox_day.png", "default/skybox_day.png", "default/skybox_day.png");
-    shader = new Shader("default/skyboxVS.glsl", "default/skyboxFS.glsl");
+    this->texture = cube_texture;
+    this->shader = shader;
 }
 
 Skybox::~Skybox()
