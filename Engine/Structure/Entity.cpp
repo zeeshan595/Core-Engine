@@ -23,15 +23,15 @@ void Entity::SetLayer(uint32_t layer)
     this->layer = layer;
 }
 
-std::string             Entity::GetName()
+std::string                     Entity::GetName()
 {
     return name;
 }
-uint32_t                Entity::GetLayer()
+uint32_t                        Entity::GetLayer()
 {
     return layer;
 }
-std::vector<Module*>*    Entity::GetModules()
+std::vector<Module*>*           Entity::GetModules()
 {
     return &modules;
 }

@@ -38,7 +38,6 @@ Environment* Environment::CreateEnvironment       (const char* name)
 {
     Environment* e = new Environment(name);
     environments.push_back(e);
-    current_environment = environments.size() - 1;
     return e;
 }
 void         Environment::DestroyEntity           (Entity* entity)
@@ -84,10 +83,13 @@ uint32_t     Environment::GetCurrentEnvironment   ()
     return current_environment;
 }
 
-void         Environment::SetEnvironment          (Environment* environment)
+void         Environment::SetEnvironment          (Environment* environment, bool start_modules)
 {
-    if (current_environment != -1)
-        StopModules();
+    if (start_modules)
+    {
+        if (current_environment != -1)
+            StopModules();
+    }
 
     for (uint32_t i = 0; i < environments.size(); i++)
     {
@@ -98,7 +100,10 @@ void         Environment::SetEnvironment          (Environment* environment)
         }
     }
 
-    StartModules();
+    if (start_modules)
+    {
+        StartModules();
+    }
 }
 
 std::vector<Entity*>*   Environment::GetEntities()

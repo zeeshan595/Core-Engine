@@ -70,7 +70,7 @@ glm::mat4x4         Camera::GetProjectionMatrix()
     uint32_t width, height;
     Screen::GetDisplayResolution(width, height);
     if (view_mode == PERSPECTIVE)
-        return glm::perspective(fov, (width * viewport.z) / (height * viewport.w), near_clip_plane, far_clip_plane);
+        return glm::perspective(fov, ((float)width * (float)viewport.z) / ((float)height * (float)viewport.w), near_clip_plane, far_clip_plane);
     else
         return glm::ortho(-orthographic_size.x * viewport.z, orthographic_size.x * viewport.z, -orthographic_size.y * viewport.w, orthographic_size.y * viewport.w, near_clip_plane, far_clip_plane);
 }

@@ -3,10 +3,12 @@ Shader::Shader(const char* vertex_shader_path, const char* fragment_shader_path)
     //Get Shaders
     GLuint vertex_shader_program = 0;
     vertex_shader_program = LoadShaderFromFile((SHADER_PATH + vertex_shader_path).c_str(), VERTEX_SHADER);
+    std::cout << "Checking vertex shader" << std::endl;
     CheckForCompilerErrors(vertex_shader_program);
 
     GLuint fragment_shader_program = 0;
     fragment_shader_program = LoadShaderFromFile((SHADER_PATH + fragment_shader_path).c_str(), FRAGMENT_SHADER);
+    std::cout << "Checking fragment shader" << std::endl;
     CheckForCompilerErrors(fragment_shader_program);
 
     //Attach Shader Programs

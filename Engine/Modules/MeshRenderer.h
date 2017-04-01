@@ -13,7 +13,6 @@ public:
 
 private:
 
-    void LightShaderInfo();
     void FogShaderInfo();
 
     MeshData*       data                = NULL;

@@ -12,18 +12,18 @@ public:
     Light(const char* name);
 
     void SetLightType(LIGHT_TYPE type);
-    void SetLightColor(float r, float g, float b, float a);
+    void SetLightColor(float r, float g, float b);
     void SetLightBrightness(float brightness);
     void SetPointLightRange(float range);
 
     LIGHT_TYPE          GetLightType();
-    glm::vec4           GetLightColor();
+    glm::vec3           GetLightColor();
     float               GetLightBrightness();
     float               GetPointLightRange();
 
 private:
     LIGHT_TYPE          type;
-    glm::vec4           color;
+    glm::vec3           color;
     float               brightness;
     float               light_range;
 

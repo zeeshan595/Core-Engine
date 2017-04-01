@@ -35,3 +35,21 @@ std::vector<Texture*>*    Material::GetTextures()
 {
     return &textures;
 }
+
+float Material::GetShineDamper()
+{
+    return shine_damper;
+}
+float Material::GetLightReflectivity()
+{
+    return light_reflectivity;
+}
+
+void Material::SetShineDamper(float v)
+{
+    shine_damper = v;
+}
+void Material::SetLightReflectivity(float v)
+{
+    light_reflectivity = v;
+}

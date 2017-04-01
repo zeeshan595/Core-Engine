@@ -19,10 +19,29 @@ Texture::~Texture()
 void Texture::ApplyImageFilter()
 {
     glBindTexture(GL_TEXTURE_2D, texture_map);
-
     glGenerateMipmap(GL_TEXTURE_2D);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_LOD_BIAS, -0.4f);
+
+	if (!glewIsSupported("GL_EXT_texture_filter_anisotropic"))
+	{
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_LOD_BIAS, -0.4f);
+	}
+	else
+	{
+		GLfloat amount = 2;
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_LOD_BIAS, 0);
+		GLfloat max_anistropic;
+		glGetFloatv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &max_anistropic);
+		if (amount > max_anistropic)
+		{
+			amount = max_anistropic;
+		}
+		else if (amount < 0)
+		{
+			amount = 0;
+		}
+		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, amount);
+	}
 }
 
 GLuint Texture::ConvertSDLSurfaceToTexture(SDL_Surface* surface)

@@ -14,9 +14,17 @@ public:
     Shader*                   GetShader();
     std::vector<Texture*>*    GetTextures();
 
+    float       GetShineDamper();
+    float       GetLightReflectivity();
+
+    void        SetShineDamper(float v);
+    void        SetLightReflectivity(float v);
+
 private:
-    Shader*                         shader          = NULL;
+    Shader*                         shader                  = NULL;
     std::vector<Texture*>           textures;
+    float                           light_reflectivity      = 1.0f;
+    float                           shine_damper            = 10.0f;
 
 };
 

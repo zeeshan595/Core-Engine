@@ -65,8 +65,9 @@ void Core::Quit()
 
 void Core::Start()
 {
+    is_running = true;
     DefaultResources::CreateDefaultResources();
-    Environment::SetEnvironment(0);
+    Environment::SetEnvironment(0, true);
     while (is_running)
     {
         SDL_Event event;

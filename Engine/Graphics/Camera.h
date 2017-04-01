@@ -34,7 +34,7 @@ private:
     VIEW_MODE           view_mode                   = PERSPECTIVE;
     float               fov                         = 45.0f;
     glm::vec2           orthographic_size           = glm::vec2(10.0f, 10.0f);
-    float               near_clip_plane             = 0.01f;
+    float               near_clip_plane             = 1.0f;
     float               far_clip_plane              = 1000.0f;
     glm::vec4           viewport                    = glm::vec4(0, 0, 1, 1);
     uint32_t            draw_order                  = 0;

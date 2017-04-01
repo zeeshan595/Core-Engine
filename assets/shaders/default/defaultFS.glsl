@@ -1,120 +1,86 @@
 #version 150
+#define MAX_LIGHTS 4
 
-out vec4 FragColor;
+out vec4 out_color;
 
-in vec3 vertex_position_world;
-in vec4 the_vertex_color;
 in vec2 the_vertex_uv;
-in mat3 tangent_to_world_matrix;
+in vec3 the_vertex_normal;
+in vec3 camera_vector;
+in vec3 the_directional_light_vector[MAX_LIGHTS];
+in vec3 the_directional_light_color[MAX_LIGHTS];
+in vec3 the_point_light_direction[MAX_LIGHTS];
+in vec3 the_point_light_color[MAX_LIGHTS];
+in float the_point_light_range[MAX_LIGHTS];
 
-uniform sampler2D texture_map0; //Texture
-uniform sampler2D texture_map1; //Normal Texture
+uniform sampler2D texture_map0;
 
-//Camera Position
-uniform vec3 camera_position;
-
-//Light Variables
-#define MAX_LIGHTS 10
-
-//Directional
-uniform vec3 light_directions[MAX_LIGHTS];
-uniform int directional_light_count;
-uniform float directional_light_brightness[MAX_LIGHTS];
-uniform vec4 directional_light_color[MAX_LIGHTS];
-
-//Point
-uniform vec3 light_positions[MAX_LIGHTS];
-uniform float light_range[MAX_LIGHTS];
-uniform int point_light_count;
-uniform float point_light_brightness[MAX_LIGHTS];
-uniform vec4 point_light_color[MAX_LIGHTS];
-
-//Fog
-uniform float fog_distance;
-uniform float fog_density;
-uniform float fog_gradient;
-uniform vec4 fog_color;
+uniform float shine_damper;
+uniform float light_reflectivity;
 
 void main()
 {
-    if (texture(texture_map0, the_vertex_uv).w < 0.3f)
-        discard;
+    vec3 diffuse = vec3(0.0f);
 
-    //Your allowed to edit these
-    vec3 ambient_color  = vec3(0.1f, 0.1f, 0.1f);
-    vec3 diffuse_color  = vec3(0.3f, 0.3f, 0.3f);
-    vec3 spec_color     = vec3(1.0f, 1.0f, 1.0f);
-    float spec_amount   = 1.0f;
-    float spec_area     = 150.0f;
-    
-    //Setup default diffuse and specular values if no light is there
-    vec4 diffuse = vec4(0.0f, 0.0f, 0.0f, 1.0f);
-    vec4 specular = vec4(0.0f, 0.0f, 0.0f, 1.0f);
+    vec3 unit_normal        = normalize(the_vertex_normal);
+    vec3 unit_camera_vector = normalize(camera_vector);
 
-    //Texture
-    vec4 texture_map = texture(texture_map0, the_vertex_uv);
-    //Normal Texture
-    vec4 normal_map = texture(texture_map1, the_vertex_uv);
-    //Convert color to coordinates
-    normal_map = (normal_map * 2) - vec4(1.0f, 1.0f, 1.0f, 1.0f);
-    //tangent space -> model space
-    vec3 normal = tangent_to_world_matrix * normal_map.xyz;
+    vec3 total_diffuse  = vec3(0.0f);
+    vec3 total_specular = vec3(0.0f);
 
-    //directional lights
-    for (int i = 0; i < directional_light_count; ++i)
+    for (int i = 0; i < MAX_LIGHTS; i++)
     {
-        //Calculate diffuse lighting
-        float diffuse_brightness = dot(normalize(light_directions[i]), normalize(normal));
-        diffuse_brightness = clamp(diffuse_brightness, 0, 1);
-        //Apply results
-        vec4 apply_diffuse_color = vec4(diffuse_color, 1.0f) + directional_light_color[i];
-        diffuse += apply_diffuse_color * diffuse_brightness * directional_light_brightness[i];
-    
-        //Calculate light's reflected vector & camera viewing vector
-        vec3 reflect_vector = reflect(-normalize(light_directions[i]), normalize(normal));
-        vec3 eye_vector = normalize(camera_position - vertex_position_world);
-        //Calculate specular lighting
-        float specular_brightness = dot(reflect_vector, eye_vector) * spec_amount;
-        specular_brightness = clamp(specular_brightness, 0, 1);
-        //Make the result less bright by using pow (between 0-1)
-        specular_brightness = pow(specular_brightness, spec_area);
-        //Apply results
-        vec4 apply_spec_color = vec4(spec_color, 1.0f) + directional_light_color[i];
-        specular += apply_spec_color * specular_brightness * directional_light_brightness[i] * texture(texture_map1, the_vertex_uv).w;
-    }
-    //Point Lights
-    for (int i = 0; i < point_light_count; i++)
-    {
-        //Calculate point light variables
-        vec3 point_light_direction = normalize(light_positions[i] - vertex_position_world);
-        float distance_from_light = distance(light_positions[i], vertex_position_world);
-        float point_light_formula = 1 / ( (1 / light_range[i]) + ( (2 / light_range[i]) * distance_from_light ) + ( (1 / pow(light_range[i], 2)) + pow(distance_from_light, 2) ) );
+        //Directional Light
+        {
+            vec3 unit_light_vector          = normalize(the_directional_light_vector[i]);
 
-        //Calculate diffuse lighting
-        float diffuse_brightness = dot(normalize(normal), normalize(point_light_direction));
-        diffuse_brightness = clamp(diffuse_brightness, 0.0f, 1.0f);
-        //Apply results
-        vec4 apply_diffuse_color = vec4(diffuse_color, 1.0f) + point_light_color[i];
-        diffuse += apply_diffuse_color * diffuse_brightness * point_light_brightness[i] * 10.0f * point_light_formula;
-    
-        //Calculate light's reflected vector & camera viewing vector
-        vec3 reflect_vector = reflect(-normalize(point_light_direction), normalize(normal));
-        vec3 eye_vector = normalize(camera_position - vertex_position_world);
-        //Calculate specular lighting
-        float specular_brightness = dot(reflect_vector, eye_vector) * spec_amount;
-        specular_brightness = clamp(specular_brightness, 0.0f, 1.0f);
-        //Make the result less bright by using pow (between 0-1)
-        specular_brightness = pow(specular_brightness, spec_area);
-        //Apply results
-        vec4 apply_spec_color = vec4(spec_color, 1.0f) + point_light_color[i];
-        specular += apply_spec_color * specular_brightness * point_light_brightness[i] * 10.0f * point_light_formula * texture(texture_map1, the_vertex_uv).w;
+            //Diffuse
+            float nDot1                     = dot(unit_normal, unit_light_vector);
+            float brightness                = max(nDot1, 0.0f);
+            vec3  diffuse                   = brightness * the_directional_light_color[i];
+            
+            //Specular
+            vec3  light_direction           = -unit_light_vector;
+            vec3  reflected_light_vector    = reflect(light_direction, unit_normal);
+            float specular_factor           = dot(reflected_light_vector, unit_camera_vector);
+                specular_factor             = max(specular_factor, 0.0f);
+            float damped_factor             = pow(specular_factor, shine_damper);
+            vec3  final_specular            = damped_factor * light_reflectivity * the_directional_light_color[i];
+
+            total_diffuse   += diffuse;
+            total_specular  += final_specular;
+        }
+        //Point Light
+        {
+            //Calculate point light variables
+            float distance_from_light   = length(the_point_light_direction[i]);
+            float point_light_inertia   = 1 / ( (1 / the_point_light_range[i]) + 
+            ( (2 / the_point_light_range[i]) * distance_from_light ) + 
+            ( (1 / pow(the_point_light_range[i], 2)) + 
+            pow(distance_from_light, 2) ) );
+
+            vec3 unit_light_vector          = normalize(the_point_light_direction[i]);
+
+            //Diffuse
+            float nDot1                     = dot(unit_normal, unit_light_vector);
+            float brightness                = max(nDot1, 0.0f);
+            vec3  diffuse                   = brightness * the_point_light_color[i];
+            
+            //Specular
+            vec3  light_direction           = -unit_light_vector;
+            vec3  reflected_light_vector    = reflect(light_direction, unit_normal);
+            float specular_factor           = dot(reflected_light_vector, unit_camera_vector);
+                specular_factor             = max(specular_factor, 0.0f);
+            float damped_factor             = pow(specular_factor, shine_damper);
+            vec3  final_specular            = damped_factor * light_reflectivity * the_point_light_color[i];
+
+            total_diffuse   += diffuse;
+            total_specular  += final_specular;
+        }
     }
-    //Combine all light calculations
-    vec4 light = vec4(ambient_color, 1.0f) + diffuse + specular;
-    //Fog
-    float distance_from_camera = distance(camera_position, vertex_position_world);
-    distance_from_camera = distance_from_camera * fog_distance;
-    float fog = exp(-pow(distance_from_camera * fog_density, fog_gradient));
-    fog = clamp(fog, 0.0f, 1.0f);
-    FragColor = mix(fog_color, light * texture_map, fog);
+
+    //Ambient Light
+    total_diffuse       = max(total_diffuse, 0.3f);
+
+    vec4 texture_color  = texture(texture_map0, the_vertex_uv);
+    out_color           = (vec4(total_diffuse, 1.0f) * texture_color) + vec4(total_specular, 1.0f);
 }

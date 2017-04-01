@@ -20,8 +20,8 @@ public:
             position -= entity->transform.Right() * 20.0f * Time::delta_time;
 
         glm::vec2 mouse_delta = Input::GetMouseDelta();
-        rotation_x += mouse_delta.y * Time::delta_time * 15.0f;
-        rotation_y -= mouse_delta.x * Time::delta_time * 15.0f;
+        rotation_x += mouse_delta.y * Time::delta_time * 5.0f;
+        rotation_y -= mouse_delta.x * Time::delta_time * 5.0f;
 
         entity->transform.Rotate(glm::vec3(rotation_x, rotation_y, 0));
         entity->transform.SetPosition(position);
@@ -37,6 +37,7 @@ int main(int argc, char* args[])
 
     //Create Scene
     Environment* scene = Environment::CreateEnvironment("default");
+    Environment::SetEnvironment(scene, false);
 
     //Skybox
     CubeTexture* skybox_texture = new CubeTexture("default/skybox_day.png", "default/skybox_day.png", "default/skybox_day.png", "default/skybox_day.png", "default/skybox_day.png", "default/skybox_day.png");
@@ -51,14 +52,16 @@ int main(int argc, char* args[])
     //Camera
     Camera* cam = Environment::CreateCamera("Camera");
     cam->CreateModule<CameraMovment>();
-    cam->transform.SetPosition(glm::vec3(0.0f, 0.0f, -10.0f));
+    cam->transform.SetPosition(glm::vec3(0.0f, 21.0f, 30.0f));
+    cam->transform.Rotate(glm::vec3(0.0f, 3.14f, 0.0f));
 
     //Objects
     Entity* monkey_obj = Environment::CreateEntity("monkey_obj");
     MeshData* mesh = monkey_obj->CreateModule<MeshData>();
-    mesh->SetMeshData(Cube::vertices, Cube::indices);
+    mesh->LoadOBJ("dragon.obj");
     MeshRenderer* monkey_renderer = monkey_obj->CreateModule<MeshRenderer>();
     monkey_obj->transform.SetPosition(glm::vec3(0, 10, 0));
+    monkey_obj->transform.Rotate(glm::vec3(0, 0, 0));
 
     Entity* my_terrain = Environment::CreateEntity("MyTerrain");
     my_terrain->CreateModule<Terrain>();
@@ -66,7 +69,7 @@ int main(int argc, char* args[])
     MeshRenderer* terrain_renderer = my_terrain->CreateModule<MeshRenderer>();
 
     //Setup Shaders
-    Shader* boulder_shader              = new Shader("Default/defaultVS.glsl", "Default/defaultFS.glsl");
+    Shader* boulder_shader              = new Shader("default/defaultVS.glsl", "default/defaultFS.glsl");
     Shader* terrain_shader              = new Shader("Default/terrainVS.glsl", "Default/terrainFS.glsl");
 
     //Setup Textures
@@ -96,6 +99,7 @@ int main(int argc, char* args[])
         terrain_texture_mud,
         terrain_texture_path
     });
+    material_two->SetLightReflectivity(0.0f);
     terrain_renderer->SetMaterial(material_two);
 
     engine.Start();

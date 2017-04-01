@@ -1,18 +1,18 @@
 Light::Light(const char* name) : Entity(name)
 {
     type            = LIGHT_TYPE::POINT;
-    color           = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
+    color           = glm::vec3(1.0f, 1.0f, 1.0f);
     brightness      = 1.0f;
-    light_range     = 20.0f;
+    light_range     = 50.0f;
 }
 
 void Light::SetLightType(LIGHT_TYPE type)
 {
     this->type = type;
 }
-void Light::SetLightColor(float r, float g, float b, float a)
+void Light::SetLightColor(float r, float g, float b)
 {
-    this->color = glm::vec4(r, g, b, a);
+    this->color = glm::vec3(r, g, b);
 }
 void Light::SetLightBrightness(float brightness)
 {
@@ -27,7 +27,7 @@ Light::LIGHT_TYPE   Light::GetLightType()
 {
     return type;
 }
-glm::vec4           Light::GetLightColor()
+glm::vec3           Light::GetLightColor()
 {
     return color;
 }

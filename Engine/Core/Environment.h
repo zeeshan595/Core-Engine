@@ -1,6 +1,7 @@
 #ifndef _ENVIRONMENT
 #define _ENVIRONMENT
 
+class Core;
 class Environment
 {
 public:
@@ -19,7 +20,7 @@ public:
 
     static uint32_t     GetEnvironmentSize      ();
     static uint32_t     GetCurrentEnvironment   ();
-    static void         SetEnvironment          (Environment* environment);
+    static void         SetEnvironment          (Environment* environment, bool start_modules);
 
     static std::vector<Entity*>*    GetEntities();
     static std::vector<Camera*>*    GetCameras();

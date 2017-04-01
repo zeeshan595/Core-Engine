@@ -3,6 +3,7 @@ void Graphics::Render()
     glm::vec4 viewport = glm::vec4(0.0f, 0.0f, 0.0f, 0.0f);
     uint32_t width, height;
     Screen::GetDisplayResolution(width, height);
+    glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
     glScissor(0, 0, width, height);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -38,17 +39,19 @@ void Graphics::InitOpenGL()
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 	glClearDepth(1.0f);
 
-	glEnable(GL_DEPTH_TEST);
     glEnable(GL_TEXTURE_CUBE_MAP);
 	glEnable(GL_CULL_FACE);
-	glEnable(GL_BLEND);
+	//glEnable(GL_BLEND);
     glEnable(GL_SCISSOR_TEST);
 
-    glDepthFunc(GL_LEQUAL);
+    glEnable(GL_DEPTH_TEST);
+    
     glCullFace(GL_BACK);
 	glFrontFace(GL_CCW);
 	//Turn on the best perspective correction
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
+    //glEnableClientState(GL_VERTEX_ARRAY);
+    //glEnableClientState(GL_INDEX_ARRAY);
 
     //GLEW
     GLenum err = glewInit();

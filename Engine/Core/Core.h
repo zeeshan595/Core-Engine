@@ -6,11 +6,12 @@ class Core
 public:
     Core(const char* window_title);
     ~Core();
+
     void Start();
     void Quit();
 
 private:
-    bool is_running = true;
+    bool is_running = false;
 
     void InitOpenGL();
     void Update();
