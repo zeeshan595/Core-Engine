@@ -75,8 +75,17 @@ const std::string SOUND_PATH    = ASSET_PATH + "Sound/";
 #include "Graphics/Light.h"
 #include "Graphics/Skybox.h"
 
+//Audio
+#include "Audio/Audio.h"
+#include "Audio/AudioClip.h"
+
+//Physics
+#include "Physics/Physics.h"
+#include "Physics/Collider.h"
+#include "Physics/BoxCollider.h"
+#include "Physics/TerrainCollider.h"
+
 //Game Engine
-#include "Core/DefaultResources.h"
 #include "Core/Environment.h"
 #include "Core/Graphics.h"
 #include "Core/Core.h"
@@ -84,6 +93,10 @@ const std::string SOUND_PATH    = ASSET_PATH + "Sound/";
 //Modules
 #include "Modules/MeshData.h"
 #include "Modules/MeshRenderer.h"
+#include "Modules/Rigidbody.h"
+#include "Modules/AudioSource.h"
+#include "Modules/AudioListener.h"
 #include "Modules/Terrain.h"
+#include "Modules/UI.h"
 
 #endif

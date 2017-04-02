@@ -18,6 +18,8 @@ public:
 
 private:
 
+    TerrainCollider::TerrainData     GetTerrainCollisionData ();
+
     SDL_Surface*    GetHeightMapImage   ();
     glm::vec3       ComputeNormal       (uint32_t x, uint32_t z, SDL_Surface* height_map_surface);
     float           GetHeightFromPixel  (uint32_t x, uint32_t z, SDL_Surface* height_map_surface);

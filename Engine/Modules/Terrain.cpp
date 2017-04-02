@@ -44,6 +44,13 @@ void Terrain::Start()
     if (mesh_data != NULL || mesh_data != nullptr)
     {
         mesh_data->SetMeshData(vertices, indices);
+    } 
+
+    Rigidbody* body = entity->GetModule<Rigidbody>();
+    if (body != NULL || body != nullptr)
+    {
+        body->SetMass(0.0f);
+        body->SetCollisionShape(new TerrainCollider(GetTerrainCollisionData()));
     }    
 }
 
@@ -81,6 +88,22 @@ float           Terrain::GetDensity()
 const char*     Terrain::GetHeightMap()
 {
     return height_map;
+}
+
+TerrainCollider::TerrainData    Terrain::GetTerrainCollisionData ()
+{
+    float x_size = terrain_size_x * density;
+    float z_size = terrain_size_z * density;
+    float* heights_data = new float[terrain_size_x * terrain_size_z];
+    for (int i = 0; i < terrain_size_z; i++)
+    {
+        for (int j = 0; j < terrain_size_x; j++)
+        {
+            heights_data[(i * terrain_size_x) + j] = heights[j][i];
+        }
+    }
+
+    return { x_size, z_size, heights_data, max_height };
 }
 
 SDL_Surface* Terrain::GetHeightMapImage()

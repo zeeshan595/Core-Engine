@@ -48,10 +48,14 @@ Core::Core(const char* window_title)
     //Enable Game Engine Components
     Screen::InitWindow(window_title);
     Graphics::InitOpenGL();
+    Audio::InitAudio();
+    Physics::InitPhysics();
 }
 
 Core::~Core()
 {
+    Physics::DestroyPhysics();
+    Audio::DestroyAudio();
     Screen::DestroyWindow();
     TTF_Quit();
     IMG_Quit();
@@ -66,8 +70,8 @@ void Core::Quit()
 void Core::Start()
 {
     is_running = true;
-    DefaultResources::CreateDefaultResources();
-    Environment::SetEnvironment(0, true);
+    Environment::SetEnvironment((int32_t)-1, false);
+    Environment::SetEnvironment((int32_t)0, true);
     while (is_running)
     {
         SDL_Event event;
@@ -75,8 +79,8 @@ void Core::Start()
             is_running = false;
 
         //Update Physics
-        //if (Physics::GetWorld())
-        //    Physics::GetWorld()->stepSimulation(Time::delta_time);
+        if (Physics::GetWorld())
+            Physics::GetWorld()->stepSimulation(Time::delta_time);
 
         Update();
 
@@ -89,7 +93,7 @@ void Core::Start()
 
 void Core::Stop()
 {
-    DefaultResources::DestroyDefaultResources();
+    Environment::CleanUp();
 }
 
 void Core::Update()

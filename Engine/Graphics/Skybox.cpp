@@ -6,7 +6,11 @@ Skybox::Skybox(CubeTexture* cube_texture, Shader* shader)
 
 Skybox::~Skybox()
 {
-    
+    glDeleteBuffers(1, &EBO);
+    glDeleteBuffers(1, &VBO);
+    glDeleteVertexArrays(1, &VAO);
+    vertices.clear();
+    indices.clear();
 }
 
 void Skybox::Start()

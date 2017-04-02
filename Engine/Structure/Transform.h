@@ -10,6 +10,7 @@ public:
     void Rotate         (glm::vec3 r);
     void SetRotation    (glm::quat q);
     void SetSize        (glm::vec3 s);
+    void SetWorldMatrix (glm::mat4x4 mat);
 
     glm::vec3 GetPosition();
     glm::quat GetRotation();

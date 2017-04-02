@@ -4,9 +4,9 @@ out vec4 FragColor;
 
 in vec2 the_uv;
 
-uniform sampler2D ui_texture_map;
+uniform sampler2D texture_map;
 
 void main()
 {
-    FragColor = texture(ui_texture_map, the_uv);
+    FragColor = texture(texture_map, the_uv);
 }

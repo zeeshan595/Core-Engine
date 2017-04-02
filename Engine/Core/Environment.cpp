@@ -1,5 +1,5 @@
 std::vector<Environment*>       Environment::environments;
-uint32_t                        Environment::current_environment        = -1;
+int32_t                         Environment::current_environment        = -1;
 
 Environment::Environment(const char* name)
 {
@@ -12,6 +12,18 @@ Environment::~Environment()
         delete entities[i];
     }
     entities.clear();
+    delete skybox;
+    delete name;
+}
+
+void         Environment::CleanUp()
+{
+    StopModules();
+    for (uint32_t i = 0; i < environments.size(); i++)
+    {
+        delete environments[current_environment];
+    }
+    environments.clear();
 }
 
 Entity*      Environment::CreateEntity            (const char* name)
@@ -40,35 +52,15 @@ Environment* Environment::CreateEnvironment       (const char* name)
     environments.push_back(e);
     return e;
 }
-void         Environment::DestroyEntity           (Entity* entity)
+
+Entity*      Environment::FindEntity              (const char* name)
 {
-    for (uint32_t i = 0; i < environments[current_environment]->entities.size(); i++)
+    std::vector<Entity*> ent = environments[current_environment]->entities;
+    for (uint32_t i = 0; i < ent.size(); i++)
     {
-        if (environments[current_environment]->entities[i] == entity)
+        if (ent[i]->GetName() == name)
         {
-            environments[current_environment]->entities.erase(environments[current_environment]->entities.begin() + i);
-            delete entity;
-            return;
-        }
-    }
-}
-void         Environment::DestroyEnvironment      (Environment* environment)
-{
-    std::vector<Entity*> entitites = (*environment->GetEntities());
-    for (uint32_t i = 0; i < entitites.size(); i++)
-    {
-        delete entitites[i];
-    }
-    entitites.clear();
-    (*environment->GetCameras()).clear();
-    (*environment->GetLights()).clear();
-    for (uint32_t i = 0; i < environments.size(); i++)
-    {
-        if (environments[i] == environment && i != current_environment)
-        {
-            environments.erase(environments.begin() + i);
-            delete environment;
-            return;
+            return ent[i];
         }
     }
 }
@@ -78,28 +70,43 @@ uint32_t     Environment::GetEnvironmentSize      ()
     return environments.size();
 }
 
-uint32_t     Environment::GetCurrentEnvironment   ()
+Environment* Environment::GetCurrentEnvironment   ()
+{
+    return environments[current_environment];
+}
+
+uint32_t     Environment::GetCurrentEnvironmentID ()
 {
     return current_environment;
 }
 
 void         Environment::SetEnvironment          (Environment* environment, bool start_modules)
 {
+    int32_t environment_id = -1;
+    for (int32_t i = 0; i < environments.size(); i++)
+    {
+        if (environments[i] == environment)
+        {
+            environment_id = i;
+            break;
+        }
+    }
+    if (environment_id == -1)
+    {
+        throw std::runtime_error("ERROR [SetEnvironment]: could not find environment");
+    }
+
+    SetEnvironment((uint32_t)environment_id, start_modules);
+}
+
+void         Environment::SetEnvironment          (int32_t environment_id  , bool start_modules)
+{
     if (start_modules)
     {
         if (current_environment != -1)
             StopModules();
     }
-
-    for (uint32_t i = 0; i < environments.size(); i++)
-    {
-        if (environments[i] == environment)
-        {
-            current_environment = i;
-            return;
-        }
-    }
-
+    current_environment = environment_id;
     if (start_modules)
     {
         StartModules();
@@ -130,7 +137,8 @@ Skybox*                  Environment::GetSkybox()
 
 void Environment::StartModules()
 {
-    Environment::GetSkybox()->Start();
+    if (Environment::GetSkybox() != NULL)
+        Environment::GetSkybox()->Start();
     std::vector<Entity*> entities = environments[current_environment]->entities;
     for (uint32_t i = 0; i < entities.size(); i++)
     {
@@ -144,7 +152,8 @@ void Environment::StartModules()
 
 void Environment::StopModules()
 {
-    Environment::GetSkybox()->Stop();
+    if (Environment::GetSkybox() != NULL)
+        Environment::GetSkybox()->Stop();
     std::vector<Entity*> entities = environments[current_environment]->entities;
     for (uint32_t i = 0; i < entities.size(); i++)
     {

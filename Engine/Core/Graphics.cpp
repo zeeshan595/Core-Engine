@@ -19,7 +19,9 @@ void Graphics::Render()
         glScissor(viewport.x, viewport.y, viewport.z, viewport.w);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        Environment::GetSkybox()->Render(cameras[i]);
+        Skybox* current_skybox = Environment::GetSkybox();
+        if (current_skybox != NULL)
+            current_skybox->Render(cameras[i]);
 
         std::vector<Entity*> entities = (*Environment::GetEntities());
         for (uint32_t j = 0; j < entities.size(); j++)
@@ -40,16 +42,16 @@ void Graphics::InitOpenGL()
 	glClearDepth(1.0f);
 
     glEnable(GL_TEXTURE_CUBE_MAP);
-	glEnable(GL_CULL_FACE);
+	//glEnable(GL_CULL_FACE);
 	//glEnable(GL_BLEND);
     glEnable(GL_SCISSOR_TEST);
 
     glEnable(GL_DEPTH_TEST);
     
-    glCullFace(GL_BACK);
-	glFrontFace(GL_CCW);
+    //glCullFace(GL_BACK);
+	//glFrontFace(GL_CCW);
 	//Turn on the best perspective correction
-	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
+	//glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
     //glEnableClientState(GL_VERTEX_ARRAY);
     //glEnableClientState(GL_INDEX_ARRAY);
 

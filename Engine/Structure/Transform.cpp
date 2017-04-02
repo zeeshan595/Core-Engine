@@ -38,6 +38,14 @@ void Transform::SetSize        (glm::vec3 s)
     ConstructMatrix();
 }
 
+void Transform::SetWorldMatrix (glm::mat4x4 mat)
+{
+    glm::mat4x4 sca = glm::scale(glm::mat4x4(1.0f), size);
+    model_matrix = sca * mat;
+    position = glm::vec3(model_matrix[3][0], model_matrix[3][1], model_matrix[3][2]);
+    rotation = glm::quat(model_matrix);
+}
+
 glm::vec3 Transform::GetPosition()
 {
     return position;
