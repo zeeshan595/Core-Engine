@@ -17,6 +17,15 @@ public:
     static Texture*                 car_normal_map;
     static Material*                car_material;
 
+    static Texture*                 stall_texture;
+    static Material*                stall_material;
+
+    static Texture*                 dragon_texture;
+    static Material*                dragon_material;
+
+    static Texture*                 tree_texture;
+    static Material*                tree_material;
+
     static void SetupResources()
     {
         skybox_texture  = new CubeTexture("Default/skybox_day.png", "Default/skybox_day.png", "Default/skybox_day.png", "Default/skybox_day.png", "Default/skybox_day.png", "Default/skybox_day.png");
@@ -42,6 +51,23 @@ public:
         car_material        = new Material();
         car_material->SetShader(car_shader);
         car_material->SetTextures({ car_texture_map, car_normal_map });
+
+        stall_texture       = new Texture("stall.png");
+        stall_material      = new Material();
+        stall_material->SetShader(car_shader);
+        stall_material->SetTextures({ stall_texture, car_normal_map });
+
+        dragon_texture      = new Texture("dragon.png");
+        dragon_material     = new Material();
+        dragon_material->SetShader(car_shader);
+        dragon_material->SetTextures({ dragon_texture, car_normal_map });
+        dragon_material->SetLightReflectivity(0.0f);
+
+        tree_texture        = new Texture("tree.png");
+        tree_material       = new Material();
+        tree_material->SetShader(car_shader);
+        tree_material->SetTextures({ tree_texture, car_normal_map });
+        tree_material->SetLightReflectivity(0.1f);
     }
 
     static void DestroyResources()
@@ -60,18 +86,38 @@ public:
         delete car_texture_map;         car_texture_map     = NULL;
         delete car_normal_map;          car_normal_map      = NULL;
         delete car_material;            car_material        = NULL;
+
+        delete stall_texture;           stall_texture       = NULL;
+        delete stall_material;          stall_material      = NULL;
+
+        delete dragon_texture;          dragon_texture       = NULL;
+        delete dragon_material;         dragon_material      = NULL;
+
+        delete tree_texture;            tree_texture        = NULL;
+        delete tree_material;           tree_material       = NULL;
     }
 };
 
 CubeTexture*                GameResources::skybox_texture               = NULL;
 Shader*                     GameResources::skybox_shader                = NULL;
 Skybox*                     GameResources::skybox                       = NULL;
+
 Shader*                     GameResources::terrain_shader               = NULL;
 std::vector<Texture*>       GameResources::terrain_textures;
 Material*                   GameResources::terrain_material             = NULL;
+
 Shader*                     GameResources::car_shader                   = NULL;
 Texture*                    GameResources::car_texture_map              = NULL;
 Texture*                    GameResources::car_normal_map               = NULL;
 Material*                   GameResources::car_material                 = NULL;
+
+Texture*                    GameResources::stall_texture                = NULL;
+Material*                   GameResources::stall_material               = NULL;
+
+Texture*                    GameResources::dragon_texture               = NULL;
+Material*                   GameResources::dragon_material              = NULL;
+
+Texture*                    GameResources::tree_texture                 = NULL;
+Material*                   GameResources::tree_material                = NULL;
 
 #endif

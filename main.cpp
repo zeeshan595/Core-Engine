@@ -92,6 +92,38 @@ int main(int argc, char* args[])
     car_object->transform.SetPosition(glm::vec3(84, 2, 10));
     car_object->transform.Rotate(glm::vec3(0, -1.57f, 0));
 
+    Entity* stall_object                = Environment::CreateEntity("Stall");
+    MeshData* stall_mesh_module         = stall_object->CreateModule<MeshData>();
+    MeshRenderer* stall_renderer_module = stall_object->CreateModule<MeshRenderer>();
+    stall_mesh_module->LoadOBJ("stall.obj");
+    stall_renderer_module->SetMaterial(GameResources::stall_material);
+    stall_object->transform.SetPosition(glm::vec3(23, 1, 32));
+    stall_object->transform.Rotate(glm::vec3(0, 3.14f, 0));
+    stall_object->transform.SetSize(glm::vec3(0.5f, 0.5f, 0.5f));
+
+    Entity* dragon_object               = Environment::CreateEntity("Dragon");
+    MeshData* dragon_mesh_module        = dragon_object->CreateModule<MeshData>();
+    MeshRenderer* dragon_render_module  = dragon_object->CreateModule<MeshRenderer>();
+    dragon_mesh_module->LoadOBJ("dragon.obj");
+    dragon_render_module->SetMaterial(GameResources::dragon_material);
+    dragon_object->transform.SetPosition(glm::vec3(60, 1.3f, 40));
+    dragon_object->transform.Rotate(glm::vec3(0, 3.14f, 0));
+
+    std::srand(std::time(NULL));
+    for (uint32_t x = 0; x < 5; x++)
+    {
+        for (uint32_t z = 0; z < 15; z++)
+        {
+            float random_number = (static_cast<float> (rand())/static_cast<float>(RAND_MAX)) - 0.5f;
+            Entity* tree_object                 = Environment::CreateEntity("Tree");
+            MeshData* tree_mesh_module          = tree_object->CreateModule<MeshData>();
+            MeshRenderer* tree_render_module    = tree_object->CreateModule<MeshRenderer>();
+            tree_mesh_module->LoadOBJ("tree.obj");
+            tree_render_module->SetMaterial(GameResources::tree_material);
+            tree_object->transform.SetPosition(glm::vec3(73 + (x * 1.1f) + random_number, 1, 70 + (z * 1.1f) + random_number));
+            tree_object->transform.Rotate(glm::vec3(0, 3.14f, 0));
+        }
+    }
 
     //Setup Main Menu
     Environment::SetEnvironment(end_scene, false);

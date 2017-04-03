@@ -18,6 +18,7 @@
 #include <list>
 #include <map>
 #include <stdio.h>
+#include <ctime>
 
 //OPEN AL
 #include <AL/al.h>
