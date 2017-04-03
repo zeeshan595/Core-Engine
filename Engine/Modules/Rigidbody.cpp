@@ -15,9 +15,12 @@ void Rigidbody::Start  ()
         
         btVector3 inertia = btVector3(0, 0, 0);
         if (mass != 0)
+        {
             collider_info->GetColliderInfo()->calculateLocalInertia(mass, inertia);
+        }
         btRigidBody::btRigidBodyConstructionInfo info = btRigidBody::btRigidBodyConstructionInfo(mass, motion, collider_info->GetColliderInfo(), inertia);
         body = new btRigidBody(info);
+        body->setFriction(0.0f);
         Physics::GetWorld()->addRigidBody(body);
     }
     else
@@ -36,13 +39,17 @@ void Rigidbody::Update ()
 {
     if (mass != 0.0f)
     {
+        body->activate(true);
         if (motion != NULL)
         {
             btTransform bullet_transform;
             motion->getWorldTransform(bullet_transform);
             glm::mat4x4 world_matrix;
             bullet_transform.getOpenGLMatrix(glm::value_ptr(world_matrix));
-            
+            glm::vec3 offset = collider_info->GetColliderOffset();
+            world_matrix[3][0] -= offset.x;
+            world_matrix[3][1] -= offset.y;
+            world_matrix[3][2] -= offset.z;
             entity->transform.SetWorldMatrix(world_matrix);
         }
     }
@@ -64,9 +71,19 @@ void Rigidbody::ClearForces    ()
 {
     body->clearForces();
 }
+
 void Rigidbody::SetDamping     (float line, float angular)
 {
     body->setDamping(line, angular);
+}
+
+void Rigidbody::SetAngularFactor(glm::vec3 factor)
+{
+    body->setAngularFactor(btVector3(factor.x, factor.y, factor.z));
+}
+void Rigidbody::SetVelocity        (glm::vec3 vel)
+{
+    body->setLinearVelocity(btVector3(vel.x, vel.y, vel.z));
 }
 
 glm::vec3       Rigidbody::GetVelocity()

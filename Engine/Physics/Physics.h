@@ -14,6 +14,7 @@ private:
     static btCollisionConfiguration*    collision_config;
     static btBroadphaseInterface*       broadphase;
     static btConstraintSolver*          solver;
+    static GLDebugDrawer*               debug_drawer;
     
 };
 

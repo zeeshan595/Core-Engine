@@ -11,7 +11,7 @@ void Transform::ConstructMatrix()
     glm::mat4x4 pos = glm::translate(glm::mat4x4(1.0f), position);
     glm::mat4x4 rot = glm::toMat4(rotation);
     glm::mat4x4 sca = glm::scale(glm::mat4x4(1.0f), size);
-    model_matrix = sca * rot * pos;
+    model_matrix = pos * rot * sca;
 }
 
 void Transform::SetPosition    (glm::vec3 t)

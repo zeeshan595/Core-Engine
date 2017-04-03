@@ -12,11 +12,18 @@ public:
     {
         delete collider_shape;
     }
-    btCollisionShape* GetColliderInfo()
+    
+    
+    btCollisionShape*       GetColliderInfo()
     {
         return collider_shape;
     }
-    glm::vec3 GetColliderOffset()
+
+    void                    SetColliderOffset(glm::vec3 offset)
+    {
+        collider_offset = offset;
+    }
+    glm::vec3               GetColliderOffset()
     {
         return collider_offset;
     }

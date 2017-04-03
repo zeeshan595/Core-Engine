@@ -8,11 +8,14 @@ public:
     void Stop   ();
     void Update ();
 
-    void ApplyForce     (glm::vec3 force);
-    void ApplyForce     (glm::vec3 force, glm::vec3 relative_position);
-    void ApplyTorque    (glm::vec3 torque);
-    void ClearForces    ();
-    void SetDamping     (float line, float angular);
+    void ApplyForce         (glm::vec3 force);
+    void ApplyForce         (glm::vec3 force, glm::vec3 relative_position);
+    void ApplyTorque        (glm::vec3 torque);
+    void ClearForces        ();
+
+    void SetDamping         (float line, float angular);
+    void SetAngularFactor   (glm::vec3 factor);
+    void SetVelocity        (glm::vec3 vel);
 
     glm::vec3       GetVelocity();
 

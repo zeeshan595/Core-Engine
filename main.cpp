@@ -1,4 +1,8 @@
 #include "Engine/Common.h"
+#include "Game/GameResources.h"
+#include "Game/MenuManager.h"
+#include "Game/CameraMovment.h"
+#include "Game/CarMovment.h"
 
 int main(int argc, char* args[])
 {
@@ -7,41 +11,70 @@ int main(int argc, char* args[])
     Screen::SetResolution(1920, 1080, false);
     Screen::SetScreenPosition(SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
 
-    //Create Scene
-    Environment* scene = Environment::CreateEnvironment("Default");
-    Environment::SetEnvironment(scene, false);
+    //Create Scenes
+    Environment* main_menu_scene    = Environment::CreateEnvironment("Main Menu");
+    Environment* game_scene         = Environment::CreateEnvironment("test");
 
-    //Skybox
-    CubeTexture* skybox_texture = new CubeTexture("Default/skybox_day.png", "Default/skybox_day.png", "Default/skybox_day.png", "Default/skybox_day.png", "Default/skybox_day.png", "Default/skybox_day.png");
-    Shader* skybox_shader = new Shader("Default/skyboxVS.glsl", "Default/skyboxFS.glsl");
-    Environment::SetSkybox(new Skybox(skybox_texture, skybox_shader));
+    //Setup Main Menu
+    Environment::SetEnvironment(main_menu_scene, false);
 
-    //Light
-    Light* lit = Environment::CreateLight("Light");
-    lit->SetLightType(Light::LIGHT_TYPE::DIRECTIONAL);
-    lit->transform.Rotate(glm::vec3(-120, 0, 0));
+    //Main Menu Camera
+    Camera* menu_camera = Environment::CreateCamera("Menu Camera");
+    menu_camera->CreateModule<MenuManager>();
 
-    //Camera
-    Camera* cam = Environment::CreateCamera("Camera");
-    cam->transform.SetPosition(glm::vec3(0.0f, 21.0f, 30.0f));
-    cam->transform.Rotate(glm::vec3(0.0f, 3.14f, 0.0f));
+    //Main Menu Background UI
+    Shader* manu_background_ui_shader = new Shader("Default/uiVS.glsl", "Default/uiFS.glsl");
+    Texture* manu_background_ui_texture = new Texture("texture.png");
+    Entity* background_object = Environment::CreateEntity("UI Object");
+    background_object->transform.SetPosition(glm::vec3(0, 0, 0));
+    background_object->transform.SetSize(glm::vec3(1, 1, 1));
+    UI* background_ui_module = background_object->CreateModule<UI>();
+    background_ui_module->SetShader(manu_background_ui_shader);
+    background_ui_module->SetTexture(manu_background_ui_texture);
 
-    //UI
-    Entity* UI_OBJ = Environment::CreateEntity("UI Object");
-    UI_OBJ->transform.SetPosition(glm::vec3(-2, -2, 0));
-    UI_OBJ->transform.SetSize(glm::vec3(0.5f, 0.5f, 1));
-    UI* ui_module = UI_OBJ->CreateModule<UI>();
-    Shader* ui_shader = new Shader("Default/uiVS.glsl", "Default/uiFS.glsl");
-    Texture* ui_texture = new Texture("texture.png");
-    ui_module->SetShader(ui_shader);
-    ui_module->SetTexture(ui_texture);
+    //Setup Game Scene
+    Environment::SetEnvironment(game_scene, false);
+    GameResources::SetupResources();
+
+    //Game Scene Skybox
+    Environment::SetSkybox(GameResources::skybox);
+
+    //Game Lighting
+    Light* game_light = Environment::CreateLight("Light");
+    game_light->SetLightType(Light::LIGHT_TYPE::DIRECTIONAL);
+    game_light->transform.Rotate(glm::vec3(130.0f, 0.0f, 0.0f));
+
+    //Game Scene Camera
+    Camera* game_camera = Environment::CreateCamera("Game Camera");
+    game_camera->CreateModule<CameraMovment>();
+    game_camera->SetNearClip(1.0f);
+
+    //Setup Terrain
+    Entity* terrain_object              = Environment::CreateEntity("Terrain");
+    Terrain* terrain_module             = terrain_object->CreateModule<Terrain>();
+                                          terrain_object->CreateModule<MeshData>();
+    MeshRenderer* terrain_renderer      = terrain_object->CreateModule<MeshRenderer>();
+                                          terrain_object->CreateModule<Rigidbody>(); // Terrain Module Auto sets collision shape
+    terrain_renderer->SetMaterial(GameResources::terrain_material);
+    game_camera->CreateModule<CameraMovment>();
+
+    //Create Car
+    Entity* car_object                  = Environment::CreateEntity("Car");
+    MeshData* car_mesh_module           = car_object->CreateModule<MeshData>();
+    MeshRenderer* car_renderer_module   = car_object->CreateModule<MeshRenderer>();
+    Rigidbody* car_rigidbody_module     = car_object->CreateModule<Rigidbody>();
+                                          car_object->CreateModule<CarMovment>();
+    BallCollider* car_collider_module   = new BallCollider(0.5f);
+    car_collider_module->SetColliderOffset(glm::vec3(0.0f, 0.5f, 0.0f));
+    car_rigidbody_module->SetCollisionShape(car_collider_module);
+    car_mesh_module->LoadOBJ("car.obj");
+    car_renderer_module->SetMaterial(GameResources::car_material);
+    car_object->transform.SetPosition(glm::vec3(5, 3, 5));
 
     engine.Start();
     //CleanUp
-    delete skybox_texture;
-    delete skybox_shader;
-    delete ui_texture;
-    delete ui_shader;
-
+    GameResources::DestroyResources();
+    delete manu_background_ui_texture;
+    delete manu_background_ui_shader;
     return 0;
 }

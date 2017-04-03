@@ -1,6 +1,8 @@
 #ifndef _COMMON
 #define _COMMON
 
+#define TINYOBJLOADER_IMPLEMENTATION // define this in only *one* .cc
+
 #ifdef __MINGW32__
 #include <windows.h>
 #endif
@@ -42,6 +44,7 @@
 #include <btBulletCollisionCommon.h>
 #include <btBulletDynamicsCommon.h>
 #include <BulletCollision/CollisionShapes/btHeightfieldTerrainShape.h>
+#include <LinearMath/btIDebugDraw.h>
 
 //PATHS
 const std::string ASSET_PATH    = "Assets/";
@@ -80,9 +83,11 @@ const std::string SOUND_PATH    = ASSET_PATH + "Sound/";
 #include "Audio/AudioClip.h"
 
 //Physics
+#include "Physics/GLDebugDrawer.h"
 #include "Physics/Physics.h"
 #include "Physics/Collider.h"
 #include "Physics/BoxCollider.h"
+#include "Physics/BallCollider.h"
 #include "Physics/TerrainCollider.h"
 
 //Game Engine

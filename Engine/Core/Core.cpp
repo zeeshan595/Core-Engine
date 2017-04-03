@@ -71,7 +71,7 @@ void Core::Start()
 {
     is_running = true;
     Environment::SetEnvironment((int32_t)-1, false);
-    Environment::SetEnvironment((int32_t)0, true);
+    Environment::SetEnvironment((int32_t) 0, true);
     while (is_running)
     {
         SDL_Event event;
@@ -85,6 +85,9 @@ void Core::Start()
         Update();
 
         Graphics::Render();
+
+        
+        glLoadIdentity();
 
         SDL_GL_SwapWindow(Screen::GetWindow());
     }

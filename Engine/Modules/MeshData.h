@@ -15,6 +15,7 @@ public:
 
 private:
     void ComputeTangents();
+    std::string GetBaseDir(const std::string &filepath);
 
     std::vector<Vertex>         vertices;
     std::vector<uint32_t>       indices;

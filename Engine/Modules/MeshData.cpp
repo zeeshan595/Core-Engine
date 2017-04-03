@@ -33,29 +33,22 @@ void MeshData::SetMeshData(std::vector<Vertex> vertices, std::vector<uint32_t> i
 
 void MeshData::LoadOBJ(const char* filename)
 {
-    IndexedModel model = OBJModel(MODEL_PATH + filename).ToIndexedModel();
-    if (model.positions.size() == model.texCoords.size() && model.texCoords.size() == model.normals.size())
+    ObjLoader::ObjStructure model = ObjLoader::LoadObj(filename);
+    vertices.resize(model.vertices.size());
+    indices.resize(model.indices.size());
+    for (uint32_t i = 0; i < vertices.size(); i++)
     {
-        const int VERTS_LEN = model.positions.size();
-        const int INDICES_LEN = model.indices.size();
-        vertices.resize(VERTS_LEN);
-        indices.resize(INDICES_LEN);
-
-        for (int i = 0; i < VERTS_LEN; i++)
-        {
-            vertices[i] = {
-                model.positions[i],
-                glm::vec4(1.0f, 1.0f, 1.0f, 1.0f),
-                model.texCoords[i],
-                model.normals[i],
-                glm::vec3(0.0f, 0.0f, 0.0f)
-            };
-        }
-
-        for (int i = 0; i < INDICES_LEN; i++)
-        {
-            indices[i] = model.indices[i];
-        }
+        vertices[i] = {
+            model.vertices[i],
+            glm::vec4(1.0f, 1.0f, 1.0f, 1.0f),
+            model.uvs[i],
+            model.normals[i],
+            glm::vec3(1.0f, 1.0f, 1.0f)
+        };
+    }
+    for (uint32_t i = 0; i < indices.size(); i++)
+    {
+        indices[i] = model.indices[i];
     }
 }
 
@@ -86,4 +79,11 @@ void MeshData::ComputeTangents()
         vertices[(i*3) + 1].tangent = tangent;
         vertices[(i*3) + 2].tangent = tangent;
     }
+}
+
+std::string MeshData::GetBaseDir(const std::string &filepath)
+{
+  if (filepath.find_last_of("/\\") != std::string::npos)
+    return filepath.substr(0, filepath.find_last_of("/\\"));
+  return "";
 }
