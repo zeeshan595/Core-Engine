@@ -74,6 +74,8 @@ void Core::Start()
     Environment::SetEnvironment((int32_t) 0, true);
     while (is_running)
     {
+        ENVIRONMENT_CHANGED = true;
+
         SDL_Event event;
         if (!Input::UpdateInputs(&event))
             is_running = false;
@@ -85,9 +87,6 @@ void Core::Start()
         Update();
 
         Graphics::Render();
-
-        
-        glLoadIdentity();
 
         SDL_GL_SwapWindow(Screen::GetWindow());
     }
@@ -113,6 +112,8 @@ void Core::Update()
         for (uint32_t k = 0; k < modules.size(); k++)
         {
             modules[k]->Update();
+            if (!ENVIRONMENT_CHANGED)
+                return;
         }
     }
 }

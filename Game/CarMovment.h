@@ -4,30 +4,32 @@
 class CarMovment : public Module
 {
 public:
-    Rigidbody*  body                = NULL;
-    float       acceleration        = 5.0f;
-    float       max_speed           = 20.0f;
-    float       reverse_accel       = 10.0f;
-    float       reverse_speed       = 5.0f;
-    float       turn_speed          = 5.0f;
-    float       gravity             = 5.2f;
-    float       friction            = 3.0f;
+    Rigidbody*      body                = NULL;
+    AudioSource*    audio               = NULL;
+    float           acceleration        = 5.0f;
+    float           max_speed           = 20.0f;
+    float           reverse_accel       = 10.0f;
+    float           reverse_speed       = 5.0f;
+    float           turn_speed          = 5.0f;
+    float           gravity             = 2.2f;
+    float           friction            = 3.0f;
 
-    float       current_speed       = 0.0f;
+    float           current_speed       = 0.0f;
 
     void Start()
     {
-        body = entity->GetModule<Rigidbody>();
+        body    = entity->GetModule<Rigidbody>();
+        audio   = entity->GetModule<AudioSource>();
         body->SetDamping(0.5f, 2.0f);
         body->SetAngularFactor(glm::vec3(0, 1, 0));
+        
     }
-
     void Update()
     {
         if (Input::GetKey(SDLK_UP))
         {
             if (current_speed < max_speed)
-                current_speed += Time::delta_time * acceleration  * (1.0f / glm::abs(current_speed));
+                current_speed += Time::delta_time * acceleration  * (1.0f / glm::abs(glm::length(body->GetVelocity())));
         }
         else if (Input::GetKey(SDLK_DOWN))
         {
@@ -51,6 +53,15 @@ public:
         }
 
         body->SetVelocity((-gravity * glm::vec3(0, 1, 0)) + (entity->transform.Forward() * current_speed));
+        audio->SetPitch((current_speed / max_speed) + 0.3f);
+
+        glm::vec3 current_pos = entity->transform.GetPosition();
+        if (current_pos.x > 80 && current_pos.x < 88 && current_pos.z > 75)
+        {
+            Environment::SetEnvironment((int32_t)2, true);
+            entity->transform.SetPosition(glm::vec3(84, 2, 10));
+            entity->transform.Rotate(glm::vec3(0, -1.57f, 0));
+        }
     }
 };
 

@@ -101,6 +101,7 @@ void         Environment::SetEnvironment          (Environment* environment, boo
 
 void         Environment::SetEnvironment          (int32_t environment_id  , bool start_modules)
 {
+    ENVIRONMENT_CHANGED = true;
     if (start_modules)
     {
         if (current_environment != -1)

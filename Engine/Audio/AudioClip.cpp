@@ -32,8 +32,17 @@ AudioClip::AudioClip(const std::string filename)
     fread(&bytes_per_sample, sizeof(short), 1, fp);
     fread(&bits_per_sample, sizeof(short), 1, fp);
     
-    fread(type,sizeof(char), 4, fp);
-    if (type[0] != 'd' || type[1] != 'a' || type[2] != 't' || type[3] != 'a')
+    uint32_t counter = 0;
+    fread(type,sizeof(char), 1, fp);
+    while (type[0] != 'd')
+    {
+        fread(type,sizeof(char), 1, fp);
+        if (counter > 1000)
+            break;
+        counter++;
+    }
+    fread(type,sizeof(char), 3, fp);
+    if (type[0] != 'a' || type[1] != 't' || type[2] != 'a')
     {
         std::cout << "Missing data" << std::endl;
         return;

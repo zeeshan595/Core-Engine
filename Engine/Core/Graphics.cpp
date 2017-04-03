@@ -30,6 +30,8 @@ void Graphics::Render()
             for (uint32_t k = 0; k < modules.size(); k++)
             {
                 modules[k]->Render(cameras[i]);
+                if (!ENVIRONMENT_CHANGED)
+                    return;
             }
         }
     }

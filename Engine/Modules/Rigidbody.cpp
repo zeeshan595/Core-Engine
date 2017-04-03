@@ -30,10 +30,16 @@ void Rigidbody::Start  ()
 }
 void Rigidbody::Stop   ()
 {
-    Physics::GetWorld()->removeCollisionObject(body);
-    delete body;
-    delete motion;
-    delete collider_info;
+    if (body != NULL)
+    {
+        Physics::GetWorld()->removeCollisionObject(body);
+        delete body;
+        delete motion;
+        delete collider_info;
+        body            = NULL;
+        motion          = NULL;
+        collider_info   = NULL;
+    }
 }
 void Rigidbody::Update ()
 {

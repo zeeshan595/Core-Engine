@@ -53,6 +53,7 @@ const std::string TEXTURE_PATH  = ASSET_PATH + "Textures/";
 const std::string FONT_PATH     = ASSET_PATH + "Fonts/";
 const std::string MODEL_PATH    = ASSET_PATH + "Models/";
 const std::string SOUND_PATH    = ASSET_PATH + "Sound/";
+bool  ENVIRONMENT_CHANGED       = false;
 
 //Static
 #include "Static/Time.h"
