@@ -13,9 +13,7 @@ public:
 private:
     bool is_running = false;
 
-    void InitOpenGL();
     void Update();
-    void Render();
     void Stop();
 };
 
