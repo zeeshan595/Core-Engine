@@ -5,12 +5,12 @@
 #include "Game/CameraMovment.h"
 #include "Game/CarMovment.h"
 #include "Game/Minimap.h"
-
+//http://people.sc.fsu.edu/~jburkardt/data/obj/obj.html
 int main(int argc, char* args[])
 {
     //Setup Window
     Screen::SetWindowTitle("The Car Game");
-    Screen::SetResolution(1280, 720, false);
+    Screen::SetResolution(1024, 720, false);
     Screen::SetScreenPosition(SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
 
     //Create Scenes
@@ -34,7 +34,7 @@ int main(int argc, char* args[])
     Texture* manu_background_ui_texture = new Texture("menu_background.png");
     Entity* background_object = Environment::CreateEntity("UI Object");
     background_object->transform.SetPosition(glm::vec3(-1, -1, 0));
-    background_object->transform.SetSize(glm::vec3(1, 1, 1));
+    background_object->transform.SetSize(glm::vec3(2, 2, 1));
     UI* background_ui_module = background_object->CreateModule<UI>();
     background_ui_module->SetShader(manu_background_ui_shader);
     background_ui_module->SetTexture(manu_background_ui_texture);
@@ -141,7 +141,7 @@ int main(int argc, char* args[])
     Texture* end_background_ui_texture = new Texture("end_background.png");
     Entity* end_background_object = Environment::CreateEntity("UI Object");
     end_background_object->transform.SetPosition(glm::vec3(-1, -1, 0));
-    end_background_object->transform.SetSize(glm::vec3(1, 1, 1));
+    end_background_object->transform.SetSize(glm::vec3(2, 2, 1));
     UI* end_background_ui_module = end_background_object->CreateModule<UI>();
     end_background_ui_module->SetShader(end_background_ui_shader);
     end_background_ui_module->SetTexture(end_background_ui_texture);

@@ -17,14 +17,14 @@ public:
     {
         glm::vec3 offset = player_car->transform.Forward() * -camera_position;
         offset.y = camera_height;
-        offset -= player_car->transform.Right() * 0.5f;
+        //offset -= player_car->transform.Right() * 0.5f;
         entity->transform.SetPosition(LerpPosition(entity->transform.GetPosition(), player_car->transform.GetPosition() + offset, Time::delta_time * 5.0f));
         glm::vec3 rotation = glm::vec3(0, player_car->transform.EulerAngles().y, 0);
         if (player_car->transform.EulerAngles().x != 0)
             rotation.y = -rotation.y + 3.14f;
 
-        rotation.y -= 0.3f;
-        rotation.z -= 0.10f;
+        //rotation.y -= 0.3f;
+        //rotation.z -= 0.10f;
         entity->transform.Rotate(rotation);
     }
 

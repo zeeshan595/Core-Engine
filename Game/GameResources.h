@@ -28,7 +28,7 @@ public:
 
     static void SetupResources()
     {
-        skybox_texture  = new CubeTexture("Default/skybox_day.png", "Default/skybox_day.png", "Default/skybox_day.png", "Default/skybox_day.png", "Default/skybox_day.png", "Default/skybox_day.png");
+        skybox_texture  = new CubeTexture("left.png", "right.png", "top.png", "bottom.png", "front.png", "back.png");
         skybox_shader   = new Shader("Default/skyboxVS.glsl", "Default/skyboxFS.glsl");
         skybox          = new Skybox(skybox_texture, skybox_shader);
 

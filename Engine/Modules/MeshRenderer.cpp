@@ -103,6 +103,8 @@ void MeshRenderer::Render(Camera* rendering_camera)
         GLint light_reflection_uniform = glGetUniformLocation(material->GetShader()->GetShaderProgram(), "light_reflectivity");
         glUniform1fv(light_reflection_uniform, 1, &material_reflectivity);
 
+        FogShaderInfo();
+
         //Draw
         glBindVertexArray(data->GetVAO());
         glDrawElements(GL_TRIANGLES, data->GetIndices().size(), GL_UNSIGNED_INT, 0);

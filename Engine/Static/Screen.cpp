@@ -1,6 +1,8 @@
 SDL_Window*         Screen::window                  = NULL;
 SDL_GLContext       Screen::context                 = NULL;
 bool                Screen::is_fullscreen           = false;
+uint32_t            Screen::WIDTH                   = 1024;
+uint32_t            Screen::HEIGHT                  = 720;
 
 void Screen::InitWindow(const char* title)
 {
@@ -11,8 +13,8 @@ void Screen::InitWindow(const char* title)
         title,
         SDL_WINDOWPOS_CENTERED,
         SDL_WINDOWPOS_CENTERED,
-        1024,
-        720,
+        WIDTH,
+        HEIGHT,
         SDL_WINDOW_OPENGL
     );
     context = SDL_GL_CreateContext(window);
@@ -41,6 +43,8 @@ void Screen::SetResolution ( uint32_t w , uint32_t h , bool full_screen )
     {
         SDL_SetWindowFullscreen(window, SDL_FALSE);
     }
+    WIDTH = w;
+    HEIGHT = h;
 }
 void Screen::SetScreenPosition ( uint32_t x , uint32_t y )
 {
@@ -48,15 +52,8 @@ void Screen::SetScreenPosition ( uint32_t x , uint32_t y )
 }
 void Screen::GetDisplayResolution ( uint32_t &width , uint32_t &height )
 {
-    SDL_DisplayMode current;
-    int should_be_zero = SDL_GetCurrentDisplayMode(0, &current);
-    if (should_be_zero != 0)
-    {
-        std::cout << "WARNING (GetDisplayResolution): Could not find monitor" << std::endl;
-        return;
-    }
-    width = current.w;
-    height = current.h;
+    width = WIDTH;
+    height = HEIGHT;
 }
 void Screen::GetWindowPosition ( uint32_t &x , uint32_t &y )
 {

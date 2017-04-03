@@ -17,6 +17,12 @@ uniform sampler2D texture_map0;
 uniform float shine_damper;
 uniform float light_reflectivity;
 
+//Fog
+uniform float fog_distance;
+uniform float fog_density;
+uniform float fog_gradient;
+uniform vec4 fog_color;
+
 void main()
 {
     vec3 diffuse = vec3(0.0f);
@@ -81,6 +87,13 @@ void main()
     //Ambient Light
     total_diffuse       = max(total_diffuse, 0.3f);
 
+    //Texture
     vec4 texture_color  = texture(texture_map0, the_vertex_uv);
-    out_color           = (vec4(total_diffuse, 1.0f) * texture_color) + vec4(total_specular, 1.0f);
+    
+    //Fog
+    float distance_from_camera  = length(camera_vector);
+    distance_from_camera        = distance_from_camera * fog_distance;
+    float fog                   = exp(-pow(distance_from_camera * fog_density, fog_gradient));
+    fog                         = clamp(fog, 0.0f, 1.0f);
+    out_color                   = mix(fog_color, (vec4(total_diffuse, 1.0f) * texture_color) + vec4(total_specular, 1.0f), fog);
 }

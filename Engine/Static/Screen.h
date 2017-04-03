@@ -21,6 +21,8 @@ private:
     static SDL_Window*          window;
     static SDL_GLContext        context;
     static bool                 is_fullscreen;
+    static uint32_t             WIDTH;
+    static uint32_t             HEIGHT;
 
 };
 
