@@ -48,7 +48,7 @@ public:
         terrain_textures    = {
             new Texture("blend_map.png"),
             new Texture("grassy2.png"),
-            new Texture("grassFlowers.png"),
+            new Texture("dirt.png"),
             new Texture("mud.png"),
             new Texture("path.png")
         };

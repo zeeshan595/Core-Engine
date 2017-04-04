@@ -1,12 +1,12 @@
-#ifndef _CAMERA_MOVMENT
-#define _CAMERA_MOVMENT
+#ifndef _FPS_CAMERA_MOVMENT
+#define _FPS_CAMERA_MOVMENT
 
-class CameraMovment : public Module
+class FPSCameraMovment : public Module
 {
 public:
     AudioSource* audio = NULL;
     Entity* player = NULL;
-    float   camera_position = 13.0f;
+    float   camera_position = 3.0f;
     float   camera_height = 7.0f;
     bool mute = false;
 
@@ -18,7 +18,7 @@ public:
 
     void Update()
     {
-        glm::vec3 offset = player->transform.Forward() * -camera_position;
+        glm::vec3 offset = player->transform.Forward() * +camera_position;
          offset.y = camera_height;
         entity->transform.SetPosition(LerpPosition(entity->transform.GetPosition(), player->transform.GetPosition() + offset, Time::delta_time * 5.0f));
         glm::vec3 rotation = glm::vec3(0, player->transform.EulerAngles().y, 0);
@@ -43,6 +43,8 @@ public:
                 audio->Play();
             }
         }
+
+        //Toogle Camera
         if(Input::GetKeyDown(SDLK_F1))
         {
 

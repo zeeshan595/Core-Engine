@@ -1,7 +1,6 @@
 #include "Engine/Common.h"
 #include "Game/GameResources.h"
 #include "Game/StartGame.h"
-#include "Game/GameOver.h"
 #include "Game/CameraMovment.h"
 #include "Game/Player_Movement.h"
 #include "Game/Obstacle.h"
@@ -187,7 +186,6 @@ int main(int argc, char* args[])
     AudioClip* end_music_clip = new AudioClip("gameover.wav");
     end_audio_source->SetClip(end_music_clip);
     end_audio_source->SetLooping(true);
-    end_camera->CreateModule<GameOver>();
 
     //Main Menu Background UI
     Shader* end_background_ui_shader = new Shader("Default/uiVS.glsl", "Default/uiFS.glsl");

@@ -4,17 +4,17 @@
 class Minimap : public Module
 {
 public:
-    Entity* player_car          = NULL;
+    Entity* player          = NULL;
     float   camera_height       = 30.0f;
 
     void Start()
     {
-        player_car = Environment::FindEntity("Car");
+        player = Environment::FindEntity("Player");
     }
 
     void Update()
     {
-        glm::vec3 offset = player_car->transform.GetPosition() + glm::vec3(0, camera_height, 0);
+        glm::vec3 offset = player->transform.GetPosition() + glm::vec3(0, camera_height, 0);
         entity->transform.SetPosition(LerpPosition(entity->transform.GetPosition(), offset, Time::delta_time * 5.0f));
     }
 
