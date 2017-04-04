@@ -35,6 +35,8 @@ void Graphics::Render()
             }
         }
     }
+
+    Physics::GetWorld()->debugDrawWorld();
 }
 
 void Graphics::InitOpenGL()

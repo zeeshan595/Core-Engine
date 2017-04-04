@@ -9,15 +9,17 @@ public:
 
     void Start();
     void Quit();
+    static bool is_running;
 
 private:
-    bool is_running = false;
 
     void InitOpenGL();
     void Update();
     void Render();
     void Stop();
 };
+
+bool Core::is_running = false;
 
 #include "Core.cpp"
 Core engine("Core Engine");

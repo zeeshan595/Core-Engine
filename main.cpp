@@ -1,9 +1,10 @@
 #include "Engine/Common.h"
 #include "Game/GameResources.h"
-#include "Game/MenuManager.h"
-#include "Game/EndSceneManager.h"
+#include "Game/StartGame.h"
+#include "Game/GameOver.h"
 #include "Game/CameraMovment.h"
 #include "Game/Player_Movement.h"
+#include "Game/Obstacle.h"
 #include "Game/Minimap.h"
 
 int main(int argc, char* args[])
@@ -11,25 +12,25 @@ int main(int argc, char* args[])
 
 /*==========SCENE MANAGEMENT===========*/
     //Setup Window
-    Screen::SetWindowTitle("The Car Game");
+    Screen::SetWindowTitle("Second Sight");
     Screen::SetResolution(1280, 720, false);
     Screen::SetScreenPosition(SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
 
     //Create Scenes
-    Environment* main_menu_scene    = Environment::CreateEnvironment("Main Menu");
-    Environment* game_scene         = Environment::CreateEnvironment("Game");
-    Environment* end_scene          = Environment::CreateEnvironment("End Scene");
+    Environment* main_menu_scene = Environment::CreateEnvironment("Main Menu");
+    Environment* game_scene = Environment::CreateEnvironment("Game");
+    Environment* gameover_scene = Environment::CreateEnvironment("Game Over");
 
     //Setup Main Menu
     Environment::SetEnvironment(main_menu_scene, false);    
 
     //Main Menu Camera
-    Camera* menu_camera             = Environment::CreateCamera("Menu Camera");
-    AudioSource* menu_audio_source  = menu_camera->CreateModule<AudioSource>();
-    AudioClip* menu_music_clip      = new AudioClip("isolation.wav");
+    Camera* menu_camera  = Environment::CreateCamera("Menu Camera");
+    AudioSource* menu_audio_source = menu_camera->CreateModule<AudioSource>();
+    AudioClip* menu_music_clip  = new AudioClip("isolation.wav");
     menu_audio_source->SetClip(menu_music_clip);    
     menu_audio_source->SetLooping(true);
-    menu_camera->CreateModule<MenuManager>();
+    menu_camera->CreateModule<StartGame>();
 
 /*==========MAIN MENU (UI)===========*/
     Shader* manu_background_ui_shader = new Shader("Default/uiVS.glsl", "Default/uiFS.glsl");
@@ -41,7 +42,7 @@ int main(int argc, char* args[])
     background_ui_module->SetShader(manu_background_ui_shader);
     background_ui_module->SetTexture(manu_background_ui_texture);
 
-/*==========SCENE OBJECTS===========*/
+/*==========ENVIRONMENT OBJECTS===========*/
 
     //Setup Game Scene
     Environment::SetEnvironment(game_scene, false);
@@ -58,7 +59,7 @@ int main(int argc, char* args[])
     //Game Scene Camera
     Camera* game_camera = Environment::CreateCamera("Game Camera");
     AudioSource* game_audio_source = game_camera->CreateModule<AudioSource>();
-    AudioClip* game_music_clip = new AudioClip("isolation.wav");
+    AudioClip* game_music_clip = new AudioClip("play.wav");
     game_audio_source->SetClip(game_music_clip);
     game_audio_source->SetLooping(true);
     game_camera->CreateModule<CameraMovment>();
@@ -78,7 +79,7 @@ int main(int argc, char* args[])
     terrain_object->CreateModule<Rigidbody>(); // Terrain Module Auto sets collision shape
     terrain_renderer->SetMaterial(GameResources::terrain_material);
 
-/*==========SCENE OBJECTS===========*/
+/*==========SCENE GAMEOBJECTS===========*/
 
     //Player
     Entity* player_object = Environment::CreateEntity("Player");    //Player Entity (GameObject)
@@ -96,27 +97,97 @@ int main(int argc, char* args[])
     player_object_rigidbody_module->SetCollisionShape(player_collider_module);  //RigidBody
     player_object_mesh_module->LoadOBJ("cube.obj"); //Model
     player_object_renderer_module->SetMaterial(GameResources::player_material); //Texture Material
-    player_object->transform.SetPosition(glm::vec3(50, 9, 50)); //Start Position
+    player_object->transform.SetPosition(glm::vec3(50, 8, 50)); //Start Position
     player_object->transform.Rotate(glm::vec3(0, 0.0f, 0));   //Initial Rotation
 
-    Entity* stall_object  = Environment::CreateEntity("House");
-    MeshData* stall_mesh_module = stall_object->CreateModule<MeshData>();
-    MeshRenderer* stall_renderer_module = stall_object->CreateModule<MeshRenderer>();
-    stall_mesh_module->LoadOBJ("LongHouse.obj");
-    stall_renderer_module->SetMaterial(GameResources::building_material);
-    stall_object->transform.SetPosition(glm::vec3(50,7, 60)); //Start Position
-    stall_object->transform.SetSize(glm::vec3(0.5f, 0.5f, 0.5f)); //Initial Scale
+    //Simple House
+    Entity* house_object  = Environment::CreateEntity("House");
+    MeshData* house_mesh_module = house_object->CreateModule<MeshData>();
+    MeshRenderer* house_renderer_module = house_object->CreateModule<MeshRenderer>();
+    // Rigidbody* house_object_rigidbody_module = house_object->CreateModule<Rigidbody>();   //RigidBody (Physics Calcs)
+    // house_object->CreateModule<Obstacle>();  //Enable Collision
+    // glm::vec3 house_size = house_object->transform.GetSize();
+    // BoxCollider* house_collider_module = new BoxCollider(1.0f,1.0f,1.0f);  //Box Collider
+    // // house_collider_module->SetColliderOffset(house_size);
+    // house_collider_module->SetColliderOffset(glm::vec3(0.0f, 0.5f, 0.0f));
+    
+    // house_object_rigidbody_module->SetCollisionShape(house_collider_module);  //RigidBody
+
+    house_mesh_module->LoadOBJ("Bambo_House.obj");
+    house_renderer_module->SetMaterial(GameResources::building_material);
+    house_object->transform.SetPosition(glm::vec3(50,7, 60)); //Start Position
+    house_object->transform.SetSize(glm::vec3(0.5f, 0.5f, 0.5f)); //Initial Scale
+
+
+    //Radio
+    Entity* radio_object  = Environment::CreateEntity("radio");
+    MeshData* radio_mesh_module = radio_object->CreateModule<MeshData>();
+    MeshRenderer* radio_renderer_module = radio_object->CreateModule<MeshRenderer>();
+    Rigidbody* radio_object_rigidbody_module = radio_object->CreateModule<Rigidbody>();   //RigidBody (Physics Calcs)
+    glm::vec3 radio_size = radio_object->transform.GetSize();
+    radio_object->CreateModule<Obstacle>();
+
+    BoxCollider* radio_collider_module = new BoxCollider(radio_size.x, radio_size.y, radio_size.z);  //Box Collider
+    radio_collider_module->SetColliderOffset(glm::vec3(0.0f, 0.5f, 0.0f));
+    radio_object_rigidbody_module->SetCollisionShape(radio_collider_module);  //RigidBody
+    
+    radio_mesh_module->LoadOBJ("radio.obj");
+    radio_renderer_module->SetMaterial(GameResources::radio_material);
+    radio_object->transform.SetPosition(glm::vec3(50,10, 52)); //Start Position
+
+    radio_object->transform.SetSize(glm::vec3(0.2f, 0.2f, 0.2f)); //Initial Scale
+    radio_object->transform.Rotate(glm::vec3(0, 90.0f, 0));   //Initial Rotation
+
+
+    //Square Crate
+    Entity* crate_object  = Environment::CreateEntity("Crate 1");
+    MeshData* crate_mesh_module = crate_object->CreateModule<MeshData>();
+    MeshRenderer* crate_renderer_module = crate_object->CreateModule<MeshRenderer>();
+    Rigidbody* crate_object_rigidbody_module = crate_object->CreateModule<Rigidbody>();
+    glm::vec3 crate_size = crate_object->transform.GetSize();   //RigidBody (Physics Calcs)
+    crate_object->CreateModule<Obstacle>();
+
+    BoxCollider* crate_collider_module = new BoxCollider(crate_size.x, crate_size.y, crate_size.z);  //Box Collider
+    crate_collider_module->SetColliderOffset(glm::vec3(0.0f, 0.5f, 0.0f));
+    crate_object_rigidbody_module->SetCollisionShape(crate_collider_module);  //RigidBody
+
+    crate_mesh_module->LoadOBJ("Crate1.obj");
+    crate_renderer_module->SetMaterial(GameResources::crate_material);
+    crate_object->transform.SetPosition(glm::vec3(40,7, 52)); //Start Position
+    crate_object->transform.SetSize(glm::vec3(1.0f, 1.0f, 1.0f)); //Initial Scale
+    crate_object->transform.Rotate(glm::vec3(0, 90.0f, 0));   //Initial Rotation
+
+
+    //Long Crate
+    Entity* crate_object2  = Environment::CreateEntity("Crate 2");
+    MeshData* crate_mesh_module2 = crate_object2->CreateModule<MeshData>();
+    MeshRenderer* crate_renderer_module2 = crate_object2->CreateModule<MeshRenderer>();
+    Rigidbody* crate2_object_rigidbody_module = crate_object2->CreateModule<Rigidbody>();   //RigidBody (Physics Calcs)
+    glm::vec3 crate_size2 = crate_object2->transform.GetSize();   //RigidBody (Physics Calcs)
+    crate_object2->CreateModule<Obstacle>();
+
+    BoxCollider* crate_collider_module2 = new BoxCollider(crate_size2.x, crate_size2.y, crate_size2.z);  //Box Collider
+    crate_collider_module2->SetColliderOffset(glm::vec3(0.0f, 0.5f, 0.0f));
+    crate2_object_rigidbody_module->SetCollisionShape(crate_collider_module2);  //RigidBody
+
+    crate_mesh_module2->LoadOBJ("Crate2.obj");
+    crate_renderer_module2->SetMaterial(GameResources::crate_material2);
+    crate_object2->transform.SetPosition(glm::vec3(40,7, 50)); //Start Position
+    crate_object2->transform.SetSize(glm::vec3(1.0f, 1.0f, 1.0f)); //Initial Scale
+    crate_object2->transform.Rotate(glm::vec3(0, 90.0f, 0));   //Initial Rotation
+
+    
 
 /*==========GAME OVER (UI)===========*/
-    Environment::SetEnvironment(end_scene, false);
+    Environment::SetEnvironment(gameover_scene, false);
 
     //Main Menu Camera
-    Camera* end_camera              = Environment::CreateCamera("Menu Camera");
-    AudioSource* end_audio_source   = end_camera->CreateModule<AudioSource>();
-    AudioClip* end_music_clip       = new AudioClip("end.wav");
+    Camera* end_camera  = Environment::CreateCamera("Menu Camera");
+    AudioSource* end_audio_source = end_camera->CreateModule<AudioSource>();
+    AudioClip* end_music_clip = new AudioClip("gameover.wav");
     end_audio_source->SetClip(end_music_clip);
     end_audio_source->SetLooping(true);
-    end_camera->CreateModule<EndSceneManager>();
+    end_camera->CreateModule<GameOver>();
 
     //Main Menu Background UI
     Shader* end_background_ui_shader = new Shader("Default/uiVS.glsl", "Default/uiFS.glsl");
@@ -138,7 +209,6 @@ int main(int argc, char* args[])
     delete end_background_ui_texture;
 
     //Destroy Music
-    // delete car_sound;
     delete menu_music_clip;
     delete game_music_clip;
     delete end_music_clip;
