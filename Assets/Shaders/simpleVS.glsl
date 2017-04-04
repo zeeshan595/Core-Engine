@@ -1,12 +1,13 @@
-#version 150
+#version 330
 
-in vec3 vertex_position;
+in vec3 vertexPosition;
+in vec4 vertexColour;
+out vec4 colour; 
 
-uniform mat4 projection_matrix;
-uniform mat4 view_matrix;
-uniform mat4 transform_matrix;
+uniform mat4 MVP;
 
 void main()
 {
-    gl_Position = projection_matrix * view_matrix * transform_matrix * vec4(vertex_position, 1.0f);
+    gl_Position = MVP * vec4(vertexPosition,1.0);
+    colour = vertexColour;
 }

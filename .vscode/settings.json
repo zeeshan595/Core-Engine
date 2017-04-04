@@ -1,6 +1,10 @@
 {
     "files.associations": {
-        "*.H": "cpp"
+        "*.H": "cpp",
+        "list": "cpp",
+        "vector": "cpp",
+        "xstring": "cpp",
+        "xutility": "cpp"
     },
     "editor.tabSize": 4,
     "search.exclude": {
