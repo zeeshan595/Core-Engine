@@ -48,7 +48,7 @@ public:
         terrain_textures    = {
             new Texture("blend_map.png"),
             new Texture("grassy2.png"),
-            new Texture("dirt.png"),
+            new Texture("dirt.jpg"),
             new Texture("mud.png"),
             new Texture("path.png")
         };
@@ -58,14 +58,14 @@ public:
         terrain_material->SetLightReflectivity(0.0f);
 
         player_shader          = new Shader("Default/defaultVS.glsl", "Default/defaultFS.glsl");
-        player_texture_map     = new Texture("dirt.png");
-        player_normal_map      = new Texture("Default/normal.png");
+        player_texture_map     = new Texture("swat_diff.png");
+        player_normal_map      = new Texture("swat_normal.png");
         player_material        = new Material();
         player_material->SetShader(player_shader);
         player_material->SetTextures({ player_texture_map, player_normal_map });
 
         building_shader          = new Shader("Default/defaultVS.glsl", "Default/defaultFS.glsl");
-        building_texture_map     = new Texture("HouseLong.png");
+        building_texture_map     = new Texture("cloth_roof.png");
         building_normal_map      = new Texture("default.png");
         building_material        = new Material();
         building_material->SetShader(building_shader);

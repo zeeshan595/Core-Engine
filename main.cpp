@@ -111,27 +111,28 @@ int main(int argc, char* args[])
     
     // house_object_rigidbody_module->SetCollisionShape(house_collider_module);  //RigidBody
 
-    house_mesh_module->LoadOBJ("Bambo_House.obj");
+    house_mesh_module->LoadOBJ("full_shop.obj");
     house_renderer_module->SetMaterial(GameResources::building_material);
     house_object->transform.SetPosition(glm::vec3(50,7, 60)); //Start Position
-    house_object->transform.SetSize(glm::vec3(0.5f, 0.5f, 0.5f)); //Initial Scale
+    house_object->transform.SetSize(glm::vec3(0.05f, 0.05f, 0.05f)); //Initial Scale
+    house_object->transform.Rotate(glm::vec3(0.0f, 180.0f, 0.05f)); //Initial Scale
 
 
     //Radio
     Entity* radio_object  = Environment::CreateEntity("radio");
     MeshData* radio_mesh_module = radio_object->CreateModule<MeshData>();
     MeshRenderer* radio_renderer_module = radio_object->CreateModule<MeshRenderer>();
-    Rigidbody* radio_object_rigidbody_module = radio_object->CreateModule<Rigidbody>();   //RigidBody (Physics Calcs)
-    glm::vec3 radio_size = radio_object->transform.GetSize();
-    radio_object->CreateModule<Obstacle>();
+    // Rigidbody* radio_object_rigidbody_module = radio_object->CreateModule<Rigidbody>();   //RigidBody (Physics Calcs)
+    // glm::vec3 radio_size = radio_object->transform.GetSize();
+    // radio_object->CreateModule<Obstacle>();
 
-    BoxCollider* radio_collider_module = new BoxCollider(radio_size.x, radio_size.y, radio_size.z);  //Box Collider
-    radio_collider_module->SetColliderOffset(glm::vec3(0.0f, 0.5f, 0.0f));
-    radio_object_rigidbody_module->SetCollisionShape(radio_collider_module);  //RigidBody
+    // BoxCollider* radio_collider_module = new BoxCollider(radio_size.x, radio_size.y, radio_size.z);  //Box Collider
+    // radio_collider_module->SetColliderOffset(glm::vec3(0.0f, 0.5f, 0.0f));
+    // radio_object_rigidbody_module->SetCollisionShape(radio_collider_module);  //RigidBody
     
     radio_mesh_module->LoadOBJ("radio.obj");
     radio_renderer_module->SetMaterial(GameResources::radio_material);
-    radio_object->transform.SetPosition(glm::vec3(50,10, 52)); //Start Position
+    radio_object->transform.SetPosition(glm::vec3(50,5, 52)); //Start Position
 
     radio_object->transform.SetSize(glm::vec3(0.2f, 0.2f, 0.2f)); //Initial Scale
     radio_object->transform.Rotate(glm::vec3(0, 90.0f, 0));   //Initial Rotation
@@ -161,8 +162,7 @@ int main(int argc, char* args[])
     MeshData* crate_mesh_module2 = crate_object2->CreateModule<MeshData>();
     MeshRenderer* crate_renderer_module2 = crate_object2->CreateModule<MeshRenderer>();
     Rigidbody* crate2_object_rigidbody_module = crate_object2->CreateModule<Rigidbody>();   //RigidBody (Physics Calcs)
-    glm::vec3 crate_size2 = crate_object2->transform.GetSize();   //RigidBody (Physics Calcs)
-    crate_object2->CreateModule<Obstacle>();
+    glm::vec3 crate_size2 = crate_object2->transform.GetSize();   
 
     BoxCollider* crate_collider_module2 = new BoxCollider(crate_size2.x, crate_size2.y, crate_size2.z);  //Box Collider
     crate_collider_module2->SetColliderOffset(glm::vec3(0.0f, 0.5f, 0.0f));
@@ -173,6 +173,23 @@ int main(int argc, char* args[])
     crate_object2->transform.SetPosition(glm::vec3(40,7, 50)); //Start Position
     crate_object2->transform.SetSize(glm::vec3(1.0f, 1.0f, 1.0f)); //Initial Scale
     crate_object2->transform.Rotate(glm::vec3(0, 90.0f, 0));   //Initial Rotation
+
+    // //Tree
+    // Entity* crate_object2  = Environment::CreateEntity("Crate 2");
+    // MeshData* crate_mesh_module2 = crate_object2->CreateModule<MeshData>();
+    // MeshRenderer* crate_renderer_module2 = crate_object2->CreateModule<MeshRenderer>();
+    // Rigidbody* crate2_object_rigidbody_module = crate_object2->CreateModule<Rigidbody>();   //RigidBody (Physics Calcs)
+    // glm::vec3 crate_size2 = crate_object2->transform.GetSize();   
+
+    // BoxCollider* crate_collider_module2 = new BoxCollider(crate_size2.x, crate_size2.y, crate_size2.z);  //Box Collider
+    // crate_collider_module2->SetColliderOffset(glm::vec3(0.0f, 0.5f, 0.0f));
+    // crate2_object_rigidbody_module->SetCollisionShape(crate_collider_module2);  //RigidBody
+
+    // crate_mesh_module2->LoadOBJ("Crate2.obj");
+    // crate_renderer_module2->SetMaterial(GameResources::crate_material2);
+    // crate_object2->transform.SetPosition(glm::vec3(40,7, 50)); //Start Position
+    // crate_object2->transform.SetSize(glm::vec3(1.0f, 1.0f, 1.0f)); //Initial Scale
+    // crate_object2->transform.Rotate(glm::vec3(0, 90.0f, 0));   //Initial Rotation
 
     
 

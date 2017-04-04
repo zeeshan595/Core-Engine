@@ -6,7 +6,7 @@ class StartGame : public Module
 public:
     void Update()
     {
-        if (Input::GetKeyDown(SDLK_SPACE))
+        if (Input::GetKeyDown(SDLK_RETURN))
         {
             Environment::SetEnvironment((int32_t)1, true);
         }
