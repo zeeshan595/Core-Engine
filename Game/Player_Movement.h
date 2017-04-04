@@ -1,7 +1,7 @@
 #ifndef _CAR_MOVMENT
 #define _CAR_MOVMENT
 
-class CarMovment : public Module
+class PlayerMovement : public Module
 {
 public:
     Rigidbody*      body                = NULL;

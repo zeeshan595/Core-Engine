@@ -12,14 +12,20 @@ public:
     static std::vector<Texture*>    terrain_textures;
     static Material*                terrain_material;
 
-    static Shader*                  car_shader;
-    static Texture*                 car_texture_map;
-    static Texture*                 car_normal_map;
-    static Material*                car_material;
+    static Shader*                  player_shader;
+    static Texture*                 player_texture_map;
+    static Texture*                 player_normal_map;
+    static Material*                player_material;
+
+    static Shader*                  building_shader;
+    static Texture*                 building_texture_map;
+    static Texture*                 building_normal_map;
+    static Material*                building_material;
 
     static void SetupResources()
     {
-        skybox_texture  = new CubeTexture("Default/skybox_day.png", "Default/skybox_day.png", "Default/skybox_day.png", "Default/skybox_day.png", "Default/skybox_day.png", "Default/skybox_day.png");
+        skybox_texture  = new CubeTexture("mountains/right.png", "mountains/left.png", "mountains/up.png", 
+        "mountains/down.png", "mountains/bk.png", "mountains/front.png");
         skybox_shader   = new Shader("Default/skyboxVS.glsl", "Default/skyboxFS.glsl");
         skybox          = new Skybox(skybox_texture, skybox_shader);
 
@@ -36,12 +42,19 @@ public:
         terrain_material->SetTextures(terrain_textures);
         terrain_material->SetLightReflectivity(0.0f);
 
-        car_shader          = new Shader("Default/defaultVS.glsl", "Default/defaultFS.glsl");
-        car_texture_map     = new Texture("car.png");
-        car_normal_map      = new Texture("Default/normal.png");
-        car_material        = new Material();
-        car_material->SetShader(car_shader);
-        car_material->SetTextures({ car_texture_map, car_normal_map });
+        player_shader          = new Shader("Default/defaultVS.glsl", "Default/defaultFS.glsl");
+        player_texture_map     = new Texture("default.png");
+        player_normal_map      = new Texture("Default/normal.png");
+        player_material        = new Material();
+        player_material->SetShader(player_shader);
+        player_material->SetTextures({ player_texture_map, player_normal_map });
+
+        building_shader          = new Shader("Default/defaultVS.glsl", "Default/defaultFS.glsl");
+        building_texture_map     = new Texture("default.png");
+        building_normal_map      = new Texture("HouseLong.jpg");
+        building_material        = new Material();
+        building_material->SetShader(building_shader);
+        building_material->SetTextures({ building_texture_map, building_normal_map });
     }
 
     static void DestroyResources()
@@ -56,10 +69,15 @@ public:
         terrain_textures.clear();
         delete terrain_material;        terrain_material    = NULL;
 
-        delete car_shader;              car_shader          = NULL;
-        delete car_texture_map;         car_texture_map     = NULL;
-        delete car_normal_map;          car_normal_map      = NULL;
-        delete car_material;            car_material        = NULL;
+        delete player_shader;              player_shader          = NULL;
+        delete player_texture_map;         player_texture_map     = NULL;
+        delete player_normal_map;          player_normal_map      = NULL;
+        delete player_material;            player_material        = NULL;
+
+        delete building_shader;            building_shader = NULL;
+        delete building_texture_map;       building_texture_map = NULL;
+        delete building_normal_map;        building_normal_map = NULL;
+        delete building_material;          building_material = NULL;
     }
 };
 
@@ -69,9 +87,15 @@ Skybox*                     GameResources::skybox                       = NULL;
 Shader*                     GameResources::terrain_shader               = NULL;
 std::vector<Texture*>       GameResources::terrain_textures;
 Material*                   GameResources::terrain_material             = NULL;
-Shader*                     GameResources::car_shader                   = NULL;
-Texture*                    GameResources::car_texture_map              = NULL;
-Texture*                    GameResources::car_normal_map               = NULL;
-Material*                   GameResources::car_material                 = NULL;
+Shader*                     GameResources::player_shader                   = NULL;
+Texture*                    GameResources::player_texture_map              = NULL;
+Texture*                    GameResources::player_normal_map               = NULL;
+Material*                   GameResources::player_material                 = NULL;
+
+Shader*                     GameResources::building_shader                   = NULL;
+Texture*                    GameResources::building_texture_map              = NULL;
+Texture*                    GameResources::building_normal_map               = NULL;
+Material*                   GameResources::building_material                 = NULL;
+
 
 #endif

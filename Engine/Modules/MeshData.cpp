@@ -33,15 +33,16 @@ void MeshData::SetMeshData(std::vector<Vertex> vertices, std::vector<uint32_t> i
 
 void MeshData::LoadOBJ(const char* filename)
 {
-    ObjLoader::ObjStructure model = ObjLoader::LoadObj(filename);
-    vertices.resize(model.vertices.size());
+    IndexedModel model = OBJModel(MODEL_PATH + filename).ToIndexedModel();
+    // ObjLoader::ObjStructure model = ObjLoader::LoadObj(filename);
+    vertices.resize(model.positions.size());
     indices.resize(model.indices.size());
     for (uint32_t i = 0; i < vertices.size(); i++)
     {
         vertices[i] = {
-            model.vertices[i],
+            model.positions[i],
             glm::vec4(1.0f, 1.0f, 1.0f, 1.0f),
-            model.uvs[i],
+            model.texCoords[i],
             model.normals[i],
             glm::vec3(1.0f, 1.0f, 1.0f)
         };
