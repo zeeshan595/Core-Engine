@@ -74,7 +74,13 @@ public:
             audio->Stop();
             AudioClip* end_music_clip = new AudioClip("gameover.wav");
             audio->SetClip(end_music_clip);
+            int counter =0;
             audio->Play();
+            while(counter <70000)
+            {
+                counter++;
+            }  
+
             Core::is_running = false;
         }
     }

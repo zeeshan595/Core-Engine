@@ -18,7 +18,6 @@ int main(int argc, char* args[])
     //Create Scenes
     Environment* main_menu_scene = Environment::CreateEnvironment("Main Menu");
     Environment* game_scene = Environment::CreateEnvironment("Game");
-    Environment* gameover_scene = Environment::CreateEnvironment("Game Over");
 
     //Setup Main Menu
     Environment::SetEnvironment(main_menu_scene, false);    
@@ -178,24 +177,6 @@ int main(int argc, char* args[])
     
 
 /*==========GAME OVER (UI)===========*/
-    Environment::SetEnvironment(gameover_scene, false);
-
-    //Main Menu Camera
-    Camera* end_camera  = Environment::CreateCamera("Menu Camera");
-    AudioSource* end_audio_source = end_camera->CreateModule<AudioSource>();
-    AudioClip* end_music_clip = new AudioClip("gameover.wav");
-    end_audio_source->SetClip(end_music_clip);
-    end_audio_source->SetLooping(true);
-
-    //Main Menu Background UI
-    Shader* end_background_ui_shader = new Shader("Default/uiVS.glsl", "Default/uiFS.glsl");
-    Texture* end_background_ui_texture = new Texture("end_background.png");
-    Entity* end_background_object = Environment::CreateEntity("UI Object");
-    end_background_object->transform.SetPosition(glm::vec3(-1, -1, 0));
-    end_background_object->transform.SetSize(glm::vec3(1, 1, 1));
-    UI* end_background_ui_module = end_background_object->CreateModule<UI>();
-    end_background_ui_module->SetShader(end_background_ui_shader);
-    end_background_ui_module->SetTexture(end_background_ui_texture);
 
     engine.Start();
     //CleanUp
@@ -203,12 +184,9 @@ int main(int argc, char* args[])
     //Destroy UI
     delete manu_background_ui_texture;
     delete manu_background_ui_shader;
-    delete end_background_ui_shader;
-    delete end_background_ui_texture;
 
     //Destroy Music
     delete menu_music_clip;
     delete game_music_clip;
-    delete end_music_clip;
     return 0;
 }

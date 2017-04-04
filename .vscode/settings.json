@@ -5,7 +5,8 @@
         "vector": "cpp",
         "xstring": "cpp",
         "xutility": "cpp",
-        "xiosbase": "cpp"
+        "xiosbase": "cpp",
+        "xtree": "cpp"
     },
     "editor.tabSize": 4,
     "search.exclude": {
