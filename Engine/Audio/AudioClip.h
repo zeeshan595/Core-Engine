@@ -4,8 +4,6 @@
 class AudioClip
 {
 public:
-    
-
     AudioClip(const std::string filename);
     ~AudioClip();
     

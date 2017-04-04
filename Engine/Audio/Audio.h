@@ -9,7 +9,7 @@ public:
 
     static glm::vec3 GetListenerPosition();
     static glm::vec3 GetListenerVelocity();
-    static void ChangeListenerPosition(glm::vec3 pos);    
+    static void ChangeListenerPosition(glm::vec3 pos);
     static void ChangeListenerVelocity(glm::vec3 vel);
     static void ChangeListenerOrientation(glm::vec3 forward, glm::vec3 top);
 
