@@ -4,13 +4,15 @@
 class CameraMovment : public Module
 {
 public:
-    Entity* player_car          = NULL;
-    float   camera_position     = 15.0f;
-    float   camera_height       = 7.0f;
+    AudioSource*    audio               = NULL;
+    Entity*         player_car          = NULL;
+    float           camera_position     = 15.0f;
+    float           camera_height       = 7.0f;
 
     void Start()
     {
-        player_car = Environment::FindEntity("Car");
+        player_car  = Environment::FindEntity("Car");
+        audio       = entity->GetModule<AudioSource>();
     }
 
     void Update()
@@ -26,6 +28,19 @@ public:
         //rotation.y -= 0.3f;
         //rotation.z -= 0.10f;
         entity->transform.Rotate(rotation);
+
+        if (Input::GetKeyDown(SDLK_m))
+        {
+            GameResources::mute_sounds = !GameResources::mute_sounds;
+            if (GameResources::mute_sounds)
+            {
+                audio->Pause();
+            }
+            else
+            {
+                audio->Play();
+            }
+        }
     }
 
 private:

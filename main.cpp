@@ -5,7 +5,7 @@
 #include "Game/CameraMovment.h"
 #include "Game/CarMovment.h"
 #include "Game/Minimap.h"
-//http://people.sc.fsu.edu/~jburkardt/data/obj/obj.html
+
 int main(int argc, char* args[])
 {
     //Setup Window

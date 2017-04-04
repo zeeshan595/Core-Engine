@@ -4,6 +4,8 @@
 class GameResources
 {
 public:
+    static bool                     mute_sounds;
+
     static CubeTexture*             skybox_texture;
     static Shader*                  skybox_shader;
     static Skybox*                  skybox;
@@ -97,6 +99,8 @@ public:
         delete tree_material;           tree_material       = NULL;
     }
 };
+
+bool                        GameResources::mute_sounds                  = false;
 
 CubeTexture*                GameResources::skybox_texture               = NULL;
 Shader*                     GameResources::skybox_shader                = NULL;
