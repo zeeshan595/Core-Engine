@@ -1,0 +1,5 @@
+UP Arrow        - Accelerate
+Down Arrow      - Reverse / Break
+Left Arrow      - Rotate Left
+Right Arrow     - Rotate Right
+M               - Turns music on/off (Only avalible when in game)
